@@ -5,6 +5,15 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_executable(Pos_2022_Semka
         src/main.cpp)
+add_executable(Grafika
+        "src/Grafika/test.cpp")
+
+
+include_directories(/usr/local/include)
+
+find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
+include_directories(${SFML_INCLUDE_DIRS})
+target_link_libraries(Grafika sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 
 add_executable(Server
         src/SFML-client_server/Server.cpp
