@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
-project(Pos_2022_Semka CXX)
+project(Pos_2022_Semka)
 
 set(CMAKE_CXX_STANDARD 11)
 
