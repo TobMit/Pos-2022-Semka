@@ -1,11 +1,14 @@
-
+#pragma once
 #include "Socket.h"
 
 class Server : public Socket{
+private:
+    int clientSoc;
 public:
     void setServerParameters() override;
+    int *getSock() override;
     bool socketBind();
-    bool serverAccept
+    bool serverAccept();
 
 };
 
@@ -20,6 +23,14 @@ inline bool Server::socketBind() {
     return overenie < 0 ? false : true;
 }
 
-inline bool serverAccept() {
-    int overenie = accept()
+inline bool Server::serverAccept() {
+    struct sockaddr_in clientAdd;
+    socklen_t clientAddLength = sizeof (clientAdd);
+    int overenie = accept(sock,(struct sockaddr *)&clientAdd, &clientAddLength);
+    closeSocket(sock); //! môže spôsobovať chybu
+    return overenie < 0 ? false : true;
+}
+
+int *Server::getSock() {
+    return &clientSoc;
 }

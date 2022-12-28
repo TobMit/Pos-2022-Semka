@@ -1,3 +1,4 @@
+#pragma once
 #include <stdlib.h>
 #include <iostream>
 #include <sys/socket.h>
@@ -20,11 +21,9 @@ public:
     virtual void setServerParameters();
     virtual void setServerParameters(char *ipAddress);
 
-    int * getSock() {
-      return &sock;
-    };
+    virtual int * getSock();
     void closeSocket();
     ~Socket();
-private:
+protected:
     void closeSocket(int pSocket);
 };
