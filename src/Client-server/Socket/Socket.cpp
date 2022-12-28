@@ -14,6 +14,8 @@ void Socket::closeSocket() {
 }
 
 Socket::~Socket() {
+    closeSocket(sock);
+    closeSocket(sockClient);
 
 }
 

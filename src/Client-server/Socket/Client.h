@@ -4,6 +4,9 @@
 
 class Client : public Socket {
 public:
+    Client(int pPort) : Socket(pPort)
+    {
+    };
     bool setServerParameters(char *ipAddress) override;
     bool serverConnect();
 };

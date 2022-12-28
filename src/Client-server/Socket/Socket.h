@@ -18,12 +18,16 @@ protected:
 public:
     Socket(int pPort);
     bool createSocket();
-    virtual bool setServerParameters();
-    bool setServerParameters(char *ipAddress){
-        return &sock;
+    virtual bool setServerParameters(){
+        return false;
+    };
+    virtual bool setServerParameters(char *ipAddress) {
+        return false;
     };
 
-    virtual int * getSock();
+    virtual int * getSock(){
+        return &sock;
+    };
     void closeSocket();
     ~Socket();
 protected:
