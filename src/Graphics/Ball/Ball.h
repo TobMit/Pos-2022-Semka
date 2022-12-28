@@ -9,7 +9,7 @@
 class Ball {
 public:
     Ball();
-    inline sf::Vector2f getPosition() { ball.getPosition(); }
+    inline sf::Vector2f getPosition() { return ball.getPosition(); }
     inline void setPosition(sf::Vector2f position) { ball.setPosition(position); }
 
 private:
