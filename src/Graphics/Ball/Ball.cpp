@@ -3,7 +3,7 @@
 //
 
 #include "Ball.h"
-#include "Constants.h"
+#include "../Constants/Constants.h"
 
 const float Ball::ballRadius = 10.f;
 const sf::Color Ball::ballColor = sf::Color::White;
