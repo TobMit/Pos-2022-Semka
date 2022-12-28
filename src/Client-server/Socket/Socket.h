@@ -11,15 +11,17 @@ using namespace std;
 class Socket {
 protected:
     int port;
-    struct hosten *ipAdr;
+    struct hostent *ipAdr;
     int sock;
     int sockClient;
     struct sockaddr_in serverAdd;
 public:
     Socket(int pPort);
     bool createSocket();
-    virtual void setServerParameters();
-    virtual void setServerParameters(char *ipAddress);
+    virtual bool setServerParameters();
+    bool setServerParameters(char *ipAddress){
+        return &sock;
+    };
 
     virtual int * getSock();
     void closeSocket();

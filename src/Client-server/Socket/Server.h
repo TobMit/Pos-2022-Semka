@@ -5,17 +5,18 @@ class Server : public Socket{
 private:
     int clientSoc;
 public:
-    void setServerParameters() override;
+    bool setServerParameters() override;
     int *getSock() override;
     bool socketBind();
     bool serverAccept();
 
 };
 
-inline void Server::setServerParameters() {
+inline bool Server::setServerParameters() {
     serverAdd.sin_family = AF_INET;
     serverAdd.sin_addr.s_addr = INADDR_ANY;
     serverAdd.sin_port = htons(Socket::port);
+    return true;
 }
 
 inline bool Server::socketBind() {
