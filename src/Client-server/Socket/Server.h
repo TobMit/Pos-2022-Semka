@@ -8,7 +8,7 @@ public:
     };
     bool setServerParameters() override;
     int *getSock() override;
-    void socketBind();
+    bool socketBind();
     bool socketListen();
     bool serverAccept();
 
@@ -22,8 +22,9 @@ inline bool Server::setServerParameters() {
     return true;
 }
 
-inline void Server::socketBind() {
-    bind(sock, (struct sockaddr *)&serverAdd, sizeof(serverAdd));
+inline bool Server::socketBind() {
+    int test = bind(sock, (struct sockaddr *)&serverAdd, sizeof(serverAdd));
+    return test < 0 ? false : true;
 }
 
 inline bool Server::socketListen() {

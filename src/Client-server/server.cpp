@@ -1,29 +1,31 @@
 #include "definition.h"
 #include "Socket/Server.h"
-using namespace std;
+
 
 int main()
 {
     Server server(constants::PORT);
     if (!server.createSocket()) {
-        cerr << "Error - socket" << endl;
+        std::cerr << "Error - socket" << std::endl;
         return EXIT_FAILURE;
     }
-    cout << "Server socekt created" << endl;
+    std::cout << "Server socekt created" << std::endl;
     server.setServerParameters();
-    cout << "Server parameters are set" << endl;
-    server.socketBind();
-    cout << "Server is bined and listening! asi" << endl;
+    std::cout << "Server parameters are set!" << std::endl;
+    if(!server.socketBind()) {
+        std::cerr << "Error - bind" << std::endl;
+    }
+    std::cout << "Server is bined and listening!" << std::endl;
     if (!server.socketListen()) {
-        cerr << "Error - listen" << endl;
+        std::cerr << "Error - listen" << std::endl;
         return EXIT_FAILURE;
     }
     if (!server.serverAccept()) {
-        cerr << "Error - accept" << endl;
+        std::cerr << "Error - accept" << std::endl;
         return EXIT_FAILURE;
     }
 
-    cout << "Client is connected!" << endl;
+    std::cout << "Client is connected!" << std::endl;
 
     char buffer[constants::BUFF_SIZE + 1];
     buffer[constants::BUFF_SIZE] = '\0';
@@ -40,7 +42,7 @@ int main()
         sleep(1);
     }
     server.closeSocket();
-    cout << "Connection was ended!"<< endl;
+    std::cout << "Connection was ended!"<< std::endl;
     return EXIT_SUCCESS;
 }
 

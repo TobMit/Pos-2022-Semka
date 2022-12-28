@@ -15,7 +15,7 @@ public:
 inline bool Client::setServerParameters(char *ipAddress) {
     ipAdr = gethostbyname(ipAddress);
     if (ipAdr == NULL) {
-        cerr << "Wrong ip add!" << endl;
+        std::cerr << "Wrong ip add!" << std::endl;
         return false;
     }
     bzero((char *)&serverAdd, sizeof(serverAdd));
