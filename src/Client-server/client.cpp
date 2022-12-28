@@ -4,7 +4,7 @@ using namespace std;
 
 int main()
 {
-    Client client(PORT);
+    Client client(constants::PORT);
     if (!client.createSocket()) {
         cerr << "Error - socket" << endl;
         return EXIT_FAILURE;
@@ -19,11 +19,11 @@ int main()
     }
     cout << "Connection was established!"<< endl;
 
-    char buffer[bufsize + 1];
-    buffer[bufsize] = '\0';
+    char buffer[constants::BUFF_SIZE + 1];
+    buffer[constants::BUFF_SIZE] = '\0';
     bool end = false;
     while (!end) {
-        read(*client.getSock(), buffer, bufsize);
+        read(*client.getSock(), buffer, constants::BUFF_SIZE);
         int cislo;
         sscanf(buffer,"%d", &cislo);
         cout << "Server send: " << cislo << endl;
