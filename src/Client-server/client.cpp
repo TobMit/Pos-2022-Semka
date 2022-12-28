@@ -43,7 +43,8 @@ int main()
     bool isExit = false;
     int bufsize = 1024;
     char buffer[bufsize];
-    char* ip = "frios2.fri.uniza.sk";
+    //char* ip = "frios2.fri.uniza.sk";
+    char* ip = "localhost";
     struct hostent *ipadresa = gethostbyname(ip);
 
     struct sockaddr_in server_addr;

@@ -6,6 +6,9 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "Socket/Socket.h"
+#include "Socket/Server.h"
+
 
 using namespace std;
 
@@ -224,3 +227,4 @@ int main()
     close(client);
     return 0;
 }
+
