@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Socket.h"
+#include <netdb.h>
 
 class Client : public Socket {
 public:

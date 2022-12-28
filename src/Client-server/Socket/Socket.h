@@ -1,10 +1,12 @@
 #pragma once
 #include <stdlib.h>
+#include <stdio.h>
 #include <iostream>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#include <netdb.h>
 #include <unistd.h>
+#include <ctype.h>
+#include <string.h>
 
 using namespace std;
 

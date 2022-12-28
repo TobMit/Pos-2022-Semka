@@ -2,13 +2,16 @@
 #include "Socket.h"
 
 class Server : public Socket{
-private:
-    int clientSoc;
 public:
+    Server(int pPort) : Socket(pPort)
+    {
+    };
     bool setServerParameters() override;
     int *getSock() override;
-    bool socketBind();
+    void socketBind();
+    bool socketListen();
     bool serverAccept();
+
 
 };
 
@@ -19,19 +22,23 @@ inline bool Server::setServerParameters() {
     return true;
 }
 
-inline bool Server::socketBind() {
-    int overenie = bind(sock, (struct sockaddr *)&serverAdd, sizeof(serverAdd));
-    return overenie < 0 ? false : true;
+inline void Server::socketBind() {
+    bind(sock, (struct sockaddr *)&serverAdd, sizeof(serverAdd));
+}
+
+inline bool Server::socketListen() {
+    int test = listen(sock, 10);
+    return test < 0 ? false : true;
 }
 
 inline bool Server::serverAccept() {
     struct sockaddr_in clientAdd;
     socklen_t clientAddLength = sizeof (clientAdd);
-    int overenie = accept(sock,(struct sockaddr *)&clientAdd, &clientAddLength);
+    sockClient = accept(sock,(struct sockaddr *)&clientAdd, &clientAddLength);
     closeSocket(sock); //! môže spôsobovať chybu
-    return overenie < 0 ? false : true;
+    return sockClient < 0 ? false : true;
 }
 
-int *Server::getSock() {
-    return &clientSoc;
+inline int *Server::getSock() {
+    return &sockClient;
 }
