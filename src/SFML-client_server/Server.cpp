@@ -81,8 +81,8 @@ int main() {
     }
     for (auto client: clients) {
         client->disconnect();
+        delete client;
     }
-    clients.clear();
     //client.disconnect();
     std::cout << "Connections is aborted " << std::endl;
     return EXIT_SUCCESS;
