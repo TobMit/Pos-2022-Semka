@@ -15,6 +15,7 @@ int main() {
     bool end = false;
     while (!end) {
         sf::Packet packet;
+        /*
         if (socket.receive(packet) != sf::Socket::Done) {
             end = true;
         }
@@ -26,6 +27,17 @@ int main() {
             std::cout << "Error receiving data: " << number << std::endl;
         }
         if (number >= 10) {
+            end = true;
+        }*/
+        std::cout << "Your message for server: ";
+        std::string inptu;
+        getline(std::cin, inptu);
+        int position =  inptu.find(":end",0);
+        packet << inptu;
+        if (socket.send(packet) != sf::Socket::Done) {
+            end = true;
+        }
+        if (position != -1) {
             end = true;
         }
     }
