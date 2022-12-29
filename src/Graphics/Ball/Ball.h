@@ -9,8 +9,13 @@
 class Ball {
 public:
     Ball();
-    inline sf::Vector2f getPosition() { return ball.getPosition(); }
+
+    inline sf::Vector2f getPosition() const { return ball.getPosition(); }
+    inline const sf::CircleShape& getObject() const { return ball; }
+
     inline void setPosition(sf::Vector2f position) { ball.setPosition(position); }
+    inline void setPosition(float x, float y) { ball.setPosition(x, y); }
+    inline void move(float offsetX, float offsetY) { ball.move(offsetX, offsetY); }
 
 private:
     static const float ballRadius;

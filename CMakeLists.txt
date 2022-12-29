@@ -9,15 +9,15 @@ add_executable(
 )
 add_executable(
         Grafika
-        src/Graphics/Main_Game.cpp
-        src/Graphics/Game.cpp
-        src/Graphics/Game.h
+        src/Main_Game.cpp
+        src/Client_logic/Game.cpp
+        src/Client_logic/Game.h
         src/Graphics/Ball/Ball.cpp
         src/Graphics/Ball/Ball.h
-        src/Graphics/Constants/Constants.h
+        src/Constants/Constants.h
         src/Graphics/Paddle/Paddle.cpp
         src/Graphics/Paddle/Paddle.h
-)
+        src/Client_logic/GameData.h)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})

@@ -9,7 +9,7 @@ const float Ball::ballRadius = 10.f;
 const sf::Color Ball::ballColor = sf::Color::White;
 
 Ball::Ball()
-: ball(sf::CircleShape(ballRadius - constants::outline_thickness))
+: ball(ballRadius - constants::outline_thickness)
 {
     ball.setOutlineThickness(constants::outline_thickness);
     ball.setOutlineColor(constants::outline_color);

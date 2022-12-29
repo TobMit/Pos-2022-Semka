@@ -9,7 +9,7 @@ const sf::Vector2f Paddle::paddleSize = sf::Vector2f(25, 100);
 const std::tuple<sf::Color, sf::Color> Paddle::paddleColor = std::tuple<sf::Color, sf::Color>(sf::Color::Red, sf::Color::Blue);
 
 Paddle::Paddle(bool isLeft)
-: paddle(sf::RectangleShape(paddleSize - constants::outline_thickness_Vector2f))
+: paddle(paddleSize - constants::outline_thickness_Vector2f)
 {
     paddle.setOutlineThickness(constants::outline_thickness);
     paddle.setOutlineColor(constants::outline_color);
