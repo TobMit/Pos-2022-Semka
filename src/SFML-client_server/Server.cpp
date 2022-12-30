@@ -100,27 +100,21 @@ int main() {
         client.send(packet);
         number++;*/
         if (selector.wait()) {
-            // test the listener
             if (selector.isReady(listener)) {
                 sf::TcpSocket* client = new sf::TcpSocket;
                 if (listener.accept(*client) == sf::Socket::Done)
                 {
-                    // Add the new client to the clients list
                     {
                         std::unique_lock<std::mutex> lock(mut);
                         clients.push_back(client);
                     }
-                    // Add the new client to the selector so that we will
-                    // be notified when he sends something
                     selector.add(*client);
                 }
                 else
                 {
-                    // Error, we won't get a new connection, delete the socket
                     delete client;
                 }
             } else {
-                // The listener socket is not ready, test all other sockets (the clients)
                 {
                     std::unique_lock<std::mutex> lock(mut);
 
