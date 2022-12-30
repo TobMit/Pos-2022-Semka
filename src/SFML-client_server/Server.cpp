@@ -3,6 +3,64 @@
 #include "../Constants.h"
 #include <unistd.h>
 #include <list>
+#include <sys/select.h>
+#include <fcntl.h>
+#include <thread>
+
+bool isEnd(std::mutex *mut, bool *pEnd) {
+    bool end;
+    {
+        std::unique_lock<std::mutex> lock(*mut);
+        end = *pEnd;
+    }
+    return end;
+}
+
+void setEnd(std::mutex *mut, bool *pEnd) {
+    std::unique_lock<std::mutex> lock(*mut);
+    *pEnd = true;
+}
+
+void writeToBuffer(std::mutex *mut, std::list<sf::TcpSocket*> &clients, bool *end)
+{
+    char buffer[constants::BUFF_SIZE + 1];
+    buffer[constants::BUFF_SIZE] = '\0';
+
+    fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL, 0) | O_NONBLOCK);
+    fd_set inputs;
+    FD_ZERO(&inputs);
+    struct timeval tv;
+    tv.tv_usec = 0;
+    while (!isEnd(mut, end)) {
+        int position = -1;
+        tv.tv_sec = 1;
+        FD_SET(STDIN_FILENO, &inputs);
+        select(STDIN_FILENO + 1, &inputs, NULL, NULL, &tv);
+
+        if (FD_ISSET(STDIN_FILENO, &inputs)) {
+            char *testStart = buffer;
+
+            while (fgets(testStart, constants::BUFF_SIZE-1, stdin)!= nullptr) {
+                std::string inputFromConsole = testStart;
+                position = inputFromConsole.find(":end",0);
+                //std::cout << testStart << std::endl;
+                {
+                    std::unique_lock<std::mutex> lock(*mut);
+                    sf::Packet packet;
+                    packet << inputFromConsole;
+                    for (auto client: clients) {
+                        client->send(packet);
+                    }
+                    if (position != -1) {
+                        *end = true;
+                    }
+                }
+            }
+        }
+    }
+    fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL, 0) & ~O_NONBLOCK);
+
+}
 
 int main() {
     std::cout << "Server start!" << std::endl;
@@ -29,8 +87,11 @@ int main() {
     std::cout << "Client is accepted!" << std::endl;*/
 
     //double number = 0;
-    bool run = true;
-    while (run) {/*
+    bool end = false;
+    std::mutex mut;
+    std::condition_variable writeToBuff, readFromBuff;
+    std::thread writer(writeToBuffer, &mut, std::ref(clients), &end);
+    while (!isEnd(&mut, &end)) {/*
         sf::Packet packet;
         packet << number;
         std::cout << "Serve is sending number: " << number << std::endl;
@@ -43,7 +104,10 @@ int main() {
                 if (listener.accept(*client) == sf::Socket::Done)
                 {
                     // Add the new client to the clients list
-                    clients.push_back(client);
+                    {
+                        std::unique_lock<std::mutex> lock(mut);
+                        clients.push_back(client);
+                    }
                     // Add the new client to the selector so that we will
                     // be notified when he sends something
                     selector.add(*client);
@@ -55,21 +119,19 @@ int main() {
                 }
             } else {
                 // The listener socket is not ready, test all other sockets (the clients)
-                for (auto it = clients.begin(); it != clients.end(); ++it)
                 {
-                    sf::TcpSocket& client = **it;
-                    if (selector.isReady(client))
-                    {
-                        // The client has sent some data, we can receive it
-                        sf::Packet packet;
-                        if (client.receive(packet) == sf::Socket::Done)
-                        {
-                            std::string message;
-                            packet >> message;
-                            std::cout << message << std::endl;
-                            int position =  message.find(":end",0);
-                            if (position != -1) {
-                                run = false;
+                    std::unique_lock<std::mutex> lock(mut);
+
+                    for (auto it = clients.begin(); it != clients.end(); ++it) {
+                        sf::TcpSocket &client = **it;
+                        if (selector.isReady(client)) {
+                            // The client has sent some data, we can receive it
+                            sf::Packet packet;
+                            if (client.receive(packet) == sf::Socket::Done) {
+                                std::string message;
+                                packet >> message;
+                                std::cout << message;
+
                             }
                         }
                     }
@@ -79,6 +141,7 @@ int main() {
         }
 
     }
+    writer.join();
     for (auto client: clients) {
         client->disconnect();
         delete client;
