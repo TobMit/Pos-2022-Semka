@@ -3,10 +3,10 @@
 #include <iostream>
 #include <thread>
 #include <mutex>
-#include <list>
 #include <unistd.h>
 #include <sys/select.h>
 #include <fcntl.h>
+#include <condition_variable>
 #include "../Constants.h"
 
 bool isEnd(std::mutex *mut, bool *pEnd) {

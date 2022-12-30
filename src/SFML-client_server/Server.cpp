@@ -6,6 +6,8 @@
 #include <sys/select.h>
 #include <fcntl.h>
 #include <thread>
+#include <mutex>
+#include <condition_variable>
 
 bool isEnd(std::mutex *mut, bool *pEnd) {
     bool end;
