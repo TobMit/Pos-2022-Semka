@@ -7,6 +7,15 @@
 
 namespace constants {
 
+    enum Direction { UP, DOWN, NONE };
+
+    struct Movement {
+
+        Direction direction;
+        bool isPressed;
+
+    };
+
     const int outline_thickness = 3;
     const sf::Vector2f outline_thickness_Vector2f = sf::Vector2f(outline_thickness, outline_thickness);
     const sf::Color outline_color = sf::Color::Black;

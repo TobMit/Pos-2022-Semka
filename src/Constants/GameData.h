@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "Constants.h"
 
 struct ServerData {
 
@@ -15,7 +16,6 @@ struct ServerData {
 
 struct ClientData {
 
-    bool isMovingUP;
-    bool isMovingDOWN;
+    constants::Movement movement;
 
 };

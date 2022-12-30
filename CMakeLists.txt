@@ -10,14 +10,14 @@ add_executable(
 add_executable(
         Grafika
         src/Main_Game.cpp
-        src/Client_logic/Game.cpp
-        src/Client_logic/Game.h
+        src/Client/Game.cpp
+        src/Client/Game.h
         src/Graphics/Ball/Ball.cpp
         src/Graphics/Ball/Ball.h
         src/Constants/Constants.h
         src/Graphics/Paddle/Paddle.cpp
         src/Graphics/Paddle/Paddle.h
-        src/Client_logic/GameData.h src/Client_logic/ClientGame.cpp src/Client_logic/ClientGame.h)
+        src/Constants/GameData.h src/Client/ClientLogic.cpp src/Client/ClientLogic.h src/Client/ClientGame.cpp src/Client/ClientGame.h)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})

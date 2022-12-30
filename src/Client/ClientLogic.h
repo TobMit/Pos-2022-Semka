@@ -5,23 +5,28 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "../Constants/Constants.h"
+#include "../Constants/GameData.h"
 #include "../Graphics/Ball/Ball.h"
 #include "../Graphics/Paddle/Paddle.h"
 
-class ClientGame {
-    inline bool isRunning() { return mainWindow.isOpen(); }
+class ClientLogic {
+
     static const float windowHeight;
     static const float windowWidth;
-    float ballAngle;
 
     sf::RenderWindow mainWindow;
     Ball ball;
     Paddle player1;
     Paddle player2;
 
+    static constants::Movement handlePlayerInputs(sf::Keyboard::Key key, bool isPressed);
+
 public:
-    ClientGame();
-    void processEvents();
-    void update();
+    ClientLogic();
+    inline bool isRunning() { return mainWindow.isOpen(); }
+    constants::Movement processEvents();
+    void update(ServerData data);
     void render();
+
 };
