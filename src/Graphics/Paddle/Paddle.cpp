@@ -3,7 +3,7 @@
 //
 
 #include "Paddle.h"
-#include "../Constants/Constants.h"
+#include "../../Constants/Constants.h"
 
 const sf::Vector2f Paddle::paddleSize = sf::Vector2f(25, 100);
 const std::tuple<sf::Color, sf::Color> Paddle::paddleColor = std::tuple<sf::Color, sf::Color>(sf::Color::Red, sf::Color::Blue);

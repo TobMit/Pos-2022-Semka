@@ -17,7 +17,7 @@ add_executable(
         src/Constants/Constants.h
         src/Graphics/Paddle/Paddle.cpp
         src/Graphics/Paddle/Paddle.h
-        src/Client_logic/GameData.h)
+        src/Client_logic/GameData.h src/Client_logic/ClientGame.cpp src/Client_logic/ClientGame.h)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})

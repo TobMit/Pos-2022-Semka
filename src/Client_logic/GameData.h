@@ -15,6 +15,7 @@ struct ServerData {
 
 struct ClientData {
 
-    float paddleY;
+    bool isMovingUP;
+    bool isMovingDOWN;
 
 };

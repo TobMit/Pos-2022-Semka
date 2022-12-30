@@ -22,11 +22,14 @@ private:
     Ball ball;
     Paddle player1;
     Paddle player2;
+    bool isMovingUP = false;
+    bool isMovingDOWN = false;
 
     float ballAngle;
+    float playerSpeed = 400.f;
 
-    void processEvents(sf::Clock* clock);
+    void processEvents();
     void update(sf::Time deltaTime);
     void render();
-    void handlePlayerInputs(sf::Keyboard::Key key, sf::Clock* clock);
+    void handlePlayerInputs(sf::Keyboard::Key key, bool isPressed);
 };
