@@ -65,6 +65,7 @@ void writeToBuffer(std::mutex *mut, std::list<sf::TcpSocket*> &clients, bool *en
 }
 
 int main() {
+
     std::cout << "Server start!" << std::endl;
     sf::TcpListener listener;
     if (listener.listen(constants::PORT) != sf::Socket::Done)
