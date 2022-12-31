@@ -11,7 +11,7 @@ add_executable(Server
         src/SFML-client_server/Sockets/Sockets.cpp
         src/SFML-client_server/Sockets/Sockets.h
         src/SFML-client_server/Sockets/Client.h
-        src/SFML-client_server/ServerTest.cpp)
+        src/SFML-client_server/ServerTest.cpp src/SFML-client_server/Sockets/MultiServer.h)
 
 
 add_executable(SimpleServer
