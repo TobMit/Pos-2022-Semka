@@ -4,7 +4,7 @@
 int main() {
     std::cout << "Client started!" << std::endl;
     Client client;
-    if (client.socketConnect("localhost", constants::PORT))
+    if (!client.socketConnect("localhost", constants::PORT))
     {
         std::cerr << "Error connection!" << std::endl;
         return EXIT_FAILURE;
@@ -14,14 +14,17 @@ int main() {
     bool end = false;
     std::mutex mut;
     std::condition_variable writeToBuff, readFromBuff;
-    std::thread writer(client.writeToBuffer, &mut, &end);
+    std::thread writer(&Client::writeToBuffer, &client, &mut, &end);
 
     while (!client.isEnd(&mut, &end)) {
         std::string fromServer;
         sf::Packet packet;
         int position = -1;
 
-        if (client.socketReceive(&packet)) {
+        //!aby to ešte správne fungovalo reciev by mal byť cez selekt
+        // treaz je to tak že keď človek zadá na klientovy :end tak sa klient vypne až keď prime najakú správu
+        // to je preto lebo to tu čaká na prijatie správy
+        if (!client.socketReceive(&packet)) {
             client.setEnd(&mut, &end);
         }
 

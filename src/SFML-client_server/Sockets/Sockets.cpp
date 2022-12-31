@@ -31,6 +31,9 @@ void Sockets::writeToBuffer(std::mutex *mut, bool *end) {
                         setEnd(mut, end);
                     }
                 }
+                if (position != -1) {
+                    setEnd(mut, end);
+                }
             }
         }
     }

@@ -7,9 +7,17 @@ add_executable(Pos_2022_Semka
         src/main.cpp)
 
 add_executable(Server
-        src/SFML-client_server/Server.cpp src/SFML-client_server/Sockets/Sockets.cpp src/SFML-client_server/Sockets/Sockets.h src/SFML-client_server/Sockets/Client.h)
+        src/SFML-client_server/Server.cpp
+        src/SFML-client_server/Sockets/Sockets.cpp
+        src/SFML-client_server/Sockets/Sockets.h
+        src/SFML-client_server/Sockets/Client.h)
+
 add_executable(Client
-        src/SFML-client_server/Client.cpp src/SFML-client_server/Sockets/Sockets.cpp src/SFML-client_server/Sockets/Sockets.h src/SFML-client_server/Sockets/Client.h)
+        src/SFML-client_server/Client.cpp
+        src/SFML-client_server/Sockets/Sockets.cpp
+        src/SFML-client_server/Sockets/Sockets.h
+        src/SFML-client_server/Sockets/Client.h
+        src/Constants.h)
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})

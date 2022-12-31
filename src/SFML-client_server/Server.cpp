@@ -54,7 +54,7 @@ void writeToBuffer(std::mutex *mut, std::list<sf::TcpSocket*> &clients, bool *en
                         client->send(packet);
                     }
                     if (position != -1) {
-                        *end = true;
+                        setEnd(mut, end);
                     }
                 }
             }
