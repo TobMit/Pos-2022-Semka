@@ -33,8 +33,12 @@ int main() {
                 if (multiServer.socketReceive(&clientPacket, &mut)) {
                     std::cout << "4" << std::endl;
                     std::string messageFromClient;
-                    *clientPacket.packet >> messageFromClient;
-                    std::cout << "Client " << clientPacket.clientId << ". send: " << messageFromClient;
+                    if (messageFromClient.find(":end", 0) != -1) {
+                        multiServer.disconectClient(clientPacket.clientId);
+                    } else {
+                        *clientPacket.packet >> messageFromClient;
+                        std::cout << "Client " << clientPacket.clientId << ". send: " << messageFromClient;
+                    }
                 }
             }
             std::cout << "Online clients " << multiServer.getClienSize() << std::endl;
