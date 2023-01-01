@@ -92,18 +92,7 @@ inline bool MultiServer::listenerIsReady() {
  * @return every time is true
  */
 inline bool MultiServer::socketConnect() {
-    //! Same changes need in Thread version
-    sf::TcpSocket* client = new sf::TcpSocket;
-    if (listener->accept(*client) == sf::Socket::Done)
-    {
-        clients->push_back(client);
-        selector->add(*client);
-    }
-    else
-    {
-        delete client;
-    }
-    return true;
+    return socketConnect(nullptr);
 }
 
 /**
@@ -112,12 +101,13 @@ inline bool MultiServer::socketConnect() {
  * @return every time is true
  */
 inline bool MultiServer::socketConnect(std::mutex *mut) {
-    //! Same changes need in clasic version
     sf::TcpSocket* client = new sf::TcpSocket;
     if (listener->accept(*client) == sf::Socket::Done)
     {
-        {
+        if  (mut != nullptr) {
             std::unique_lock<std::mutex> lock(*mut);
+            clients->push_back(client);
+        } else {
             clients->push_back(client);
         }
         selector->add(*client);
