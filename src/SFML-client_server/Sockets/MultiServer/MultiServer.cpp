@@ -1,5 +1,4 @@
 #include "MultiServer.h"
-#include <iostream>
 
 MultiServer::MultiServer() {
     listener = new sf::TcpListener;
@@ -164,7 +163,6 @@ bool MultiServer::socketSend(int id, sf::Packet *pPacket, std::mutex *mut) {
 }
 
 bool MultiServer::selectorIsReady(sf::Socket &pSocket) {
-    std::cout << "6" << std::endl;
     return selector->isReady(pSocket);
 }
 
@@ -208,10 +206,8 @@ bool MultiServer::socketReceive(ClientPacket *pClientPacket, std::mutex *mut) {
     sf::Socket::Status status;
     if (mut != nullptr) {
         std::unique_lock<std::mutex> lock(*mut);
-        std::cout << "5" << std::endl;
         for (int i = 0; i < clients->size(); ++i) {
             if (selectorIsReady(*clients->at(i))) {
-                std::cout << "7" << std::endl;
                 pClientPacket->clientId = i;
                 if (!socketReceive(pClientPacket->packet, clients->at(i), &status)){
                     successful = false;
