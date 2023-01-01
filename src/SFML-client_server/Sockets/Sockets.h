@@ -22,11 +22,11 @@ public:
     Sockets() = default;
     ~Sockets()= default;
     /**
-     * fun ideal for threads!
+     * Function ideal for threads! Exit is via ":end"
      * @param mut mutex for thread
      * @param end end of thread
      */
-    void writeToBuffer(std::mutex *mut, bool *end);
+    void consoleSendData(std::mutex *mut, bool *end);
     //! časom sa môžu presunúť do protected
     bool isEnd(std::mutex *mut, bool *pEnd);
     void setEnd(std::mutex *mut, bool *pEnd);

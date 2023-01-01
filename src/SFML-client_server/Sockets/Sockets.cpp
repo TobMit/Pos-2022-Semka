@@ -1,6 +1,6 @@
 #include "Sockets.h"
 
-void Sockets::writeToBuffer(std::mutex *mut, bool *end) {
+void Sockets::consoleSendData(std::mutex *mut, bool *end) {
     char buffer[constants::BUFF_SIZE + 1];
     buffer[constants::BUFF_SIZE] = '\0';
 

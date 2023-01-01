@@ -14,7 +14,7 @@ int main() {
     bool end = false;
     std::mutex mut;
     std::condition_variable writeToBuff, readFromBuff;
-    std::thread writer(&Client::writeToBuffer, &client, &mut, &end);
+    std::thread writer(&Client::consoleSendData, &client, &mut, &end);
 
     while (!client.isEnd(&mut, &end)) {
         std::string fromServer;
