@@ -19,20 +19,25 @@ int main() {
     std::thread writer(&MultiServer::consoleSendData, &multiServer, &mut, &end);
     while (!multiServer.isEnd(&mut, &end)) {
         if (multiServer.selectorWait()) {
+            std::cout << "1" << std::endl;
+
             if (multiServer.listenerIsReady()) {
+                std::cout << "2" << std::endl;
                 if (multiServer.socketConnect(&mut)){
-                    std::cout << "New client is connected!\n Actual connected client: "<< multiServer.getClienSize() << std::endl;
+                    std::cout << "New client is connected!" << std::endl;
                 }
             } else {
+                std::cout << "3" << std::endl;
                 sf::Packet packet;
                 ClientPacket clientPacket(&packet);
                 if (multiServer.socketReceive(&clientPacket, &mut)) {
+                    std::cout << "4" << std::endl;
                     std::string messageFromClient;
                     *clientPacket.packet >> messageFromClient;
-                    std::cout << "Client " << clientPacket.clientId << ". send: " << messageFromClient << std::endl;
+                    std::cout << "Client " << clientPacket.clientId << ". send: " << messageFromClient;
                 }
             }
-
+            std::cout << "Online clients " << multiServer.getClienSize() << std::endl;
         }
 
     }

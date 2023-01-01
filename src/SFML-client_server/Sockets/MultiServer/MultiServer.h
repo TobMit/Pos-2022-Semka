@@ -81,10 +81,12 @@ public:
     bool socketReceive(ClientPacket *pClientPacket, std::mutex *mut);
 
     void socketDisconect() override;
+
+    void disconectClient(int id);
 private:
     bool selectorIsReady(sf::Socket &pSocket);
 
-    bool socketSendPacket(sf::Packet *pPacket, sf::TcpSocket *pSocket);
+    bool socketSendPacket(sf::Packet *pPacket, sf::TcpSocket *pSocket, sf::Socket::Status *status);
 
-    bool socketReceive(sf::Packet *pPacket, sf::TcpSocket *pSocket);
+    bool socketReceive(sf::Packet *pPacket, sf::TcpSocket *pSocket, sf::Socket::Status *status);
 };
