@@ -80,9 +80,9 @@ public:
 
     bool socketReceive(ClientPacket *pClientPacket, std::mutex *mut);
 
-    void socketDisconect() override;
+    void socketDisconnect() override;
 
-    void disconectClient(int id);
+    void clientDisconnect(int id);
 private:
     bool selectorIsReady(sf::Socket &pSocket);
 

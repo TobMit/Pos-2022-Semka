@@ -28,7 +28,7 @@ public:
      */
     bool socketInicialise(int pPort);
 
-    void socketDisconect() override;
+    void socketDisconnect() override;
 };
 
 inline SimpleServer::SimpleServer() {
@@ -37,7 +37,7 @@ inline SimpleServer::SimpleServer() {
 
 inline SimpleServer::~SimpleServer() {
     delete listener;
-    this->socketDisconect();
+    this->socketDisconnect();
     delete client;
 }
 
@@ -66,6 +66,6 @@ bool SimpleServer::socketInicialise(int pPort) {
     return false;
 }
 
-inline void SimpleServer::socketDisconect() {
+inline void SimpleServer::socketDisconnect() {
     client->disconnect();
 }

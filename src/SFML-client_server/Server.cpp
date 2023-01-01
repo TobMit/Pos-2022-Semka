@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Sockets/MultiServer/MultiServer.h"
-#include "../Constants.h"
 
 int main() {
 
@@ -30,7 +29,7 @@ int main() {
                 if (multiServer.socketReceive(&clientPacket, &mut)) {
                     std::string messageFromClient;
                     if (messageFromClient.find(":end", 0) != -1) {
-                        multiServer.disconectClient(clientPacket.clientId);
+                        multiServer.clientDisconnect(clientPacket.clientId);
                     } else {
                         *clientPacket.packet >> messageFromClient;
                         std::cout << "Client " << clientPacket.clientId << ". send: " << messageFromClient;
@@ -42,7 +41,7 @@ int main() {
 
     }
     writer.join();
-    multiServer.socketDisconect();
+    multiServer.socketDisconnect();
     std::cout << "Connections is aborted " << std::endl;
     return EXIT_SUCCESS;
 }

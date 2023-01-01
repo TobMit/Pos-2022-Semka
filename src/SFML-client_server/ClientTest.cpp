@@ -40,7 +40,7 @@ int main() {
         }
     }
     writer.join();
-    client.socketDisconect();
+    client.socketDisconnect();
     std::cout << "Connections is aborted " << std::endl;
     return EXIT_SUCCESS;
 

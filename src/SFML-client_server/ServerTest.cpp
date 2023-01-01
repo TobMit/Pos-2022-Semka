@@ -27,7 +27,7 @@ int main() {
     sf::Packet packet;
     packet << ":end\n";
     server.socketSend(&packet);
-    server.socketDisconect();
+    server.socketDisconnect();
     std::cout << "Connection aborted" << std::endl;
     return EXIT_SUCCESS;
 

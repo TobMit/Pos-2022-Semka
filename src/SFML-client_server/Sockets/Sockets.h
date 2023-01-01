@@ -52,7 +52,7 @@ public:
     /**
      * Disconect from server
      */
-    virtual void socketDisconect() = 0;
+    virtual void socketDisconnect() = 0;
 protected:
 
 };

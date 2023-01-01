@@ -29,8 +29,6 @@ add_executable(Client
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})
-target_link_libraries(Server sfml-network)
+target_link_libraries(Server sfml-network pthread)
 target_link_libraries(SimpleServer sfml-network)
-target_link_libraries(Client sfml-network)
-target_link_libraries(Server pthread)
-target_link_libraries(Client pthread)
+target_link_libraries(Client sfml-network pthread)

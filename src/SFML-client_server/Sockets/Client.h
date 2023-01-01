@@ -14,7 +14,7 @@ public:
 
     bool socketConnect(std::string pIpAddress, int pPort) override;
 
-    void socketDisconect() override;
+    void socketDisconnect() override;
 
 };
 
@@ -40,11 +40,11 @@ inline bool Client::socketConnect(std::string pIpAddress, int pPort) {
 }
 
 
-inline void Client::socketDisconect() {
+inline void Client::socketDisconnect() {
     socket->disconnect();
 }
 
 inline Client::~Client() {
-    socketDisconect();
+    socketDisconnect();
     delete socket;
 }

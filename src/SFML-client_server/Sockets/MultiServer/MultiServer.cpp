@@ -83,7 +83,7 @@ bool MultiServer::socketSend(sf::Packet *pPacket) {
         if (!socketSendPacket(pPacket, clients->at(i), &status)) {
             successful = false;
             if (status == sf::Socket::Disconnected) {
-                disconectClient(i);
+                clientDisconnect(i);
             }
         }
     }
@@ -118,7 +118,7 @@ bool MultiServer::socketSend(sf::Packet *pPacket, std::mutex *mut) {
             if (!socketSendPacket(pPacket, clients->at(i), &status)) {
                 success = false;
                 if (status == sf::Socket::Disconnected) {
-                    disconectClient(i);
+                    clientDisconnect(i);
                 }
             }
         }
@@ -128,7 +128,7 @@ bool MultiServer::socketSend(sf::Packet *pPacket, std::mutex *mut) {
             if (!socketSendPacket(pPacket, clients->at(i), &status)) {
                 success = false;
                 if (status == sf::Socket::Disconnected) {
-                    disconectClient(i);
+                    clientDisconnect(i);
                 }
             }
         }
@@ -151,12 +151,12 @@ bool MultiServer::socketSend(int id, sf::Packet *pPacket, std::mutex *mut) {
         std::unique_lock<std::mutex> lock(*mut);
         success = socketSendPacket(pPacket, clients->at(id), &status);
         if (status == sf::Socket::Disconnected) {
-            disconectClient(id);
+            clientDisconnect(id);
         }
     } else {
         success = socketSendPacket(pPacket, clients->at(id), &status);
         if (status == sf::Socket::Disconnected) {
-            disconectClient(id);
+            clientDisconnect(id);
         }
     }
     return success;
@@ -214,7 +214,7 @@ bool MultiServer::socketReceive(ClientPacket *pClientPacket, std::mutex *mut) {
                 }
                 // if was client disconnected
                 if (status == sf::Socket::Disconnected) {
-                    disconectClient(i);
+                    clientDisconnect(i);
                 }
                 break;
             }
@@ -228,7 +228,7 @@ bool MultiServer::socketReceive(ClientPacket *pClientPacket, std::mutex *mut) {
                 }
                 // if was client disconnected
                 if (status == sf::Socket::Disconnected) {
-                    disconectClient(i);
+                    clientDisconnect(i);
                 }
                 break;
             }
@@ -237,13 +237,13 @@ bool MultiServer::socketReceive(ClientPacket *pClientPacket, std::mutex *mut) {
     return successful;
 }
 
-void MultiServer::socketDisconect() {
+void MultiServer::socketDisconnect() {
     for (auto client: *clients) {
         client->disconnect();
     }
 }
 
-void MultiServer::disconectClient(int id) {
+void MultiServer::clientDisconnect(int id) {
     selector->remove(*clients->at(id));
     clients->at(id)->disconnect();
     delete clients->at(id);
