@@ -40,7 +40,7 @@ constants::Movement ClientLogic::processEvents() {
 }
 
 void ClientLogic::update(ServerData data) {
-
+    
 }
 
 void ClientLogic::render() {
