@@ -4,6 +4,7 @@
 class Client : public Sockets {
 private:
     sf::TcpSocket *socket;
+    sf::SocketSelector *selector;
 public:
     Client();
     ~Client();
@@ -15,6 +16,8 @@ public:
 
     void socketDisconnect() override;
 
+    bool selectorChange();
+
 };
 
 /**
@@ -22,6 +25,7 @@ public:
  */
 inline Client::Client() {
     socket = new sf::TcpSocket;
+    selector = new sf::SocketSelector;
 }
 
 
@@ -35,15 +39,29 @@ inline bool Client::socketReceive(sf::Packet *pPacket) {
 
 inline bool Client::socketConnect(std::string pIpAddress, int pPort) {
     sf::Socket::Status status = socket->connect(pIpAddress, pPort);
-    return status == sf::Socket::Done;
+    if (status == sf::Socket::Done) {
+        selector->add(*socket);
+        return true;
+    }
+    return false;
 }
 
 
 inline void Client::socketDisconnect() {
     socket->disconnect();
+    selector->remove(*socket);
 }
 
 inline Client::~Client() {
     socketDisconnect();
     delete socket;
+    delete selector;
+}
+
+inline bool Client::selectorChange() {
+    if (selector->wait()) {
+        std::cout << "SELEKTOR HEKTOR" << std::endl;
+        return selector->isReady(*socket);
+    }
+    return false;
 }
