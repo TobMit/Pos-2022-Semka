@@ -5,8 +5,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "../Graphics/Ball/Ball.h"
-#include "../Graphics/Paddle/Paddle.h"
+#include "Graphics/Ball/Ball.h"
+#include "Graphics/Paddle/Paddle.h"
 
 class Game {
 public:

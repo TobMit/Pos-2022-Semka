@@ -4,7 +4,6 @@
 
 #include <cmath>
 #include "Game.h"
-#include "../Constants/Constants.h"
 
 const sf::Time Game::timePerFrame = sf::seconds(1.f/120.f);
 const float Game::windowHeight = 600;

@@ -5,15 +5,11 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "../Constants/Constants.h"
 #include "../Constants/GameData.h"
-#include "../Graphics/Ball/Ball.h"
 #include "../Graphics/Paddle/Paddle.h"
+#include "../Graphics/Ball/Ball.h"
 
 class ClientLogic {
-
-    static const float windowHeight;
-    static const float windowWidth;
 
     sf::RenderWindow mainWindow;
     Ball ball;

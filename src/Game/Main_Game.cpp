@@ -2,7 +2,7 @@
 // Created by Matúš Mištrik on 27/12/2022.
 //
 
-#include "Client_logic/Game.h"
+#include "Game.h"
 
 int main()
 {

@@ -4,16 +4,13 @@
 
 #include "ClientLogic.h"
 
-const float ClientLogic::windowHeight = 600;
-const float ClientLogic::windowWidth = 800;
-
 ClientLogic::ClientLogic()
-: mainWindow(sf::VideoMode(windowWidth ,windowHeight, 32),"Online PONG!",sf::Style::Titlebar | sf::Style::Close),
+: mainWindow(sf::VideoMode(constants::windowWidth ,constants::windowHeight, 32),"Online PONG!",sf::Style::Titlebar | sf::Style::Close),
   ball(), player1(true), player2(false) {
     mainWindow.setVerticalSyncEnabled(true);
-    ball.setPosition(windowWidth / 2, windowHeight / 2);
-    player1.setPosition(10 + player1.getSize().x / 2, windowHeight / 2);
-    player2.setPosition(windowWidth - 10 - player2.getSize().x / 2, windowHeight / 2);
+    ball.setPosition(constants::windowWidth / 2, constants::windowHeight / 2);
+    player1.setPosition(10 + player1.getSize().x / 2, constants::windowHeight / 2);
+    player2.setPosition(constants::windowWidth - 10 - player2.getSize().x / 2, constants::windowHeight / 2);
 //    do
 //    {
 //        ballAngle = (std::rand() % 360) * 2 * constants::pi / 360;

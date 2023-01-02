@@ -18,7 +18,6 @@ public:
     inline void move(float offsetX, float offsetY) { ball.move(offsetX, offsetY); }
 
 private:
-    static const float ballRadius;
     static const sf::Color ballColor;
     sf::CircleShape ball;
 };
