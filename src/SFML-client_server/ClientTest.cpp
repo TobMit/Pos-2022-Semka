@@ -13,7 +13,6 @@ int main() {
 
     bool end = false;
     std::mutex mut;
-    std::condition_variable writeToBuff, readFromBuff;
     std::thread writer(&Client::consoleSendData, &client, &mut, &end);
 
     while (!client.isEnd(&mut, &end)) {
@@ -21,8 +20,8 @@ int main() {
         sf::Packet packet;
         int position = -1;
 
-        //!aby to ešte správne fungovalo reciev by mal byť cez selekt
-        // treaz je to tak že keď človek zadá na klientovy :end tak sa klient vypne až keď prime najakú správu
+        //!aby to ešte správne fungovalo receive by mal byť cez select alebo set to nonBlocking
+        // teraz je to tak, že keď človek zadá na klientovy :end tak sa klient vypne až keď prime najakú správu
         // to je preto lebo to tu čaká na prijatie správy
         if (!client.socketReceive(&packet)) {
             client.setEnd(&mut, &end);

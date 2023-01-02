@@ -2,7 +2,7 @@
 #include "Sockets/MultiServer/MultiServer.h"
 
 int main() {
-
+    //todo keď je 0 klientov nechce vypnut server
     std::cout << "Server start!" << std::endl;
     MultiServer multiServer;
     if (!multiServer.socketInicialise(constants::PORT))

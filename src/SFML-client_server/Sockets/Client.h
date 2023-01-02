@@ -7,8 +7,7 @@ private:
 public:
     Client();
     ~Client();
-    bool socketSend(sf::Packet *
-    pPacket) override;
+    bool socketSend(sf::Packet *pPacket) override;
 
     bool socketReceive(sf::Packet *pPacket) override;
 
