@@ -5,6 +5,8 @@
 #pragma once
 
 #include "ClientLogic.h"
+#include <iostream>
+#include "../../SFML-client_server/Sockets/Client.h"
 
 
 class ClientGame {

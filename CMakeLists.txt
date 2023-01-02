@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})
 
+
 add_executable(Grafika
         src/Game/Main_Game.cpp
         src/Game/Game.cpp
@@ -43,8 +44,19 @@ add_executable(Client
         src/SFML-client_server/Sockets/Client.h
         src/Constants.h)
 
+add_executable(GameSimpleServer
+        src/MainSimpleServer.cpp
+        src/SFML-client_server/Sockets/Sockets.cpp
+        src/SFML-client_server/Sockets/Sockets.h
+        src/SFML-client_server/Sockets/Client.h
+        src/Constants.h
+        src/Game/Constants/GameData.h
+        src/Game/Server/ServerLogic.cpp
+        src/Game/Server/ServerLogic.h
+        )
 target_link_libraries(Server sfml-network pthread)
 target_link_libraries(SimpleServer sfml-network)
+target_link_libraries(GameSimpleServer sfml-network)
 target_link_libraries(Client sfml-network pthread)
 target_link_libraries(Grafika sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 

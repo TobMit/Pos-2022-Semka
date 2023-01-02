@@ -40,7 +40,9 @@ constants::Movement ClientLogic::processEvents() {
 }
 
 void ClientLogic::update(ServerData data) {
-    
+    player1.setPosition(player1.getPosition().x, data.player1PaddleY);
+    player2.setPosition(player2.getPosition().x, data.player2PaddleY);
+    ball.setPosition(data.ballX, data.ballY);
 }
 
 void ClientLogic::render() {

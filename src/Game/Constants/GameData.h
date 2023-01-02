@@ -3,6 +3,8 @@
 //
 
 #pragma once
+
+#include <SFML/Network/Packet.hpp>
 #include "../../Constants.h"
 
 struct ServerData {
@@ -16,6 +18,24 @@ struct ServerData {
 
 struct ClientData {
 
-    constants::Movement movement;
+    int id;
+    constants::Direction direction;
+    bool isPressed;
 
 };
+
+inline sf::Packet& operator <<(sf::Packet& packet, const ServerData& data) {
+    return packet << data.player1PaddleY << data.player2PaddleY << data.ballX << data.ballY;
+}
+
+inline sf::Packet& operator >>(sf::Packet& packet, ServerData& data) {
+    return packet >> data.player1PaddleY >> data.player2PaddleY >> data.ballX >> data.ballY;
+}
+
+//sf::Packet& operator <<(sf::Packet& packet, const ClientData& data) {
+//    return packet << static_cast<float>(data.id) << static_cast<float>data.direction << data.isPressed;
+//}
+//
+//sf::Packet& operator >>(sf::Packet& packet, ClientData& data) {
+//    return packet >>  >> data.direction >> data.isPressed;
+//}

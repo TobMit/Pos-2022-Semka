@@ -3,10 +3,13 @@
 //
 
 #include "Game.h"
+#include "Client/ClientGame.h"
 
 int main()
 {
-    Game game;
-    game.Run();
+//    Game game;
+//    game.Run();
+    ClientGame game;
+    game.run();
     return 0;
 }

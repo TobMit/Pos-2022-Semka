@@ -12,10 +12,12 @@ ServerLogic::ServerLogic()
 }
 
 ServerData ServerLogic::processData(ClientData data, bool isLeftPlayer) {
-    if (isLeftPlayer) {
-//        switch (data.movement) {
+//    switch (data.movement.direction) {
+//        case constants::UP:
+//            break;
 //
-//        }
-    }
+//        case constants::DOWN:
+//            break;
+//    }
     return ServerData();
 }
