@@ -56,7 +56,7 @@ add_executable(GameSimpleServer
         )
 target_link_libraries(Server sfml-network pthread)
 target_link_libraries(SimpleServer sfml-network)
-target_link_libraries(GameSimpleServer sfml-network)
+target_link_libraries(GameSimpleServer sfml-network sfml-graphics)
 target_link_libraries(Client sfml-network pthread)
 target_link_libraries(Grafika sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 
