@@ -15,7 +15,8 @@ void ClientGame::run() {
     while (game.isRunning()) {
         if (client.selectorChange()) {
             auto movement = game.processEvents();
-            if (movement.direction != constants::NONE) {
+            // musí tam byť overenie či bola klávesa zmačknutá lebo inak to robili dvojkliky
+            if (movement.direction != constants::NONE && movement.isPressed) {
                 sf::Packet packet;
                 ClientData data(CLIENT_UPDATE, movement.direction);
 //            std::cout << data.direction << " " << data.packet_id << std::endl;
