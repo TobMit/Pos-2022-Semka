@@ -7,7 +7,7 @@ namespace constants
 {
     const std::string IP_ADDRESS_LOCALHOST = "localhost";
     const std::string IP_ADDRESS_FRIOS = "frios2.fri.uniza.sk";
-    const int PORT = 15000;
+    const int PORT = 20000;
     const int BUFF_SIZE = 1024;
 
     /**

@@ -23,7 +23,8 @@ int main() {
     std::mutex mut;
     std::condition_variable writeToBuff;
     bool end = false;
-    float position;
+    float position = constants::windowHeight / 2;
+    float oldPosition = 0;
 
     //long long cislo = 0;
 
@@ -58,12 +59,18 @@ int main() {
 
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > timePerFrame) {
+            //std::cout << "tick" << std::endl;
             sf::Packet packet;
             ServerData data;
             timeSinceLastUpdate -= timePerFrame;
             if (server.getClienSize() > 0) {
                 data.player1PaddleY = position;
-                packet << data;
+                data.player2PaddleY = rand() % static_cast<int>(constants::windowHeight);
+                packet << data;/*
+                if (position != oldPosition) {
+                    std::cout << data.player1PaddleY << " Sending data" << std::endl;
+                    oldPosition = position;
+                }*/
                 //std::cout << "Sending data" << std::endl;
                 if (!server.socketSend(&packet, &mut)) {
                     std::cerr << "Error sending" << std::endl;

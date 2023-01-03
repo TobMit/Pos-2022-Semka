@@ -15,6 +15,7 @@ class ClientGame {
 
 public:
     void run();
+    void update();
     void update(ServerData data);
 };
 

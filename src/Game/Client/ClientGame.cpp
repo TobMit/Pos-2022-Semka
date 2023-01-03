@@ -6,12 +6,13 @@
 
 void ClientGame::run() {
     Client client;
-    if (!client.socketConnect(constants::IP_ADDRESS_LOCALHOST, constants::PORT)) {
+    if (!client.socketConnect(constants::IP_ADDRESS_FRIOS, constants::PORT)) {
         std::cerr << "Error - cennection" << std::endl;
         return;
     }
     std::cout << "Client is connected to the server" << std::endl;
     //long long cislo = 0;
+    //float oldData = 0;
     while (game.isRunning()) {
         if (client.selectorChange()) {
             auto movement = game.processEvents();
@@ -35,6 +36,11 @@ void ClientGame::run() {
             ServerData serverData;
             if (client.socketReceive(&packet)) {
                 if (packet >> serverData) {
+                    /*
+                    if (oldData != serverData.player1PaddleY) {
+                        oldData = serverData.player1PaddleY;
+                        std::cout << oldData << " Receiving data"<< std::endl;
+                    }*/
                     update(serverData);
                 }
             } else {
@@ -42,6 +48,7 @@ void ClientGame::run() {
             }
         }
 //        std::cout << "Koniec loopu" << std::endl;
+        //game.render();
 
     }
     //TODO paket inicializuje disconect
@@ -50,5 +57,9 @@ void ClientGame::run() {
 
 void ClientGame::update(ServerData data) {
     game.update(data);
+    game.render();
+}
+
+void ClientGame::update() {
     game.render();
 }
