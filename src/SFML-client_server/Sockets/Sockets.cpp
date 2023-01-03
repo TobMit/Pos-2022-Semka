@@ -39,8 +39,8 @@ void Sockets::consoleSendData(std::mutex *mut, bool *end) {
     fcntl(STDIN_FILENO, F_SETFL, fcntl(STDIN_FILENO, F_GETFL, 0) & ~O_NONBLOCK);
 }
 
-void Sockets::consoleToBuffer(std::mutex *mut, bool *end, std::vector<std::string> buffer,
-                              std::condition_variable writeToBuff) {
+void Sockets::consoleToBuffer(std::mutex *mut, bool *end, std::vector<std::string> &buffer,
+                              std::condition_variable *writeToBuff) {
     char inputBuff[constants::BUFF_SIZE + 1];
     inputBuff[constants::BUFF_SIZE] = '\0';
 
@@ -57,7 +57,7 @@ void Sockets::consoleToBuffer(std::mutex *mut, bool *end, std::vector<std::strin
         if (FD_ISSET(STDIN_FILENO, &inputs)) {
             std::unique_lock<std::mutex> lock(*mut);
             while (!buffer.empty()) {
-                writeToBuff.wait(lock);
+                writeToBuff->wait(lock);
             }
             char *testStart = inputBuff;
             while (fgets(testStart, constants::BUFF_SIZE-1, stdin)!= nullptr) {

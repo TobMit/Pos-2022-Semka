@@ -22,13 +22,14 @@ int main() {
 
     std::mutex mut;
     std::condition_variable writeToBuff;
+    std::vector<std::string> buffer;
     bool end = false;
     float position = constants::windowHeight / 2;
     float oldPosition = 0;
 
     //long long cislo = 0;
 
-    //std::thread console(&MultiServer::consoleSendData, &server, &mut, &end, &writeToBuff);
+    std::thread console(&MultiServer::consoleToBuffer, &server, &mut, &end, std::ref(buffer), &writeToBuff);
 
     while (!server.isEnd(&mut, &end)) {
         if (server.selectorWait()) {
@@ -54,14 +55,14 @@ int main() {
                         std::cerr << "Error - data receiving!" << std::endl;
                 }
             }
-            //std::cout << "Online clients " << server.getClienSize() << std::endl;
+            std::cout << "Online clients " << server.getClienSize() << std::endl;
         }
 
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > timePerFrame) {
             //std::cout << "tick" << std::endl;
             sf::Packet packet;
-            ServerData data;
+            ServerResponse data;
             timeSinceLastUpdate -= timePerFrame;
             if (server.getClienSize() > 0) {
                 data.player1PaddleY = position;
@@ -77,7 +78,26 @@ int main() {
                 }
             }
         }
+        std::string commandFromBuffer;
+        {
+            std::unique_lock<std::mutex> lock(mut);
+            if (!buffer.empty()) {
+                commandFromBuffer = buffer.at(buffer.size() - 1);
+                buffer.pop_back();
+                writeToBuff.notify_one();
+            }
+        }
+        if (commandFromBuffer.size() != 0) {
+            int position = -1;
+            position = commandFromBuffer.find(":end", 0);
+            if (position != -1) {
+                std::cout << "Ha mal by si končiť" << std::endl;
+            } else {
+                std::cout << "Z konzoli ha " << commandFromBuffer;
+            }
+        }
     }
+    console.join();
 
     return EXIT_SUCCESS;
 }
