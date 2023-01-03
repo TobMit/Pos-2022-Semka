@@ -2,6 +2,9 @@
 // Created by Matúš Mištrik on 30/12/2022.
 //
 
+//todo keď podržím šipku tak to zaváha a potom sa rozbehne, pravdepodobne niekde je sa zle odchytáva event
+//todo doriešiť konečne tú logiku aby už aj prepočítavalo a odrážalo ball
+
 #include "ClientGame.h"
 
 void ClientGame::run() {
