@@ -11,22 +11,25 @@ void ClientGame::run() {
         return;
     }
     std::cout << "Client is connected to the server" << std::endl;
+    //long long cislo = 0;
     while (game.isRunning()) {
-        auto movement = game.processEvents();
-        if (movement.direction != constants::NONE) {
-            sf::Packet packet;
-            ClientData data(CLIENT_UPDATE, movement.direction);
-//            std::cout << data.direction << " " << data.packet_id << std::endl;
-            if(packet << data) {
-                if (!client.socketSend(&packet)) {
-                    std::cerr << "Error - sending data" << std::endl;
-                }
-            } else {
-                std::cerr << "Error - compressing data" << std::endl;
-            }
-
-        }
         if (client.selectorChange()) {
+            auto movement = game.processEvents();
+            if (movement.direction != constants::NONE) {
+                sf::Packet packet;
+                ClientData data(CLIENT_UPDATE, movement.direction);
+//            std::cout << data.direction << " " << data.packet_id << std::endl;
+                if(packet << data) {
+                    if (!client.socketSend(&packet)) {
+                        std::cerr << "Error - sending data" << std::endl;
+                    } else {
+                        //std::cout << cislo++ << " Sending data" << std::endl;
+                    }
+                } else {
+                    std::cerr << "Error - compressing data" << std::endl;
+                }
+
+            }
             sf::Packet packet;
             ServerData serverData;
             if (client.socketReceive(&packet)) {

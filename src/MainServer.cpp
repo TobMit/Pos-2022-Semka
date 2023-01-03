@@ -16,7 +16,7 @@ int main() {
         std::cerr << "ERROR listening" << std::endl;
     }
     std::cout << "Server is ready" << std::endl;
-    sf::Time timePerFrame = sf::seconds(1.f/120.f);
+    sf::Time timePerFrame = sf::seconds(1.f/60.f);
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     sf::Clock clock;
 
@@ -25,10 +25,11 @@ int main() {
     bool end = false;
     float position;
 
+    //long long cislo = 0;
+
     //std::thread console(&MultiServer::consoleSendData, &server, &mut, &end, &writeToBuff);
 
     while (!server.isEnd(&mut, &end)) {
-        timeSinceLastUpdate += clock.restart();
         if (server.selectorWait()) {
 
             if (server.listenerIsReady()) {
@@ -44,8 +45,10 @@ int main() {
                 if (server.socketReceive(&clientPacket, &mut)) {
                     ClientData data;
 
-                    if (packet >> data)
+                    if (packet >> data) {
                         position = serverLogic.processData(&data, true);
+                        //std::cout << cislo++ << " Processing data"<< std::endl;
+                    }
                     //else
                         //std::cerr << "Error - data receiving!" << std::endl;
                 }
@@ -53,6 +56,7 @@ int main() {
             //std::cout << "Online clients " << server.getClienSize() << std::endl;
         }
 
+        timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > timePerFrame) {
             sf::Packet packet;
             ServerData data;
