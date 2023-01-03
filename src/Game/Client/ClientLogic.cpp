@@ -11,11 +11,6 @@ ClientLogic::ClientLogic()
     ball.setPosition(constants::windowWidth / 2, constants::windowHeight / 2);
     player1.setPosition(10 + player1.getSize().x / 2, constants::windowHeight / 2);
     player2.setPosition(constants::windowWidth - 10 - player2.getSize().x / 2, constants::windowHeight / 2);
-//    do
-//    {
-//        ballAngle = (std::rand() % 360) * 2 * constants::pi / 360;
-//    }
-//    while (std::abs(std::cos(ballAngle)) < 0.7f);
 }
 
 constants::Movement ClientLogic::processEvents() {
@@ -36,7 +31,7 @@ constants::Movement ClientLogic::processEvents() {
                 break;
         }
     }
-    return constants::Movement {.direction = constants::DOWN, .isPressed = false};
+    return constants::Movement {.direction = constants::NONE, .isPressed = false};
 }
 
 void ClientLogic::update(ServerData data) {

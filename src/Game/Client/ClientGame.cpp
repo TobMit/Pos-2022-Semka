@@ -6,17 +6,27 @@
 
 void ClientGame::run() {
     Client client;
-    if (!client.socketConnect("localhost", constants::PORT)) {
+    if (!client.socketConnect(constants::IP_ADDRESS_LOCALHOST, constants::PORT)) {
         std::cerr << "Error - cennection" << std::endl;
         return;
     }
     std::cout << "Client is connected to the server" << std::endl;
     while (game.isRunning()) {
-        std::cout << "why the fuck" << std::endl;
-        game.processEvents();
-        std::cout << "why the heck" << std::endl;
+        auto movement = game.processEvents();
+        if (movement.direction != constants::NONE) {
+            sf::Packet packet;
+            ClientData data(CLIENT_UPDATE, movement.direction);
+//            std::cout << data.direction << " " << data.packet_id << std::endl;
+            if(packet << data) {
+                if (!client.socketSend(&packet)) {
+                    std::cerr << "Error - sending data" << std::endl;
+                }
+            } else {
+                std::cerr << "Error - compressing data" << std::endl;
+            }
+
+        }
         if (client.selectorChange()) {
-            std::cout << "nieco"<< std::endl;
             sf::Packet packet;
             ServerData serverData;
             if (client.socketReceive(&packet)) {
@@ -27,7 +37,7 @@ void ClientGame::run() {
                 std::cerr << "ERROR - data receiving" << std::endl;
             }
         }
-        std::cout << "Koniec loopu" << std::endl;
+//        std::cout << "Koniec loopu" << std::endl;
 
     }
     //TODO paket inicializuje disconect

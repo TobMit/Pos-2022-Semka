@@ -9,12 +9,13 @@
 #include <SFML/Graphics.hpp>
 
 class ServerLogic {
+private:
     sf::Vector2f player1Position;
     sf::Vector2f player2Position;
     sf::Vector2f ballPosition;
     float ballAngle;
-    ServerLogic();
-
 public:
-    ServerData processData(ClientData data, bool isLeftPlayer);
+    ServerLogic();
+    float processData(ClientData* data, bool isLeftPlayer);
+    ServerData update();
 };

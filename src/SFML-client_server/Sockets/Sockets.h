@@ -27,6 +27,9 @@ public:
      * @param end end of thread
      */
     void consoleSendData(std::mutex *mut, bool *end);
+
+    void consoleToBuffer(std::mutex *mut, bool *end, std::vector<std::string> buffer,
+                         std::condition_variable writeToBuff);
     //! časom sa môžu presunúť do protected
     bool isEnd(std::mutex *mut, bool *pEnd);
     void setEnd(std::mutex *mut, bool *pEnd);

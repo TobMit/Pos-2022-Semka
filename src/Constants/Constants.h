@@ -2,8 +2,11 @@
 
 #include <SFML/Graphics.hpp>
 
+#define EMPTY std::cout << ""
 namespace constants
 {
+    const std::string IP_ADDRESS_LOCALHOST = "localhost";
+    const std::string IP_ADDRESS_FRIOS = "frios2.fri.uniza.sk";
     const int PORT = 15000;
     const int BUFF_SIZE = 1024;
 
@@ -11,7 +14,11 @@ namespace constants
      * MOVEMENT
      */
 
-    enum Direction { UP, DOWN, NONE };
+    enum Direction {
+        UP = 0,
+        DOWN = 1,
+        NONE = 2
+    };
 
     struct Movement {
 
@@ -36,4 +43,5 @@ namespace constants
     const float paddleSpped = 7.f;
     const float ballSpeed = 7.f;
     const float pi = 3.14159f;
+
 }

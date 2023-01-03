@@ -187,7 +187,7 @@ bool MultiServer::socketReceive(sf::Packet *pPacket, sf::TcpSocket *pSocket, sf:
 /**
  * Get packet form client, but only for first find clients. I dont expect in same time from two clients get message.
  * If is client disconnected this can detect and remove client
- * @param pClientPacket strore id and packet form client
+ * @param pClientPacket strore packet_id and packet form client
  * @return true if was receiving successful
  */
 bool MultiServer::socketReceive(ClientPacket *pClientPacket) {
@@ -198,7 +198,7 @@ bool MultiServer::socketReceive(ClientPacket *pClientPacket) {
  * THREADS ONLY
  * Get packet form client, but only for first find clients. I dont expect in same time from two clients get message.
  * If is client disconnected this can detect and remove client
- * @param pClientPacket strore id and packet form client
+ * @param pClientPacket strore packet_id and packet form client
  * @return true if was receiving successful
  */
 bool MultiServer::socketReceive(ClientPacket *pClientPacket, std::mutex *mut) {
