@@ -8,7 +8,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "../../Constants.h"
+#include "../../Constants/Constants.h"
 
 /**
  * Wrapper class for SFML networking

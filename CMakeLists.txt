@@ -15,7 +15,7 @@ add_executable(Grafika
         src/Game/Graphics/Ball/Ball.h
         src/Game/Graphics/Paddle/Paddle.cpp
         src/Game/Graphics/Paddle/Paddle.h
-        src/Game/Constants/GameData.h
+        src/Constants/GameData.h
         src/Game/Client/ClientLogic.cpp
         src/Game/Client/ClientLogic.h
         src/Game/Client/ClientGame.cpp
@@ -42,15 +42,15 @@ add_executable(Client
         src/SFML-client_server/Sockets/Sockets.cpp
         src/SFML-client_server/Sockets/Sockets.h
         src/SFML-client_server/Sockets/Client.h
-        src/Constants.h)
+        src/Constants/Constants.h)
 
 add_executable(GameSimpleServer
         src/MainSimpleServer.cpp
         src/SFML-client_server/Sockets/Sockets.cpp
         src/SFML-client_server/Sockets/Sockets.h
         src/SFML-client_server/Sockets/Client.h
-        src/Constants.h
-        src/Game/Constants/GameData.h
+        src/Constants/Constants.h
+        src/Constants/GameData.h
         src/Game/Server/ServerLogic.cpp
         src/Game/Server/ServerLogic.h
         )

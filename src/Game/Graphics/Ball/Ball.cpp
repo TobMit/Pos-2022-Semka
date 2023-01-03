@@ -3,7 +3,7 @@
 //
 
 #include "Ball.h"
-#include "../../../Constants.h"
+#include "../../../Constants/Constants.h"
 
 const sf::Color Ball::ballColor = sf::Color::White;
 

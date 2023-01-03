@@ -5,7 +5,7 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
-#include "../../../Constants.h"
+#include "../../../Constants/Constants.h"
 #include <tuple>
 
 class Paddle {

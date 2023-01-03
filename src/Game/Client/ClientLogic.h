@@ -5,7 +5,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "../Constants/GameData.h"
+#include "../../Constants/GameData.h"
 #include "../Graphics/Paddle/Paddle.h"
 #include "../Graphics/Ball/Ball.h"
 

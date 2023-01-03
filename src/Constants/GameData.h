@@ -5,7 +5,7 @@
 #pragma once
 
 #include <SFML/Network/Packet.hpp>
-#include "../../Constants.h"
+#include "Constants.h"
 
 struct ServerData {
 

@@ -5,7 +5,7 @@
 #pragma once
 
 
-#include "../Constants/GameData.h"
+#include "../../Constants/GameData.h"
 #include <SFML/Graphics.hpp>
 
 class ServerLogic {

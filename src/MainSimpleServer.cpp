@@ -1,5 +1,5 @@
 #include "SFML-client_server/Sockets/SimpleServer.h"
-#include "Game/Constants/GameData.h"
+#include "Constants/GameData.h"
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
 #include <iostream>
