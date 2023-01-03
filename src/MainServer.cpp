@@ -33,7 +33,7 @@ int main() {
         if (server.selectorWait()) {
 
             if (server.listenerIsReady()) {
-                server.socketConnect(&mut);// ? std::cout << "New client!" << std::endl : EMPTY; //! no krása
+                server.socketConnect(&mut) ? std::cout << "New client!" << std::endl : EMPTY; //! no krása
                 /*
                 if (server.socketConnect(&mut)) {
                     std::cout << "New client!" << std::endl;
@@ -49,8 +49,8 @@ int main() {
                         position = serverLogic.processData(&data, true);
                         //std::cout << cislo++ << " Processing data"<< std::endl;
                     }
-                    //else
-                        //std::cerr << "Error - data receiving!" << std::endl;
+                    else
+                        std::cerr << "Error - data receiving!" << std::endl;
                 }
             }
             //std::cout << "Online clients " << server.getClienSize() << std::endl;
@@ -62,12 +62,11 @@ int main() {
             ServerData data;
             timeSinceLastUpdate -= timePerFrame;
             if (server.getClienSize() > 0) {
-                //totu sa budu posielať správy
                 data.player1PaddleY = position;
                 packet << data;
                 //std::cout << "Sending data" << std::endl;
                 if (!server.socketSend(&packet, &mut)) {
-                    //std::cerr << "Error sending" << std::endl;
+                    std::cerr << "Error sending" << std::endl;
                 }
             }
         }
