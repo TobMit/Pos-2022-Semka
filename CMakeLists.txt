@@ -45,7 +45,7 @@ add_executable(Client
         src/Constants/Constants.h)
 
 add_executable(GameSimpleServer
-        src/MainSimpleServer.cpp
+        src/MainServer.cpp
         src/SFML-client_server/Sockets/Sockets.cpp
         src/SFML-client_server/Sockets/Sockets.h
         src/SFML-client_server/Sockets/Client.h
