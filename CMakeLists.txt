@@ -48,7 +48,8 @@ add_executable(GameSimpleServer
         src/MainServer.cpp
         src/SFML-client_server/Sockets/Sockets.cpp
         src/SFML-client_server/Sockets/Sockets.h
-        src/SFML-client_server/Sockets/Client.h
+        src/SFML-client_server/Sockets/MultiServer/MultiServer.h
+        src/SFML-client_server/Sockets/MultiServer/MultiServer.cpp
         src/Constants/Constants.h
         src/Constants/GameData.h
         src/Game/Server/ServerLogic.cpp
@@ -56,7 +57,7 @@ add_executable(GameSimpleServer
         )
 target_link_libraries(Server sfml-network pthread)
 target_link_libraries(SimpleServer sfml-network)
-target_link_libraries(GameSimpleServer sfml-network sfml-graphics)
+target_link_libraries(GameSimpleServer sfml-network sfml-graphics pthread)
 target_link_libraries(Client sfml-network pthread)
 target_link_libraries(Grafika sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 

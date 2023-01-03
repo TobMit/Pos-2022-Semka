@@ -31,7 +31,7 @@ bool MultiServer::socketInicialise(int pPort) {
 }
 
 bool MultiServer::selectorWait() {
-    return selector->wait();
+    return selector->wait(sf::microseconds(1)); //! keď nebude server stíhať zmeniť na nanoseconds
 }
 
 bool MultiServer::listenerIsReady() {
@@ -223,7 +223,7 @@ bool MultiServer::socketReceive(ClientPacket *pClientPacket, std::mutex *mut) {
         for (int i = 0; i < clients->size(); ++i) {
             if (selectorIsReady(*clients->at(i))) {
                 pClientPacket->clientId = i;
-                if (!socketReceive(pClientPacket->packet, clients->at(i), nullptr)){
+                if (!socketReceive(pClientPacket->packet, clients->at(i), &status)){
                     successful = false;
                 }
                 // if was client disconnected

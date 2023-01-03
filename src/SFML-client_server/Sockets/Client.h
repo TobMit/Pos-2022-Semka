@@ -60,7 +60,6 @@ inline Client::~Client() {
 
 inline bool Client::selectorChange() {
     if (selector->wait()) {
-        std::cout << "SELEKTOR HEKTOR" << std::endl;
         return selector->isReady(*socket);
     }
     return false;
