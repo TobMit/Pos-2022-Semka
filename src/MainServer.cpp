@@ -41,33 +41,53 @@ int main() {
                     std::cout << "New client!" << std::endl;
                 }
                  */
+                std::cout << "Online clients " << server.getClienSize() << std::endl;
             } else {
                 sf::Packet packet;
                 ClientPacket clientPacket(&packet);
                 if (server.socketReceive(&clientPacket, &mut)) {
-                    ClientData data;
-
-                    if (packet >> data) {
-                        position = serverLogic.processData(&data, true);
-                        //std::cout << cislo++ << " Processing data"<< std::endl;
+                    //! Zistím typ paketu a podľa toho reagujem
+                    float typPaketu;
+                    if (packet >> typPaketu) {
+                        //! Switchujem podla typu paketu
+                        switch (static_cast<int>(typPaketu)) {
+                            case packetType::CLIENT_UPDATE :{
+                                ClientData clientData;
+                                packet >> clientData;
+                                //todo spojazniť logiku
+                                position = serverLogic.processData(&clientData, true);
+                                break;
+                            }
+                            case packetType::NETWORK_MSG : {
+                                NetworkData networkData;
+                                packet >> networkData;
+                                if (networkData.netMsg == packetType::DISCONECT) {
+                                    server.clientDisconnect(clientPacket.clientId);
+                                }
+                                break;
+                            }
+                            default:
+                                std::cout << "wrong" << std::endl;
+                                break;
+                        }
                     }
-                    else
-                        std::cerr << "Error - data receiving!" << std::endl;
                 }
             }
-            std::cout << "Online clients " << server.getClienSize() << std::endl;
         }
 
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > timePerFrame) {
             //std::cout << "tick" << std::endl;
             sf::Packet packet;
-            ServerResponse data;
+            ServerResponseData data;
             timeSinceLastUpdate -= timePerFrame;
             if (server.getClienSize() > 0) {
+                data.id = packetType::SERVER_RESPONSE;
                 data.player1PaddleY = position;
                 data.player2PaddleY = rand() % static_cast<int>(constants::windowHeight);
-                packet << data;/*
+                packet << static_cast<float>(data.id) << data;
+
+                /*
                 if (position != oldPosition) {
                     std::cout << data.player1PaddleY << " Sending data" << std::endl;
                     oldPosition = position;
@@ -90,14 +110,33 @@ int main() {
         if (commandFromBuffer.size() != 0) {
             int position = -1;
             position = commandFromBuffer.find(":end", 0);
-            if (position != -1) {
-                std::cout << "Ha mal by si končiť" << std::endl;
-            } else {
+            if (position == -1) {
                 std::cout << "Z konzoli ha " << commandFromBuffer;
+            } else {
+                sf::Packet packet;
+                NetworkData networkData(packetType::DISCONECT);
+                packet << static_cast<float>(packetType::NETWORK_MSG) << networkData;
+                server.socketSend(&packet, &mut);
+                server.setEnd(&mut, &end);
+                continue;
+            }
+            position = commandFromBuffer.find(":cend", 0);
+            if (position == -1) {
+                std::cout << "Disconect zatial prvého klienta " << commandFromBuffer;
+                sf::Packet packet;
+                NetworkData networkData(packetType::DISCONECT);
+                packet << static_cast<float>(packetType::NETWORK_MSG) << networkData;
+                if (server.getClienSize() > 0) {
+                    if(!server.socketSend(0, &packet, &mut)){
+                       server.clientDisconnect(0);
+                    }
+                }
             }
         }
     }
     console.join();
 
+    server.socketDisconnect();
+    std::cout << "Server shut down!" << std::endl;
     return EXIT_SUCCESS;
 }

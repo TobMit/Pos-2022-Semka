@@ -17,5 +17,5 @@ private:
 public:
     ServerLogic();
     float processData(ClientData* data, bool isLeftPlayer);
-    ServerData update();
+    ServerResponseData update();
 };

@@ -34,7 +34,7 @@ constants::Movement ClientLogic::processEvents() {
     return constants::Movement {.direction = constants::NONE, .isPressed = false};
 }
 
-void ClientLogic::update(ServerData data) {
+void ClientLogic::update(ServerResponseData data) {
     player1.setPosition(player1.getPosition().x, data.player1PaddleY);
     player2.setPosition(player2.getPosition().x, data.player2PaddleY);
     ball.setPosition(data.ballX, data.ballY);

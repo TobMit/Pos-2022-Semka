@@ -22,7 +22,8 @@ public:
     ClientLogic();
     inline bool isRunning() { return mainWindow.isOpen(); }
     constants::Movement processEvents();
-    void update(ServerData data);
+    void update(ServerResponseData data);
     void render();
+    void closeWindow(){ mainWindow.close();}
 
 };

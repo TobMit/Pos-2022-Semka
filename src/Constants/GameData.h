@@ -8,51 +8,99 @@
 #include "Constants.h"
 
 enum packetType {
+    /**
+     * Client to server
+     */
     CLIENT_UPDATE = 0,
+    /**
+     * Server to client
+     */
     SERVER_RESPONSE = 1,
-    CLIENT_DISCONNECT = 2,
-    SERVER_DISCONNECT = 3
+    /**
+     * Network info
+     */
+    NETWORK_MSG = 2,
+
+    //! ak bude treba vlastný enum
+    DISCONECT = 3
 
 };
 
-class ServerData {
+/**
+ * Basic class for identify data exchange
+ */
+class PacketData {
+public:
+    int id;
+    PacketData() = default;
+    PacketData(int pId) : id(pId) {};
+};
+
+/**
+ * Server send data for client
+ * Every information for render canvas
+ */
+class ServerResponseData : public PacketData { // sending server to client
 public:
     float player1PaddleY;
     float player2PaddleY;
     float ballX;
     float ballY;
-    ServerData() = default;
-    ServerData(float player1PaddleY, float player2PaddleY, float ballX, float ballY)
+    ServerResponseData() = default;
+    ServerResponseData(float player1PaddleY, float player2PaddleY, float ballX, float ballY)
     : player1PaddleY(player1PaddleY), player2PaddleY(player2PaddleY), ballX(ballX), ballY(ballY) {}
 };
 
-class ClientData {
+/**
+ * Client to server.
+ * Information about paddle
+ */
+class ClientData : public PacketData { // sending client to server
 public:
-    int packet_id;
     constants::Direction direction;
-    //    bool isPressed;
     ClientData() = default;
-    ClientData(int packet_id, constants::Direction direction)
-    : packet_id(packet_id), direction(direction) {}
+    ClientData( constants::Direction direction)
+    : direction(direction) {}
 };
 
-inline sf::Packet& operator <<(sf::Packet& packet, const ServerData& data) {
+/**
+ * Network information
+ */
+class NetworkData : public PacketData {
+public:
+    int netMsg;
+    NetworkData() = default;
+    NetworkData(int pNetMsg) : netMsg(pNetMsg) {};
+};
+
+
+inline sf::Packet& operator <<(sf::Packet& packet, const ServerResponseData& data) {
     return packet << data.player1PaddleY << data.player2PaddleY << data.ballX << data.ballY;
 }
 
-inline sf::Packet& operator >>(sf::Packet& packet, ServerData& data) {
+inline sf::Packet& operator >>(sf::Packet& packet, ServerResponseData& data) {
     return packet >> data.player1PaddleY >> data.player2PaddleY >> data.ballX >> data.ballY;
 }
 
 inline sf::Packet& operator <<(sf::Packet& packet, const ClientData& data) {
-    return packet << static_cast<float>(data.packet_id) << static_cast<float>(data.direction);
+    return packet << static_cast<float>(data.direction);
 }
 
+//! Nemusí to detekovať zlý paket
 inline sf::Packet& operator >>(sf::Packet& packet, ClientData& data) {
-    float id, direction;
-    packet >> id;
+    float direction;
     packet >> direction;
-    data.packet_id = static_cast<int>(id);
     data.direction = static_cast<constants::Direction>(direction);
+    return packet;
+}
+
+inline sf::Packet& operator <<(sf::Packet& packet, const NetworkData& data) {
+    return packet << static_cast<float>(data.netMsg);
+}
+
+inline sf::Packet& operator >>(sf::Packet& packet, NetworkData& data) {
+    float netMsg;
+    packet >> netMsg;
+    data.netMsg = static_cast<int >(netMsg);
     return packet;
 }

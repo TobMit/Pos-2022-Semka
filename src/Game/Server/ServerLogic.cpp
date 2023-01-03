@@ -31,6 +31,6 @@ float ServerLogic::processData(ClientData* data, bool isLeftPlayer) {
     return isLeftPlayer ? player1Position.y : player2Position.y;
 }
 
-ServerData ServerLogic::update() {
-    return ServerData();
+ServerResponseData ServerLogic::update() {
+    return ServerResponseData();
 }
