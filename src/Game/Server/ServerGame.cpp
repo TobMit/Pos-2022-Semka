@@ -30,45 +30,14 @@ void ServerGame::run() {
 
             if (server.listenerIsReady()) {
                 server.socketConnect(&mut) ? std::cout << "New client!" << std::endl : EMPTY; //! no krása
-                /*
-                if (server.socketConnect(&mut)) {
-                    std::cout << "New client!" << std::endl;
-                }
-                 */
+
                 std::cout << "Online clients " << server.getClienSize() << std::endl;
                 server.getClienSize() > 1 ? serverLogic.setStart(true) : serverLogic.setStart(false);
             } else {
                 sf::Packet packet;
                 ClientPacket clientPacket(&packet);
                 if (server.socketReceive(&clientPacket, &mut)) {
-                    //! Zistím typ paketu a podľa toho reagujem
-                    float typPaketu;
-                    if (packet >> typPaketu) {
-                        //! Switchujem podla typu paketu
-                        switch (static_cast<int>(typPaketu)) {
-                            case packetType::CLIENT_UPDATE :{
-                                ClientData clientData;
-                                packet >> clientData;
-                                serverLogic.processData(&clientData, clientPacket.clientId == 0 ? true : false);
-                                break;
-                            }
-                            case packetType::NETWORK_MSG : {
-                                NetworkData networkData;
-                                packet >> networkData;
-                                if (networkData.netMsg == packetType::DISCONECT) {
-                                    server.clientDisconnect(clientPacket.clientId);
-                                    server.clientDisconnect(0);
-                                    //alebo
-                                    server.clientDisconnect(1);
-
-                                }
-                                break;
-                            }
-                            default:
-                                std::cout << "wrong" << std::endl;
-                                break;
-                        }
-                    }
+                    processPacket(&packet, &clientPacket);
                 }
             }
         }
@@ -95,42 +64,73 @@ void ServerGame::run() {
                 }
             }
         }
+        processConsole(&end);
 
-        std::string commandFromBuffer;
-        {
-            std::unique_lock<std::mutex> lock(mut);
-            if (!buffer.empty()) {
-                commandFromBuffer = buffer.at(buffer.size() - 1);
-                buffer.pop_back();
-                writeToBuff.notify_one();
-            }
-        }
-
-        if (commandFromBuffer.size() != 0) {
-            if (commandFromBuffer.find(":end", 0) != -1) {
-                sf::Packet packet;
-                NetworkData networkData(packetType::DISCONECT);
-                packet << networkData;
-                server.socketSend(&packet, &mut);
-                server.setEnd(&mut, &end);
-            } else if (commandFromBuffer.find(":cend", 0) != -1) {
-                std::cout << "Disconect zatial prvého klienta " << commandFromBuffer;
-                sf::Packet packet;
-                NetworkData networkData(packetType::DISCONECT);
-                packet << networkData;
-                if (server.getClienSize() > 0) {
-                    if(!server.socketSend(0, &packet, &mut)){
-                        server.clientDisconnect(0);
-                    }
-                }
-            } else {
-                std::cout << "Z konzoli ha " << commandFromBuffer;
-            }
-        }
     }
-
     console.join();
 
     server.socketDisconnect();
     std::cout << "Server shut down!" << std::endl;
+}
+
+void
+ServerGame::processPacket(sf::Packet *packet, ClientPacket *clientPacket) {//! Zistím typ paketu a podľa toho reagujem
+    float typPaketu;
+    if (*packet >> typPaketu) {
+        //! Switchujem podla typu paketu
+        switch (static_cast<int>(typPaketu)) {
+            case CLIENT_UPDATE :{
+                ClientData clientData;
+                *packet >> clientData;
+                serverLogic.processData(&clientData, clientPacket->clientId == 0 ? true : false);
+                break;
+            }
+            case NETWORK_MSG : {
+                NetworkData networkData;
+                *packet >> networkData;
+                if (networkData.netMsg == DISCONECT) {
+                    server.clientDisconnect(clientPacket->clientId);
+
+                }
+                break;
+            }
+            default:
+                std::cout << "wrong" << std::endl;
+                break;
+        }
+    }
+}
+
+void ServerGame::processConsole(bool *end) {
+    std::string commandFromBuffer;
+    {
+        std::__1::unique_lock<std::mutex> lock(mut);
+        if (!buffer.empty()) {
+            commandFromBuffer = buffer.at(buffer.size() - 1);
+            buffer.pop_back();
+            writeToBuff.notify_one();
+        }
+    }
+
+    if (commandFromBuffer.size() != 0) {
+        if (commandFromBuffer.find(":end", 0) != -1) {
+            sf::Packet packet;
+            NetworkData networkData(DISCONECT);
+            packet << networkData;
+            server.socketSend(&packet, &mut);
+            server.setEnd(&mut, end);
+        } else if (commandFromBuffer.find(":cend", 0) != -1) {
+            std::cout << "Disconect zatial prvého klienta " << commandFromBuffer;
+            sf::Packet packet;
+            NetworkData networkData(DISCONECT);
+            packet << networkData;
+            if (server.getClienSize() > 0) {
+                if(!server.socketSend(0, &packet, &mut)){
+                    server.clientDisconnect(0);
+                }
+            }
+        } else {
+            std::cout << "Z konzoli ha " << commandFromBuffer;
+        }
+    }
 }

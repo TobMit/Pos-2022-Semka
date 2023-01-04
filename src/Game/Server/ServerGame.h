@@ -23,5 +23,9 @@ public:
     ServerGame();
     bool serverInicialise();
     void run();
+
+    void processConsole(bool *end);
+
+    void processPacket(sf::Packet *packet, ClientPacket *clientPacket);
 };
 
