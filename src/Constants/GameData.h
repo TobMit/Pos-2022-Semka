@@ -22,8 +22,16 @@ enum packetType {
     NETWORK_MSG = 2,
 
     //! ak bude treba vlastný enum
-    DISCONECT = 3
+    DISCONECT = 3,
 
+    GAME_INFO = 4
+
+};
+
+enum gameInfo{
+    COUNT_DOWM = 0,
+    WIN = 1,
+    LOSE = 2
 };
 
 /**
@@ -83,6 +91,23 @@ public:
     NetworkData(int pNetMsg) : netMsg(pNetMsg) {
         id = packetType::NETWORK_MSG;
     };
+};
+
+class GameInfoData : public PacketData {
+public:
+    int msg;
+    int scoreP1;
+    int scoreP2;
+    int other;
+    GameInfoData(){
+        id = packetType::GAME_INFO;
+    };
+    GameInfoData(int msg, int other) : msg(msg), other(other) {
+        id = packetType::GAME_INFO;
+    }
+    GameInfoData(int msg, int scoreP1, int scoreP2, int other) : msg(msg), scoreP1(scoreP1), scoreP2(scoreP2), other(other) {
+        id = packetType::GAME_INFO;
+    }
 };
 
 
