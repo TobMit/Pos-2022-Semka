@@ -7,6 +7,8 @@
 ServerLogic::ServerLogic() {
     resetPositions();
     isStarted = false;
+    scorePlayer1 = 0;
+    scorePlayer2 = 0;
 }
 
 float ServerLogic::processData(ClientData* data, bool isLeftPlayer) {

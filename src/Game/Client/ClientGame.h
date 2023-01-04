@@ -10,12 +10,15 @@
 
 
 class ClientGame {
-
+private:
     ClientLogic game;
+    Client client;
 
 public:
     void run();
     void update();
     void update(ServerResponseData data);
+
+    void processPacket(sf::Packet *packet);
 };
 

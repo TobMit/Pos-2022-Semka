@@ -28,10 +28,12 @@ enum packetType {
 
 };
 
-enum gameInfo{
-    COUNT_DOWM = 0,
-    WIN = 1,
-    LOSE = 2
+enum gameStatus{
+    WAITING = 0,
+    COUNT_DOWM = 1,
+    PLAYNG = 2,
+    WIN = 3,
+    LOSE = 4
 };
 
 /**
@@ -139,5 +141,22 @@ inline sf::Packet& operator >>(sf::Packet& packet, NetworkData& data) {
     float netMsg;
     packet >> netMsg;
     data.netMsg = static_cast<int >(netMsg);
+    return packet;
+}
+
+inline sf::Packet& operator <<(sf::Packet& packet, const GameInfoData& data) {
+    return packet << static_cast<float>(data.id) << static_cast<float>(data.msg) << static_cast<float>(data.scoreP1) << static_cast<float>(data.scoreP2) << static_cast<float>(data.other);
+}
+
+inline sf::Packet& operator >>(sf::Packet& packet, GameInfoData& data) {
+    float msg, score1, score2, other;
+    packet >> msg;
+    packet >> score1;
+    packet >> score2;
+    packet >> other;
+    data.msg = static_cast<int >(msg);
+    data.scoreP1 = static_cast<int >(score1);
+    data.scoreP2 = static_cast<int >(score2);
+    data.other = static_cast<int >(other);
     return packet;
 }

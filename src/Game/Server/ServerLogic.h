@@ -16,6 +16,8 @@ private:
     sf::Vector2f ballPosition;
     float ballAngle;
     bool isStarted;
+    int scorePlayer1;
+    int scorePlayer2;
 
 public:
     ServerLogic();
@@ -25,6 +27,7 @@ public:
     void setStart(bool start) {
         isStarted = start;
     }
+
 private:
     void resetPositions();
 };

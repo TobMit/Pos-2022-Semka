@@ -10,11 +10,15 @@
 #include "../Graphics/Ball/Ball.h"
 
 class ClientLogic {
-
+private:
     sf::RenderWindow mainWindow;
     Ball ball;
     Paddle player1;
     Paddle player2;
+    int state;
+    int playerScore1;
+    int playerScore2;
+    int countDownNumber;
 
     static constants::Movement handlePlayerInputs(sf::Keyboard::Key key, bool isPressed);
 
@@ -25,5 +29,15 @@ public:
     void update(ServerResponseData data);
     void render();
     void closeWindow(){ mainWindow.close();}
+    void setGameState(int gState) {
+        state = gState;
+    }
+    void win(int player1, int player2);
+    void lose(int player1, int player2);
+    void showNumber(int number) {
+        countDownNumber = number;
+    };
 
+private:
+    void setGameScore(int player1, int player2);
 };
