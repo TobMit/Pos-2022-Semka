@@ -16,7 +16,7 @@ int main() {
         std::cerr << "ERROR listening" << std::endl;
     }
     std::cout << "Server is ready" << std::endl;
-    sf::Time timePerFrame = sf::seconds(1.f/60.f);
+    sf::Time timePerFrame = sf::seconds(1.f/50.f);
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
     sf::Clock clock;
 
