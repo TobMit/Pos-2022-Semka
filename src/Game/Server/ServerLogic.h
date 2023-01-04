@@ -14,6 +14,8 @@ private:
     sf::Vector2f player1Position;
     sf::Vector2f player2Position;
     sf::Vector2f ballPosition;
+    constants::Direction player1Direction;
+    constants::Direction player2Direction;
     float ballAngle;
     bool isStarted;
     int scorePlayer1;
@@ -21,7 +23,7 @@ private:
 
 public:
     ServerLogic();
-    float processData(ClientData* data, bool isLeftPlayer);
+    void processData(ClientData* data, bool isLeftPlayer);
     void update();
     ServerResponseData getDataForClient(bool isLeft);
     void setStart(bool start) {

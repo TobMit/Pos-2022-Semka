@@ -11,25 +11,39 @@ ServerLogic::ServerLogic() {
     scorePlayer2 = 0;
 }
 
-float ServerLogic::processData(ClientData* data, bool isLeftPlayer) {
-    switch (data->direction) {
-        case constants::UP:
-            isLeftPlayer ? player1Position.y -= constants::paddleSpped : player2Position.y -= constants::paddleSpped;
-            break;
-
-        case constants::DOWN:
-            isLeftPlayer ? player1Position.y += constants::paddleSpped : player2Position.y += constants::paddleSpped;
-            break;
-
-        default:
-            break;
-    }
-    return isLeftPlayer ? player1Position.y : player2Position.y;
+void ServerLogic::processData(ClientData* data, bool isLeftPlayer) {
+    isLeftPlayer ? player1Direction = data->direction : player2Direction = data->direction;
 }
 
 void ServerLogic::update() {
     if (!isStarted) {
         return;
+    }
+
+    switch (player1Direction) {
+        case constants::UP:
+            player1Position.y -= constants::paddleSpped;
+            break;
+
+        case constants::DOWN:
+            player1Position.y += constants::paddleSpped;
+            break;
+
+        default:
+            break;
+    }
+
+    switch (player2Direction) {
+        case constants::UP:
+            player2Position.y -= constants::paddleSpped;
+            break;
+
+        case constants::DOWN:
+            player2Position.y += constants::paddleSpped;
+            break;
+
+        default:
+            break;
     }
 
     ballPosition.x += std::cos(ballAngle) * constants::ballSpeed;
@@ -107,6 +121,8 @@ void ServerLogic::resetPositions() {
     player1Position.y = constants::windowHeight / 2;
     player2Position.x = constants::windowWidth - 10 - constants::paddleSize.x /2;
     player2Position.y = constants::windowHeight / 2;
+    player1Direction = constants::NONE;
+    player2Direction = constants::NONE;
     ballPosition.x = constants::windowWidth / 2;
     ballPosition.y = constants::windowHeight / 2;
     do

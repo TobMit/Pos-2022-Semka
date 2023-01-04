@@ -14,7 +14,7 @@ ClientLogic::ClientLogic()
     state = gameStatus::WAITING;
 }
 
-constants::Movement ClientLogic::processEvents() {
+constants::Direction ClientLogic::processEvents() {
     sf::Event event{};
 
     while(mainWindow.pollEvent(event) && state == gameStatus::PLAYNG) {
@@ -32,7 +32,7 @@ constants::Movement ClientLogic::processEvents() {
                 break;
         }
     }
-    return constants::Movement {.direction = constants::NONE, .isPressed = false};
+    return constants::NONE;
 }
 
 void ClientLogic::update(ServerResponseData data) {
@@ -69,16 +69,16 @@ void ClientLogic::render() {
     mainWindow.display();
 }
 
-constants::Movement ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool isPressed) {
+constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool isPressed) {
     switch (key) {
         case sf::Keyboard::Up:
-            return constants::Movement {.direction = constants::UP, .isPressed = isPressed};
+            return isPressed ? constants::UP : constants::RELEASED;
 
         case sf::Keyboard::Down:
-            return constants::Movement {.direction = constants::DOWN, .isPressed = isPressed};
+            return isPressed ? constants::DOWN : constants::RELEASED;
 
         default:
-            return constants::Movement {.direction = constants::NONE, .isPressed = isPressed};
+            return constants::NONE;
     }
 }
 

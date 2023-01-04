@@ -20,12 +20,12 @@ private:
     int playerScore2;
     int countDownNumber;
 
-    static constants::Movement handlePlayerInputs(sf::Keyboard::Key key, bool isPressed);
+    static constants::Direction handlePlayerInputs(sf::Keyboard::Key key, bool isPressed);
 
 public:
     ClientLogic();
     inline bool isRunning() { return mainWindow.isOpen(); }
-    constants::Movement processEvents();
+    constants::Direction processEvents();
     void update(ServerResponseData data);
     void render();
     void closeWindow(){ mainWindow.close();}

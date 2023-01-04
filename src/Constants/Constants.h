@@ -17,14 +17,8 @@ namespace constants
     enum Direction {
         UP = 0,
         DOWN = 1,
-        NONE = 2
-    };
-
-    struct Movement {
-
-        Direction direction;
-        bool isPressed;
-
+        NONE = 2,
+        RELEASED = 3
     };
 
     /**
@@ -40,7 +34,7 @@ namespace constants
     const int outline_thickness = 3;
     const sf::Vector2f outline_thickness_Vector2f = sf::Vector2f(outline_thickness, outline_thickness);
     const sf::Color outline_color = sf::Color::Black;
-    const float paddleSpped = 21.f;
+    const float paddleSpped = 7.f;
     const float ballSpeed = 5.5f;
     const float pi = 3.14159f;
 

@@ -17,13 +17,11 @@ void ClientGame::run() {
     while (game.isRunning()) {
 
         if (client.selectorChange()) {
-            auto movement = game.processEvents();
-
+            auto direction = game.processEvents();
             // musí tam byť overenie či bola klávesa zmačknutá lebo inak to robili dvojkliky
-            if (movement.direction != constants::NONE && movement.isPressed) {
+            if (direction != constants::NONE) {
                 sf::Packet packet;
-                ClientData data(movement.direction);
-
+                ClientData data(direction);
                 if(packet << data) {
                     if (!client.socketSend(&packet)) {
                         std::cerr << "Error - sending data" << std::endl;
