@@ -15,8 +15,16 @@ private:
     sf::Vector2f player2Position;
     sf::Vector2f ballPosition;
     float ballAngle;
+    bool isStarted;
+
 public:
     ServerLogic();
     float processData(ClientData* data, bool isLeftPlayer);
-    ServerResponseData update();
+    void update();
+    ServerResponseData getDataForClient(bool isLeft);
+    void setStart(bool start) {
+        isStarted = start;
+    }
+private:
+    void resetPositions();
 };

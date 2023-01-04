@@ -42,6 +42,7 @@ int main() {
                 }
                  */
                 std::cout << "Online clients " << server.getClienSize() << std::endl;
+                server.getClienSize() > 1 ? serverLogic.setStart(true) : serverLogic.setStart(false);
             } else {
                 sf::Packet packet;
                 ClientPacket clientPacket(&packet);
@@ -54,8 +55,7 @@ int main() {
                             case packetType::CLIENT_UPDATE :{
                                 ClientData clientData;
                                 packet >> clientData;
-                                //todo spojazniť logiku
-                                position = serverLogic.processData(&clientData, true);
+                                serverLogic.processData(&clientData, clientPacket.clientId == 0 ? true : false);
                                 break;
                             }
                             case packetType::NETWORK_MSG : {
@@ -82,25 +82,26 @@ int main() {
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > timePerFrame) {
             //std::cout << "tick" << std::endl;
-            sf::Packet packet;
-            ServerResponseData data;
             timeSinceLastUpdate -= timePerFrame;
+            if (server.getClienSize() > 1) {
+                serverLogic.update();
+            }
             if (server.getClienSize() > 0) {
-                data.player1PaddleY = position;
-                data.player2PaddleY = rand() % static_cast<int>(constants::windowHeight);
-                packet << data;
-
-                /*
-                if (position != oldPosition) {
-                    std::cout << data.player1PaddleY << " Sending data" << std::endl;
-                    oldPosition = position;
-                }*/
-                //std::cout << "Sending data" << std::endl;
-                if (!server.socketSend(&packet, &mut)) {
+                sf::Packet packet;
+                packet << serverLogic.getDataForClient(true);
+                if (!server.socketSend(0, &packet, &mut)) {
                     std::cerr << "Error sending" << std::endl;
+                }
+                if (server.getClienSize() > 1) {
+                    packet.clear();
+                    packet << serverLogic.getDataForClient(false);
+                    if (!server.socketSend(1, &packet, &mut)) {
+                        std::cerr << "Error sending" << std::endl;
+                    }
                 }
             }
         }
+
         std::string commandFromBuffer;
         {
             std::unique_lock<std::mutex> lock(mut);
@@ -110,21 +111,15 @@ int main() {
                 writeToBuff.notify_one();
             }
         }
+
         if (commandFromBuffer.size() != 0) {
-            int position = -1;
-            position = commandFromBuffer.find(":end", 0);
-            if (position == -1) {
-                std::cout << "Z konzoli ha " << commandFromBuffer;
-            } else {
+            if (commandFromBuffer.find(":end", 0) != -1) {
                 sf::Packet packet;
                 NetworkData networkData(packetType::DISCONECT);
                 packet << networkData;
                 server.socketSend(&packet, &mut);
                 server.setEnd(&mut, &end);
-                continue;
-            }
-            position = commandFromBuffer.find(":cend", 0);
-            if (position == -1) {
+            } else if (commandFromBuffer.find(":cend", 0) != -1) {
                 std::cout << "Disconect zatial prvého klienta " << commandFromBuffer;
                 sf::Packet packet;
                 NetworkData networkData(packetType::DISCONECT);
@@ -134,9 +129,12 @@ int main() {
                        server.clientDisconnect(0);
                     }
                 }
+            } else {
+                std::cout << "Z konzoli ha " << commandFromBuffer;
             }
         }
     }
+
     console.join();
 
     server.socketDisconnect();

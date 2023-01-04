@@ -147,6 +147,9 @@ bool MultiServer::socketSend(sf::Packet *pPacket, std::mutex *mut) {
 bool MultiServer::socketSend(int id, sf::Packet *pPacket, std::mutex *mut) {
     sf::Socket::Status status;
     bool success = true;
+    if (id >= clients->size()) {
+        return false;
+    }
     if (mut != nullptr) {
         std::unique_lock<std::mutex> lock(*mut);
         success = socketSendPacket(pPacket, clients->at(id), &status);
