@@ -2,9 +2,6 @@
 // Created by Matúš Mištrik on 30/12/2022.
 //
 
-//todo keď podržím šipku tak to zaváha a potom sa rozbehne, pravdepodobne niekde je sa zle odchytáva event
-//todo doriešiť konečne tú logiku aby už aj prepočítavalo a odrážalo ball
-
 #include "ClientGame.h"
 
 void ClientGame::run() {
@@ -83,8 +80,8 @@ void ClientGame::processPacket(sf::Packet *packet) {//! Zistím typ paketu a pod
                         game.lose(gameInfoData.scoreP1, gameInfoData.scoreP2);
                         std::cout << "Round lose" << std::endl;
                         break;
-                    case gameStatus::COUNT_DOWM:
-                        game.setGameState(gameStatus::COUNT_DOWM);
+                    case gameStatus::COUNTDOWN:
+                        game.setGameState(gameStatus::COUNTDOWN);
                         game.showNumber(gameInfoData.other);
                         std::cout << gameInfoData.other << std::endl;
                         break;

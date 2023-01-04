@@ -30,8 +30,8 @@ enum packetType {
 
 enum gameStatus{
     WAITING = 0,
-    COUNT_DOWM = 1,
-    PLAYNG = 2,
+    COUNTDOWN = 1,
+    PLAYING = 2,
     WIN = 3,
     LOSE = 4
 };

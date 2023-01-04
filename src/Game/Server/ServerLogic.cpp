@@ -52,11 +52,11 @@ void ServerLogic::update() {
     //boundries collisions checking
 
     if (ballPosition.x - constants::ballRadius / 2 < 0.f) {
-        //prehral player1
+        scorePlayer1++;
         resetPositions();
     }
     if (ballPosition.x + constants::ballRadius / 2 > constants::windowWidth) {
-        //prehral player2
+        scorePlayer2++;
         resetPositions();
     }
     if (ballPosition.y - constants::ballRadius / 2 < 0.f) {
@@ -95,7 +95,6 @@ void ServerLogic::update() {
 
         ballPosition.x = player2Position.x - constants::ballRadius / 2 - constants::paddleSize.x / 2 - 0.1f;
     }
-
 
 }
 

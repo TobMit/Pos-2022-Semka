@@ -40,4 +40,5 @@ public:
 
 private:
     void setGameScore(int player1, int player2);
+    void setupResources();
 };

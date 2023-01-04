@@ -17,7 +17,7 @@ ClientLogic::ClientLogic()
 constants::Direction ClientLogic::processEvents() {
     sf::Event event{};
 
-    while(mainWindow.pollEvent(event) && state == gameStatus::PLAYNG) {
+    while(mainWindow.pollEvent(event) && state == gameStatus::PLAYING) {
         switch (event.type) {
             case sf::Event::KeyPressed:
                 return handlePlayerInputs(event.key.code, true);
@@ -53,8 +53,11 @@ void ClientLogic::render() {
             //todo nejaký nápis ako waiting for players
             //todo hudba lobyMusic.waw
             break;
-        case gameStatus::COUNT_DOWM:
+        case gameStatus::COUNTDOWN:
             //todo zobrazí cislo countDownNumber;
+            break;
+        case gameStatus::PLAYING:
+            //todo score
             break;
         case gameStatus::WIN:
             //todo nejaká hlaška round win
@@ -65,6 +68,7 @@ void ClientLogic::render() {
             //todo hudba hit
             break;
     }
+    //todo score
 
     mainWindow.display();
 }
@@ -75,6 +79,12 @@ constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool
             return isPressed ? constants::UP : constants::RELEASED;
 
         case sf::Keyboard::Down:
+            return isPressed ? constants::DOWN : constants::RELEASED;
+
+        case sf::Keyboard::Left:
+            return isPressed ? constants::UP : constants::RELEASED;
+
+        case sf::Keyboard::Right:
             return isPressed ? constants::DOWN : constants::RELEASED;
 
         default:

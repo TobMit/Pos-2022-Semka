@@ -73,8 +73,7 @@ void ServerGame::run() {
     std::cout << "Server shut down!" << std::endl;
 }
 
-void
-ServerGame::processPacket(sf::Packet *packet, ClientPacket *clientPacket) {//! Zistím typ paketu a podľa toho reagujem
+void ServerGame::processPacket(sf::Packet *packet, ClientPacket *clientPacket) {//! Zistím typ paketu a podľa toho reagujem
     float typPaketu;
     if (*packet >> typPaketu) {
         //! Switchujem podla typu paketu
