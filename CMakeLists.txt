@@ -54,7 +54,8 @@ add_executable(GameServer
         src/Constants/GameData.h
         src/Game/Server/ServerLogic.cpp
         src/Game/Server/ServerLogic.h
-        )
+        src/Game/Server/ServerGame.cpp
+        src/Game/Server/ServerGame.h)
 target_link_libraries(Server sfml-network pthread sfml-graphics)
 target_link_libraries(SimpleServer sfml-network sfml-graphics)
 target_link_libraries(GameServer sfml-network sfml-graphics pthread)
