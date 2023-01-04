@@ -63,6 +63,10 @@ int main() {
                                 packet >> networkData;
                                 if (networkData.netMsg == packetType::DISCONECT) {
                                     server.clientDisconnect(clientPacket.clientId);
+                                    server.clientDisconnect(0);
+                                    //alebo
+                                    server.clientDisconnect(1);
+
                                 }
                                 break;
                             }
@@ -82,10 +86,9 @@ int main() {
             ServerResponseData data;
             timeSinceLastUpdate -= timePerFrame;
             if (server.getClienSize() > 0) {
-                data.id = packetType::SERVER_RESPONSE;
                 data.player1PaddleY = position;
                 data.player2PaddleY = rand() % static_cast<int>(constants::windowHeight);
-                packet << static_cast<float>(data.id) << data;
+                packet << data;
 
                 /*
                 if (position != oldPosition) {
@@ -115,7 +118,7 @@ int main() {
             } else {
                 sf::Packet packet;
                 NetworkData networkData(packetType::DISCONECT);
-                packet << static_cast<float>(packetType::NETWORK_MSG) << networkData;
+                packet << networkData;
                 server.socketSend(&packet, &mut);
                 server.setEnd(&mut, &end);
                 continue;
@@ -125,7 +128,7 @@ int main() {
                 std::cout << "Disconect zatial prvého klienta " << commandFromBuffer;
                 sf::Packet packet;
                 NetworkData networkData(packetType::DISCONECT);
-                packet << static_cast<float>(packetType::NETWORK_MSG) << networkData;
+                packet << networkData;
                 if (server.getClienSize() > 0) {
                     if(!server.socketSend(0, &packet, &mut)){
                        server.clientDisconnect(0);

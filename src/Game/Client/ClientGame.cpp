@@ -25,7 +25,7 @@ void ClientGame::run() {
                 ClientData data(movement.direction);
 //            std::cout << data.direction << " " << data.packet_id << std::endl;
                 //! najskôr sa pošle typ a potom samotný paket chcelo by to nejak zautomatizovať
-                if(packet << static_cast<float>(packetType::CLIENT_UPDATE) << data) {
+                if(packet << data) {
                     if (!client.socketSend(&packet)) {
                         std::cerr << "Error - sending data" << std::endl;
                     } else {
@@ -68,7 +68,7 @@ void ClientGame::run() {
         //game.render();
 
     }
-    //TODO paket inicializuje disconect
+    //TODO paket inicializuje disconect ked sa zvrie okno
     client.socketDisconnect();
 }
 

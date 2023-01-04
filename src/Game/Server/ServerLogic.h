@@ -6,6 +6,7 @@
 
 
 #include "../../Constants/GameData.h"
+#include <cmath>
 #include <SFML/Graphics.hpp>
 
 class ServerLogic {

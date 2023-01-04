@@ -6,13 +6,14 @@
 
 ServerLogic::ServerLogic()
 : player1Position(10 + constants::paddleSize.x / 2, constants::windowHeight / 2),
-  player2Position()
+  player2Position(constants::windowWidth - 10 - constants::paddleSize.x /2, constants::windowHeight / 2),
+  ballPosition(constants::windowWidth / 2, constants::windowHeight / 2)
 {
-//    do
-//    {
-//        ballAngle = (random() % 360) * 2 * constants::pi / 360;
-//    }
-//    while (std::abs(std::cos(ballAngle)) < 0.7f);
+    do
+    {
+        ballAngle = (random() % 360) * 2 * constants::pi / 360;
+    }
+    while (std::abs(std::cos(ballAngle)) < 0.7f);
 }
 
 float ServerLogic::processData(ClientData* data, bool isLeftPlayer) {
@@ -23,7 +24,7 @@ float ServerLogic::processData(ClientData* data, bool isLeftPlayer) {
 
         case constants::DOWN:
             isLeftPlayer ? player1Position.y += constants::paddleSpped : player2Position.y += constants::paddleSpped;
-            break;
+            break;//Matúúš makaj iks Dé         som zvedavý kedy si to všimneš potom sa ohlás - sak ja makam jako srob, len zrovna na inom projekte :D :D
 
         default:
             break;
@@ -32,5 +33,6 @@ float ServerLogic::processData(ClientData* data, bool isLeftPlayer) {
 }
 
 ServerResponseData ServerLogic::update() {
+
     return ServerResponseData();
 }

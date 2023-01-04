@@ -46,9 +46,13 @@ public:
     float player2PaddleY;
     float ballX;
     float ballY;
-    ServerResponseData() = default;
+    ServerResponseData() {
+      id = packetType::SERVER_RESPONSE;
+    };
     ServerResponseData(float player1PaddleY, float player2PaddleY, float ballX, float ballY)
-    : player1PaddleY(player1PaddleY), player2PaddleY(player2PaddleY), ballX(ballX), ballY(ballY) {}
+    : player1PaddleY(player1PaddleY), player2PaddleY(player2PaddleY), ballX(ballX), ballY(ballY) {
+        id = packetType::SERVER_RESPONSE;
+    }
 };
 
 /**
@@ -58,9 +62,13 @@ public:
 class ClientData : public PacketData { // sending client to server
 public:
     constants::Direction direction;
-    ClientData() = default;
+    ClientData(){
+        id = packetType::CLIENT_UPDATE;
+    };
     ClientData( constants::Direction direction)
-    : direction(direction) {}
+    : direction(direction) {
+        id = packetType::CLIENT_UPDATE;
+    }
 };
 
 /**
@@ -69,13 +77,17 @@ public:
 class NetworkData : public PacketData {
 public:
     int netMsg;
-    NetworkData() = default;
-    NetworkData(int pNetMsg) : netMsg(pNetMsg) {};
+    NetworkData(){
+        id = packetType::NETWORK_MSG;
+    };
+    NetworkData(int pNetMsg) : netMsg(pNetMsg) {
+        id = packetType::NETWORK_MSG;
+    };
 };
 
 
 inline sf::Packet& operator <<(sf::Packet& packet, const ServerResponseData& data) {
-    return packet << data.player1PaddleY << data.player2PaddleY << data.ballX << data.ballY;
+    return packet << static_cast<float>(data.id) << data.player1PaddleY << data.player2PaddleY << data.ballX << data.ballY;
 }
 
 inline sf::Packet& operator >>(sf::Packet& packet, ServerResponseData& data) {
@@ -83,7 +95,7 @@ inline sf::Packet& operator >>(sf::Packet& packet, ServerResponseData& data) {
 }
 
 inline sf::Packet& operator <<(sf::Packet& packet, const ClientData& data) {
-    return packet << static_cast<float>(data.direction);
+    return packet << static_cast<float>(data.id) << static_cast<float>(data.direction);
 }
 
 //! Nemusí to detekovať zlý paket
@@ -95,7 +107,7 @@ inline sf::Packet& operator >>(sf::Packet& packet, ClientData& data) {
 }
 
 inline sf::Packet& operator <<(sf::Packet& packet, const NetworkData& data) {
-    return packet << static_cast<float>(data.netMsg);
+    return packet << static_cast<float>(data.id) << static_cast<float>(data.netMsg);
 }
 
 inline sf::Packet& operator >>(sf::Packet& packet, NetworkData& data) {
