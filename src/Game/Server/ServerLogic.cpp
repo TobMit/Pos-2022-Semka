@@ -52,7 +52,7 @@ void ServerLogic::update() {
     ballPosition.y += std::sin(ballAngle) * constants::ballSpeed;
 
     //boundries collisions checking
-
+    //todo upraviť kolizie
     if (ballPosition.x - constants::ballRadius / 2 < 0.f) {
         scorePlayer2++;
         setServerStatus(gameStatus::COLLISION);
@@ -155,14 +155,19 @@ GameInfoData ServerLogic::getClientStatus(bool isLeft) {
     if (isLeft) {
         data.scoreP1 = scorePlayer1;
         data.scoreP2 = scorePlayer2;
+        if (roundWinPlayer1) {
+            data.msg = gameStatus::WIN;
+        } else {
+            data.msg = gameStatus::LOSE;
+        }
     } else {
         data.scoreP1 = scorePlayer2;
         data.scoreP2 = scorePlayer1;
-    }
-    if (roundWinPlayer1) {
-        data.msg = gameStatus::WIN;
-    } else {
-        data.msg = gameStatus::LOSE;
+        if (roundWinPlayer1) {
+            data.msg = gameStatus::LOSE;
+        } else {
+            data.msg = gameStatus::WIN;
+        }
     }
     return data;
 }
