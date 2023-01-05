@@ -32,9 +32,9 @@ private:
     };
 
 private:
-    Sound ballSound;
-    Sound winSound;
-    Sound loseSound;
+    Music ballSound;
+    Music winSound;
+    Music loseSound;
     Music lobbyMusic;
     Music gameMusic;
 
