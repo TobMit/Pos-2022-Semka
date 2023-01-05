@@ -6,6 +6,7 @@
 
 ServerGame::ServerGame() {
     srand(time(NULL));
+    //todo dokoncovanie nastavovanie rychlosti
     timePerFrame = sf::seconds(1.f/50.f);
 }
 

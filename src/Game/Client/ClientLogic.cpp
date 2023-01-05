@@ -94,6 +94,7 @@ constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool
 
 void ClientLogic::win(int player1, int player2) {
     setGameScore(player1, player2);
+    resources.playWinSound();
     state = gameStatus::WIN;
 }
 

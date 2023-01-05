@@ -8,6 +8,7 @@
 #include "../../Constants/GameData.h"
 #include "../Graphics/Paddle/Paddle.h"
 #include "../Graphics/Ball/Ball.h"
+#include "../Graphics/Resources/Resources.h"
 
 class ClientLogic {
 private:
@@ -19,6 +20,7 @@ private:
     int playerScore1;
     int playerScore2;
     int countDownNumber;
+    Resources resources;
 
     static constants::Direction handlePlayerInputs(sf::Keyboard::Key key, bool isPressed);
 
@@ -40,5 +42,4 @@ public:
 
 private:
     void setGameScore(int player1, int player2);
-    void setupResources();
 };

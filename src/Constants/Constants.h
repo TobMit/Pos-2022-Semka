@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <cstring>
 
 #define EMPTY std::cout << ""
 namespace constants
@@ -37,5 +38,11 @@ namespace constants
     const float paddleSpped = 7.f;
     const float ballSpeed = 5.5f;
     const float pi = 3.14159f;
+
+    const std::string ballSoundPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/ballHit.wav";
+    const std::string loseSoundPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/lose.wav";
+    const std::string winSoundPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/win.wav";
+//    const std::string gameMusicPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/gameMusic.wav";
+//    const std::string lobbyMusicPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/lobbyMusic.wav";
 
 }
