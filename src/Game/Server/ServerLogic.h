@@ -25,6 +25,7 @@ private:
      */
     int time;
     bool roundWinPlayer1;
+    bool bounce;
     int roundPause;
 
 public:

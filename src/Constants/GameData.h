@@ -70,10 +70,12 @@ public:
     bool bounce;
     ServerResponseData() {
       id = packetType::SERVER_RESPONSE;
+      bounce = false;
     };
     ServerResponseData(float player1PaddleY, float player2PaddleY, float ballX, float ballY, bool bounce)
     : player1PaddleY(player1PaddleY), player2PaddleY(player2PaddleY), ballX(ballX), ballY(ballY), bounce(bounce) {
         id = packetType::SERVER_RESPONSE;
+        bounce = false;
     }
 };
 

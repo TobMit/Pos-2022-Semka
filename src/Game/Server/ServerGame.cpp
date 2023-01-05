@@ -195,5 +195,5 @@ void ServerGame::setSpeedToGame() {
 }
 
 void ServerGame::setSpeedToWait() {
-    timePerFrame = sf::seconds(1.f/5.f);
+    timePerFrame = sf::seconds(1.f/2.f);
 }

@@ -37,9 +37,7 @@ public:
     void showNumber(int number) {
         countDownNumber = number;
     };
-    void playBounceMusic(){
-        resources.playBallSound();
-    }
+
 
 private:
     void setGameScore(int player1, int player2);

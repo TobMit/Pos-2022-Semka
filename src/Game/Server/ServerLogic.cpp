@@ -11,6 +11,7 @@ ServerLogic::ServerLogic() {
     scorePlayer2 = 0;
     time = 3;
     roundPause = 3;
+    bounce = false;
 }
 
 void ServerLogic::processData(ClientData* data, bool isLeftPlayer) {
@@ -21,6 +22,8 @@ void ServerLogic::update() {
     if (serverStatus != gameStatus::PLAYING) {
         return;
     }
+    bounce = false;
+
 
     switch (player1Direction) {
         case constants::UP:
@@ -52,7 +55,6 @@ void ServerLogic::update() {
     ballPosition.y += std::sin(ballAngle) * constants::ballSpeed;
 
     //boundries collisions checking
-    //todo upraviť kolizie
     if (ballPosition.x - constants::ballRadius / 2 < 0.f) {
         scorePlayer2++;
         setServerStatus(gameStatus::COLLISION);
@@ -86,6 +88,7 @@ void ServerLogic::update() {
             ballAngle = constants::pi - ballAngle - (std::rand() % 20) * constants::pi / 180;
 
         ballPosition.x = player1Position.x + constants::ballRadius / 2 + constants::paddleSize.x / 2 + 0.1f;
+        bounce = true;
     }
 
     //player2 pad collisions checking
@@ -100,6 +103,7 @@ void ServerLogic::update() {
             ballAngle = constants::pi - ballAngle - (std::rand() % 20) * constants::pi / 180;
 
         ballPosition.x = player2Position.x - constants::ballRadius / 2 - constants::paddleSize.x / 2 - 0.1f;
+        bounce = true;
     }
 
 }
@@ -118,6 +122,7 @@ ServerResponseData ServerLogic::getDataForClient(bool isLeft) {
         responseData.ballX = constants::windowWidth + tmp;
         responseData.ballY = ballPosition.y;
     }
+    responseData.bounce = bounce;
     return responseData;
 }
 
