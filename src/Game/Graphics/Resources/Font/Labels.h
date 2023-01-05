@@ -21,6 +21,8 @@ private:
     sf::Text message;
     bool isFontLoaded;
 
+    void setupMessage(const std::string& text, bool isCountdown = false);
+
 public:
     Labels();
     bool updatePlayersScore(int player1Score, int player2Score);
@@ -28,5 +30,5 @@ public:
 
     inline const sf::Text& player1ScoreText() const { return player1Score; }
     inline const sf::Text& player2ScoreText() const { return player2Score; }
-    inline const sf::Text& messageText() const { return player1Score; }
+    inline const sf::Text& messageText() const { return message; }
 };

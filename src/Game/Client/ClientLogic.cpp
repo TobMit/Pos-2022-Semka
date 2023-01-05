@@ -51,21 +51,16 @@ void ClientLogic::render() {
 
     switch (state) {
         case gameStatus::WAITING:
-            //todo nejaký nápis ako waiting for players
-            //todo hudba lobyMusic.waw
-//            if (resources.updateMessage(Labels::WAITING))
-//                mainWindow.draw(resources.messageText());
-
+            if (resources.updateMessage(Labels::WAITING))
+                mainWindow.draw(resources.messageText());
             break;
 
         case gameStatus::COUNTDOWN:
-            //todo zobrazí cislo countDownNumber;
-//            if (resources.updateMessage(Labels::COUNTDOWN, countDownNumber) )
-//                mainWindow.draw(resources.messageText());
+            if (resources.updateMessage(Labels::COUNTDOWN, countDownNumber) )
+                mainWindow.draw(resources.messageText());
             break;
 
         case gameStatus::PLAYING:
-            //todo score
             if (resources.updatePlayersScore(playerScore1, playerScore2)) {
                 mainWindow.draw(resources.player1ScoreText());
                 mainWindow.draw(resources.player2ScoreText());
@@ -73,17 +68,13 @@ void ClientLogic::render() {
             break;
 
         case gameStatus::WIN:
-            //todo nejaká hlaška round win
-            //todo hudba succes
-//            if (resources.updateMessage(Labels::WIN))
-//                mainWindow.draw(resources.messageText());
+            if (resources.updateMessage(Labels::WIN))
+                mainWindow.draw(resources.messageText());
             break;
 
         case gameStatus::LOSE:
-            //todo nejaká hláška round lose
-            //todo hudba hit
-//            if (resources.updateMessage(Labels::LOSE))
-//                mainWindow.draw(resources.messageText());
+            if (resources.updateMessage(Labels::LOSE))
+                mainWindow.draw(resources.messageText());
             break;
     }
 

@@ -31,6 +31,7 @@ namespace constants
     const float windowHeight = 600.f;
     const float ballRadius = 10.f;
     const sf::Vector2f paddleSize = sf::Vector2f(25, 100);
+    const float messageBorderOffset = 50.f;
 
 
     const int outline_thickness = 3;
