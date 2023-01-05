@@ -14,7 +14,6 @@ void ClientGame::run() {
     while (game.isRunning()) {
         if (client.selectorChange()) {
             auto direction = game.processEvents();
-            // musí tam byť overenie či bola klávesa zmačknutá lebo inak to robili dvojkliky
             if (direction != constants::NONE) {
                 sf::Packet packet;
                 ClientData data(direction);
@@ -88,6 +87,7 @@ void ClientGame::processPacket(sf::Packet *packet) {//! Zistím typ paketu a pod
                         game.setGameState(gameStatus::PLAYING);
                         break;
                 }
+                update();
             }
         }
     }

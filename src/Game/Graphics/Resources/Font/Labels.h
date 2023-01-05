@@ -8,6 +8,7 @@
 #include "../../../../Constants/Constants.h"
 #include <cstring>
 #include <iostream>
+#include <vector>
 
 class Labels {
 public:
@@ -26,6 +27,6 @@ public:
     bool updateMessage(MessageType messageType, int countDownValue);
 
     inline const sf::Text& player1ScoreText() const { return player1Score; }
-    inline const sf::Text& player2ScoreText() const { return player1Score; }
+    inline const sf::Text& player2ScoreText() const { return player2Score; }
     inline const sf::Text& messageText() const { return player1Score; }
 };

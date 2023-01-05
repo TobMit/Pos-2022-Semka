@@ -25,8 +25,8 @@ public:
     inline void stopGameMusic() { sounds.stopGameMusic(); }
     inline void muteAllSounds(bool isMuted) { sounds.muteAllsounds(isMuted); }
 
-    inline void updatePlayersScore(int player1Score, int player2Score) { labels.updatePlayersScore(player1Score, player2Score); };
-    inline void updateMessage(Labels::MessageType messageType, int countDownValue = -1) { labels.updateMessage(messageType, countDownValue); };
+    inline bool updatePlayersScore(int player1Score, int player2Score) { return labels.updatePlayersScore(player1Score, player2Score); };
+    inline bool updateMessage(Labels::MessageType messageType, int countDownValue = -1) { return labels.updateMessage(messageType, countDownValue); };
     inline const sf::Text& player1ScoreText() const { return labels.player1ScoreText(); }
     inline const sf::Text& player2ScoreText() const { return labels.player2ScoreText(); }
     inline const sf::Text& messageText() const { return labels.messageText(); }

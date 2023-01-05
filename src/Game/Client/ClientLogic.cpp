@@ -12,6 +12,7 @@ ClientLogic::ClientLogic()
     player1.setPosition(10 + player1.getSize().x / 2, constants::windowHeight / 2);
     player2.setPosition(constants::windowWidth - 10 - player2.getSize().x / 2, constants::windowHeight / 2);
     state = gameStatus::ROUNDPAUSE;
+    playerScore1 = playerScore2 = 0;
     isMutedSound = false;
 }
 
@@ -52,32 +53,37 @@ void ClientLogic::render() {
         case gameStatus::WAITING:
             //todo nejaký nápis ako waiting for players
             //todo hudba lobyMusic.waw
-//            resources.updateMessage(Labels::WAITING);
-//            mainWindow.draw(resources.messageText());
-            break;
-        case gameStatus::COUNTDOWN:
-            //todo zobrazí cislo countDownNumber;
-//            resources.updateMessage(Labels::COUNTDOWN, countDownNumber);
-//            mainWindow.draw(resources.messageText());
-            break;
-        case gameStatus::PLAYING:
-            //todo score
-            resources.updatePlayersScore(playerScore1, playerScore2);
-            mainWindow.draw(resources.player1ScoreText());
-            mainWindow.draw(resources.player2ScoreText());
+//            if (resources.updateMessage(Labels::WAITING))
+//                mainWindow.draw(resources.messageText());
 
             break;
+
+        case gameStatus::COUNTDOWN:
+            //todo zobrazí cislo countDownNumber;
+//            if (resources.updateMessage(Labels::COUNTDOWN, countDownNumber) )
+//                mainWindow.draw(resources.messageText());
+            break;
+
+        case gameStatus::PLAYING:
+            //todo score
+            if (resources.updatePlayersScore(playerScore1, playerScore2)) {
+                mainWindow.draw(resources.player1ScoreText());
+                mainWindow.draw(resources.player2ScoreText());
+            }
+            break;
+
         case gameStatus::WIN:
             //todo nejaká hlaška round win
             //todo hudba succes
-            resources.updateMessage(Labels::WIN);
-            mainWindow.draw(resources.messageText());
+//            if (resources.updateMessage(Labels::WIN))
+//                mainWindow.draw(resources.messageText());
             break;
+
         case gameStatus::LOSE:
             //todo nejaká hláška round lose
             //todo hudba hit
-            resources.updateMessage(Labels::LOSE);
-            mainWindow.draw(resources.messageText());
+//            if (resources.updateMessage(Labels::LOSE))
+//                mainWindow.draw(resources.messageText());
             break;
     }
 
