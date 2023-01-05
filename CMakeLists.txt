@@ -8,9 +8,7 @@ include_directories(${SFML_INCLUDE_DIRS})
 
 
 add_executable(Grafika
-        src/Game/Main_Game.cpp
-        src/Game/Game.cpp
-        src/Game/Game.h
+        src/Game/MainClient.cpp
         src/Game/Graphics/Ball/Ball.cpp
         src/Game/Graphics/Ball/Ball.h
         src/Game/Graphics/Paddle/Paddle.cpp
@@ -22,10 +20,11 @@ add_executable(Grafika
         src/Game/Client/ClientGame.h
         src/Game/Server/ServerLogic.cpp
         src/Game/Server/ServerLogic.h
-        src/Game/Graphics/Resources/Resources.cpp
         src/Game/Graphics/Resources/Resources.h
         src/Game/Graphics/Resources/Sounds/Sounds.cpp
-        src/Game/Graphics/Resources/Sounds/Sounds.h src/Game/Graphics/Resources/Font/Labels.cpp src/Game/Graphics/Resources/Font/Labels.h)
+        src/Game/Graphics/Resources/Sounds/Sounds.h
+        src/Game/Graphics/Resources/Labels/Labels.cpp
+        src/Game/Graphics/Resources/Labels/Labels.h)
 
 add_executable(Server
         src/SFML-client_server/Server.cpp
@@ -60,6 +59,7 @@ add_executable(GameServer
         src/Game/Server/ServerLogic.h
         src/Game/Server/ServerGame.cpp
         src/Game/Server/ServerGame.h)
+
 target_link_libraries(Server sfml-network pthread sfml-graphics)
 target_link_libraries(SimpleServer sfml-network sfml-graphics)
 target_link_libraries(GameServer sfml-network sfml-graphics pthread)

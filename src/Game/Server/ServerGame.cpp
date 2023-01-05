@@ -10,7 +10,7 @@ ServerGame::ServerGame() {
     timePerFrame = sf::seconds(1.f/50.f);
 }
 
-bool ServerGame::serverInicialise() {
+bool ServerGame::serverInitialize() {
     if (!server.socketInicialise(constants::PORT)) {
         std::cerr << "ERROR listening" << std::endl;
         return false;
@@ -33,7 +33,7 @@ void ServerGame::run() {
                 server.socketConnect(&mut) ? std::cout << "New client!" << std::endl : EMPTY; //! no krása
 
                 std::cout << "Online clients " << server.getClienSize() << std::endl;
-                server.getClienSize() > 1 ? serverLogic.setServerStatus(gameStatus::COUNTDOWN) : serverLogic.setServerStatus(gameStatus::WAITING);
+                server.getClienSize() > 1 ? serverLogic.setServerStatus(GameStatus::COUNTDOWN) : serverLogic.setServerStatus(GameStatus::WAITING);
             } else {
                 sf::Packet packet;
                 ClientPacket clientPacket(&packet);
@@ -48,7 +48,7 @@ void ServerGame::run() {
             //std::cout << "tick" << std::endl;
             timeSinceLastUpdate -= timePerFrame;
             if (server.getClienSize() < 2) {
-                serverLogic.setServerStatus(gameStatus::WAITING);
+                serverLogic.setServerStatus(GameStatus::WAITING);
                 serverLogic.restGame();
             }
             serverTick();
@@ -64,10 +64,10 @@ void ServerGame::run() {
 
 void ServerGame::serverTick() {
     switch (serverLogic.getServerStatus()) {
-        case gameStatus::WAITING: {
-            setSpeedToWait();
+        case GameStatus::WAITING: {
+            setGameSpeed(WAITING);
             GameInfoData data;
-            data.msg = gameStatus::WAITING;
+            data.msg = GameStatus::WAITING;
             sf::Packet packet;
             packet << data;
             server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
@@ -76,9 +76,9 @@ void ServerGame::serverTick() {
             server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
             break;
         }
-        case gameStatus::COUNTDOWN: {
-            setSpeedToCountDown();
-            GameInfoData data = serverLogic.coundDown();
+        case GameStatus::COUNTDOWN: {
+            setGameSpeed(COUNTDOWN);
+            GameInfoData data = serverLogic.countdown();
             sf::Packet packet;
             packet << data;
             server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
@@ -87,8 +87,8 @@ void ServerGame::serverTick() {
             server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
             break;
         }
-        case gameStatus::PLAYING: {
-            setSpeedToGame();
+        case GameStatus::PLAYING: {
+            setGameSpeed(PLAYING);
             serverLogic.update();
             sf::Packet packet;
             packet << serverLogic.getDataForClient(true);
@@ -98,8 +98,8 @@ void ServerGame::serverTick() {
             server.socketSend(1, &packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
             break;
         }
-        case gameStatus::COLLISION: {
-            setSpeedToWait();
+        case GameStatus::COLLISION: {
+            setGameSpeed(COLLISION);
             sf::Packet packet;
             packet << serverLogic.getDataForClient(true);
             server.socketSend(&packet, &mut);
@@ -109,14 +109,14 @@ void ServerGame::serverTick() {
             packet.clear();
             packet << serverLogic.getClientStatus(false);
             server.socketSend(1, &packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
-            serverLogic.setServerStatus(gameStatus::ROUNDPAUSE);
+            serverLogic.setServerStatus(GameStatus::ROUND_PAUSE);
             break;
         }
-        case gameStatus::ROUNDPAUSE:
-            setSpeedToWait();
-            if(!serverLogic.puseTick()) {
+        case GameStatus::ROUND_PAUSE:
+            setGameSpeed(ROUND_PAUSE);
+            if(!serverLogic.pauseTick()) {
                 GameInfoData data;
-                data.msg = gameStatus::PLAYING;
+                data.msg = GameStatus::PLAYING;
                 sf::Packet packet;
                 packet << data;
                 server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
@@ -133,7 +133,7 @@ void ServerGame::processPacket(sf::Packet *packet, ClientPacket *clientPacket) {
             case CLIENT_UPDATE : {
                 ClientData clientData;
                 *packet >> clientData;
-                serverLogic.processData(&clientData, clientPacket->clientId == 0 ? true : false);
+                serverLogic.processData(&clientData, clientPacket->clientId == 0);
                 break;
             }
             case NETWORK_MSG : {
@@ -192,11 +192,11 @@ void ServerGame::processConsole(bool *end) {
             }
         } else if (commandFromBuffer.find(":stat", 0) != -1) {
             switch (serverLogic.getServerStatus()) {
-                case gameStatus::WAITING:
+                case GameStatus::WAITING:
                     std::cout << "Online players: " << server.getClienSize() << std::endl;
                     std::cout << "Game is WAITING for players!" << std::endl;
                     break;
-                case gameStatus::PLAYING: {
+                case GameStatus::PLAYING: {
                     std::cout << "Game is RUNNING!" << std::endl;
                     GameInfoData data = serverLogic.getClientStatus(true);
                     std::cout << "Score:\n\tPlayer 1: " << data.scoreP1 << "\n\tPlayer 2: " << data.scoreP2 << std::endl;;
@@ -207,7 +207,7 @@ void ServerGame::processConsole(bool *end) {
             }
         } else if (commandFromBuffer.find(":restart", 0) != -1 && server.getClienSize()>= 2) {
             std::cout << "Restarting game!" << std::endl;;
-            serverLogic.setServerStatus(gameStatus::WAITING);
+            serverLogic.setServerStatus(GameStatus::WAITING);
             serverLogic.restGame();
         } else {
             std::cerr << "Unknow command!" << std::endl;
@@ -215,14 +215,20 @@ void ServerGame::processConsole(bool *end) {
     }
 }
 
-void ServerGame::setSpeedToCountDown() {
-    timePerFrame = sf::seconds(1.f/1.f);
-}
+void ServerGame::setGameSpeed(GameStatus status) {
+    switch (status) {
+        case WAITING:
+        case ROUND_PAUSE:
+        case COLLISION:
+            timePerFrame = sf::seconds(1.f/2.f);
+            break;
 
-void ServerGame::setSpeedToGame() {
-    timePerFrame = sf::seconds(1.f/50.f);
-}
+        case COUNTDOWN:
+            timePerFrame = sf::seconds(1.f/1.f);
+            break;
 
-void ServerGame::setSpeedToWait() {
-    timePerFrame = sf::seconds(1.f/2.f);
+        default:
+            timePerFrame = sf::seconds(1.f/50.f);
+            break;
+    }
 }

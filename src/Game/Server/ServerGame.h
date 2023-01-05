@@ -19,16 +19,16 @@ private:
     std::vector<std::string> buffer;
 
     sf::Time timePerFrame;
+
 public:
     ServerGame();
-    bool serverInicialise();
+    bool serverInitialize();
     void run();
+
 private:
     void processConsole(bool *end);
     void processPacket(sf::Packet *packet, ClientPacket *clientPacket);
-    void setSpeedToCountDown();
-    void setSpeedToGame();
-    void setSpeedToWait();
+    void setGameSpeed(GameStatus status);
     void serverTick();
 };
 

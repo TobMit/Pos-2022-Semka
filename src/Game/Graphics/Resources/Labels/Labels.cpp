@@ -5,7 +5,7 @@
 #include "Labels.h"
 
 Labels::Labels() {
-    isFontLoaded = font.loadFromFile(constants::fontPath);
+    isFontLoaded = font.loadFromFile(constants::FONT_PATH);
     if (isFontLoaded) {
         player1Score.setFont(font);
         player2Score.setFont(font);
@@ -18,7 +18,8 @@ Labels::Labels() {
             text->setFillColor(sf::Color::Black);
             text->setCharacterSize(40);
         });
-    }
+    } else
+        std::cerr << "Failed to load font" << std::endl << std::endl;
 }
 
 bool Labels::updatePlayersScore(int player1, int player2) {
@@ -27,8 +28,8 @@ bool Labels::updatePlayersScore(int player1, int player2) {
         player2Score.setString(std::to_string(player2));
         player1Score.setOrigin(player1Score.getGlobalBounds().width / 2, player1Score.getGlobalBounds().height / 2);
         player2Score.setOrigin(player2Score.getGlobalBounds().width / 2, player2Score.getGlobalBounds().height / 2);
-        player1Score.setPosition(constants::messageBorderOffset, constants::messageBorderOffset);
-        player2Score.setPosition(constants::windowWidth - constants::messageBorderOffset, constants::messageBorderOffset);
+        player1Score.setPosition(constants::TEXT_OFFSET, constants::TEXT_OFFSET);
+        player2Score.setPosition(constants::WINDOW_WIDTH - constants::TEXT_OFFSET, constants::TEXT_OFFSET);
     } else {
         std::cout << "SCORE:" << std::endl;
         std::cout << "YOU " << player1 << " : " << player2 << " OPPONENT" << std::endl << std::endl;
@@ -55,8 +56,9 @@ bool Labels::updateMessage(MessageType messageType, int countDownValue) {
             setupMessage(constants::LOSE_MESSAGE);
             break;
     }
+
     message.setOrigin(message.getGlobalBounds().width / 2, message.getGlobalBounds().height / 2);
-    message.setPosition(constants::windowWidth / 2, constants::messageBorderOffset);
+    message.setPosition(constants::WINDOW_WIDTH / 2, constants::TEXT_OFFSET);
 
     return isFontLoaded;
 

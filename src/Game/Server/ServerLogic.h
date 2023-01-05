@@ -20,35 +20,32 @@ private:
     int serverStatus;
     int scorePlayer1;
     int scorePlayer2;
+    bool roundWinPlayer1;
+    bool bounce;
+    int roundPause;
     /**
      * Používa sa napríklad na odpočítavanie
      */
     int time;
-    bool roundWinPlayer1;
-    bool bounce;
-    int roundPause;
 
 public:
     ServerLogic();
-    void processData(ClientData* data, bool isLeftPlayer);
-    void update();
-    ServerResponseData getDataForClient(bool isLeft);
-    void setServerStatus(int pStatus) {
-        serverStatus = pStatus;
-    }
-    int getServerStatus() {
-        return serverStatus;
-    }
-    GameInfoData coundDown();
 
-    GameInfoData getClientStatus(bool isLeft);
+    void update();
+    void processData(ClientData* data, bool isLeftPlayer);
+
+    GameInfoData countdown();
+    GameInfoData getClientStatus(bool isLeft) const;
+    ServerResponseData getDataForClient(bool isLeft) const;
+
+    inline void setServerStatus(int pStatus) { serverStatus = pStatus; }
+    inline int getServerStatus() const { return serverStatus; }
 
     /**
      * Pause countdown
      * @return if is pause
      */
-    bool puseTick();
-
+    bool pauseTick();
     void restGame();
 
 private:

@@ -4,7 +4,7 @@
 int main() {
     std::cout << "Client started!" << std::endl;
     Client client;
-    if (!client.socketConnect(constants::IP_ADDRESS_FRIOS, constants::PORT))
+    if (!client.socketConnect(constants::FRIOS_IP, constants::PORT))
     {
         std::cerr << "Error connection!" << std::endl;
         return EXIT_FAILURE;

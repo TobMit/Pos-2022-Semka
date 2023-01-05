@@ -25,6 +25,7 @@ private:
 
 public:
     Labels();
+
     bool updatePlayersScore(int player1Score, int player2Score);
     bool updateMessage(MessageType messageType, int countDownValue);
 

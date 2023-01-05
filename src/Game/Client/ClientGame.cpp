@@ -5,7 +5,7 @@
 #include "ClientGame.h"
 
 void ClientGame::run() {
-    if (!client.socketConnect(constants::IP_ADDRESS_FRIOS, constants::PORT)) {
+    if (!client.socketConnect(constants::LOCALHOST_IP, constants::PORT)) {
         std::cerr << "Error - connection" << std::endl;
         return;
     }
@@ -66,25 +66,25 @@ void ClientGame::processPacket(sf::Packet *packet) {//! Zistím typ paketu a pod
                 *packet >> gameInfoData;
                 //todo upratať
                 switch (gameInfoData.msg) {
-                    case gameStatus::WAITING:
-                        game.setGameState(gameStatus::WAITING);
+                    case GameStatus::WAITING:
+                        game.setGameState(GameStatus::WAITING);
                         std::cout << "Waiting for players" << std::endl;
                         break;
-                    case gameStatus::WIN:
+                    case GameStatus::WIN:
                         game.win(gameInfoData.scoreP1, gameInfoData.scoreP2);
                         std::cout << "Round win" << std::endl;
                         break;
-                    case gameStatus::LOSE:
+                    case GameStatus::LOSE:
                         game.lose(gameInfoData.scoreP1, gameInfoData.scoreP2);
                         std::cout << "Round lose" << std::endl;
                         break;
-                    case gameStatus::COUNTDOWN:
-                        game.setGameState(gameStatus::COUNTDOWN);
+                    case GameStatus::COUNTDOWN:
+                        game.setGameState(GameStatus::COUNTDOWN);
                         game.showNumber(gameInfoData.other);
                         std::cout << gameInfoData.other << std::endl;
                         break;
-                    case gameStatus::PLAYING:
-                        game.setGameState(gameStatus::PLAYING);
+                    case GameStatus::PLAYING:
+                        game.setGameState(GameStatus::PLAYING);
                         break;
                 }
                 update();

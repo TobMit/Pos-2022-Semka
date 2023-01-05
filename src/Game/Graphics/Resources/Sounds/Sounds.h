@@ -14,6 +14,7 @@ private:
         sf::Sound sound;
         sf::SoundBuffer buffer;
         bool isLoaded;
+
     public:
         explicit Sound(const std::string& soundPath);
         void play();
@@ -24,6 +25,7 @@ private:
     private:
         std::string musicPath;
         sf::Music music;
+
     public:
         explicit Music(std::string musicPath) : musicPath(std::move(musicPath)) {}
         void play();
@@ -40,15 +42,16 @@ private:
 
 public:
     Sounds()
-    : ballSound(constants::ballSoundPath), winSound(constants::winSoundPath),
-    loseSound(constants::loseSoundPath) ,lobbyMusic(constants::lobbyMusicPath),
-    gameMusic(constants::gameMusicPath) {}
+    : ballSound(constants::BALL_SOUND_PATH), winSound(constants::WIN_SOUND_PATH),
+      loseSound(constants::LOSE_SOUND_PATH) , lobbyMusic(constants::LOBBY_MUSIC_PATH),
+      gameMusic(constants::GAME_MUSIC_PATH) {}
 
     inline void playBallSound() { ballSound.play(); }
     inline void playWinSound() { winSound.play(); }
     inline void playLoseSound() { loseSound.play(); }
     inline void playLobbyMusic() { lobbyMusic.play(); }
     inline void playGameMusic() { gameMusic.play(); }
+
     inline void stopLobbyMusic() { lobbyMusic.stop(); }
     inline void stopGameMusic() { gameMusic.stop(); }
 

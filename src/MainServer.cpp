@@ -4,7 +4,7 @@
 
 int main() {
     ServerGame game;
-    if (!game.serverInicialise()) {
+    if (!game.serverInitialize()) {
         return EXIT_FAILURE;
     }
     game.run();

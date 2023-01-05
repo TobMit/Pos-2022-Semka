@@ -7,7 +7,7 @@
 #include <SFML/Network/Packet.hpp>
 #include "Constants.h"
 
-enum packetType {
+enum PacketType {
     /**
      * Client to server
      */
@@ -31,7 +31,7 @@ enum packetType {
 
 };
 
-enum gameStatus{
+enum GameStatus{
     WAITING = 0,
     COUNTDOWN = 1,
     PLAYING = 2,
@@ -42,13 +42,13 @@ enum gameStatus{
      */
     COLLISION = 5,
     /**
-     * Pusa between rounds
+     * Pause between rounds
      */
-    ROUNDPAUSE = 6
+    ROUND_PAUSE = 6
 };
 
 /**
- * Basic class for identify data exchange
+ * Basic class for identifying data exchange
  */
 class PacketData {
 public:
@@ -58,8 +58,8 @@ public:
 };
 
 /**
- * Server send data for client
- * Every information for render canvas
+ * Server to client
+ * Every information for rendering canvas
  */
 class ServerResponseData : public PacketData { // sending server to client
 public:
@@ -69,12 +69,12 @@ public:
     float ballY;
     bool bounce;
     ServerResponseData() {
-      id = packetType::SERVER_RESPONSE;
+      id = PacketType::SERVER_RESPONSE;
       bounce = false;
     };
     ServerResponseData(float player1PaddleY, float player2PaddleY, float ballX, float ballY, bool bounce)
     : player1PaddleY(player1PaddleY), player2PaddleY(player2PaddleY), ballX(ballX), ballY(ballY), bounce(bounce) {
-        id = packetType::SERVER_RESPONSE;
+        id = PacketType::SERVER_RESPONSE;
         bounce = false;
     }
 };
@@ -87,11 +87,11 @@ class ClientData : public PacketData { // sending client to server
 public:
     constants::Direction direction;
     ClientData(){
-        id = packetType::CLIENT_UPDATE;
+        id = PacketType::CLIENT_UPDATE;
     };
     ClientData( constants::Direction direction)
     : direction(direction) {
-        id = packetType::CLIENT_UPDATE;
+        id = PacketType::CLIENT_UPDATE;
     }
 };
 
@@ -102,10 +102,10 @@ class NetworkData : public PacketData {
 public:
     int netMsg;
     NetworkData(){
-        id = packetType::NETWORK_MSG;
+        id = PacketType::NETWORK_MSG;
     };
     NetworkData(int pNetMsg) : netMsg(pNetMsg) {
-        id = packetType::NETWORK_MSG;
+        id = PacketType::NETWORK_MSG;
     };
 };
 
@@ -119,13 +119,13 @@ public:
     int scoreP2;
     int other;
     GameInfoData(){
-        id = packetType::GAME_INFO;
+        id = PacketType::GAME_INFO;
     };
     GameInfoData(int msg, int other) : msg(msg), other(other) {
-        id = packetType::GAME_INFO;
+        id = PacketType::GAME_INFO;
     }
     GameInfoData(int msg, int scoreP1, int scoreP2, int other) : msg(msg), scoreP1(scoreP1), scoreP2(scoreP2), other(other) {
-        id = packetType::GAME_INFO;
+        id = PacketType::GAME_INFO;
     }
 };
 
@@ -171,9 +171,9 @@ inline sf::Packet& operator >>(sf::Packet& packet, GameInfoData& data) {
     packet >> score1;
     packet >> score2;
     packet >> other;
-    data.msg = static_cast<int >(msg);
-    data.scoreP1 = static_cast<int >(score1);
-    data.scoreP2 = static_cast<int >(score2);
-    data.other = static_cast<int >(other);
+    data.msg = static_cast<int>(msg);
+    data.scoreP1 = static_cast<int>(score1);
+    data.scoreP2 = static_cast<int>(score2);
+    data.other = static_cast<int>(other);
     return packet;
 }

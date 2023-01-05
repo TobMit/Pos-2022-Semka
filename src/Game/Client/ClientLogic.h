@@ -33,13 +33,13 @@ public:
     void render();
     void closeWindow(){ mainWindow.close();}
     void setGameState(int pState);
-    void win(int player1, int player2);
-    void lose(int player1, int player2);
+    void win(int player1Score, int player2Score);
+    void lose(int player1Score, int player2Score);
     void showNumber(int number) {
         countDownNumber = number;
     };
 
 
 private:
-    void setGameScore(int player1, int player2);
+    void setGameScore(int player1Score, int player2Score);
 };

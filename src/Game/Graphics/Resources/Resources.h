@@ -6,7 +6,7 @@
 
 
 #include "Sounds/Sounds.h"
-#include "Font/Labels.h"
+#include "Labels/Labels.h"
 
 class Resources {
 private:
@@ -21,8 +21,10 @@ public:
     inline void playLoseSound() { sounds.playLoseSound(); }
     inline void playLobbyMusic() { sounds.playLobbyMusic(); }
     inline void playGameMusic() { sounds.playGameMusic(); }
+
     inline void stopLobbyMusic() { sounds.stopLobbyMusic(); }
     inline void stopGameMusic() { sounds.stopGameMusic(); }
+
     inline void muteAllSounds(bool isMuted) { sounds.muteAllSounds(isMuted); }
 
     inline bool updatePlayersScore(int player1Score, int player2Score) { return labels.updatePlayersScore(player1Score, player2Score); };
