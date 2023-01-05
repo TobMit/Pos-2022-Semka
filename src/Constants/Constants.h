@@ -39,10 +39,11 @@ namespace constants
     const float ballSpeed = 5.5f;
     const float pi = 3.14159f;
 
-    const std::string ballSoundPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/ballHit.wav";
-    const std::string loseSoundPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/lose.wav";
-    const std::string winSoundPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/win.wav";
-//    const std::string gameMusicPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/gameMusic.wav";
-//    const std::string lobbyMusicPath = "/Users/matus/Desktop/GoodRequest/Pos-2022-Semka/src/Game/Graphics/Resources/Sounds/Samples/lobbyMusic.wav";
+    const std::string ballSoundPath = "../src/Game/Graphics/Resources/Sounds/Samples/ballHit.wav";
+    const std::string loseSoundPath = "../src/Game/Graphics/Resources/Sounds/Samples/lose.wav";
+    const std::string winSoundPath = "../src/Game/Graphics/Resources/Sounds/Samples/win.wav";
+    const std::string gameMusicPath = "../src/Game/Graphics/Resources/Sounds/Samples/lobyMusic.ogg";
+    const std::string lobbyMusicPath = "../src/Game/Graphics/Resources/Sounds/Samples/Pacific Rim.ogg";
+    const int ROUNDPAUSE = 2;
 
 }
