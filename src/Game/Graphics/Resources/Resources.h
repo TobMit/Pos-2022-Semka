@@ -6,10 +6,12 @@
 
 
 #include "Sounds/Sounds.h"
+#include "Font/Labels.h"
 
 class Resources {
 private:
     Sounds sounds;
+    Labels labels;
 
 public:
     Resources() = default;
@@ -21,4 +23,11 @@ public:
     inline void playGameMusic() { sounds.playGameMusic(); }
     inline void stopLobbyMusic() { sounds.stopLobbyMusic(); }
     inline void stopGameMusic() { sounds.stopGameMusic(); }
+
+    inline void updatePlayersScore(int player1Score, int player2Score) { labels.updatePlayersScore(player1Score, player2Score); };
+    inline void updateMessage(Labels::MessageType messageType, int countDownValue = -1) { labels.updateMessage(messageType, countDownValue); };
+    inline const sf::Text& player1ScoreText() const { return labels.player1ScoreText(); }
+    inline const sf::Text& player2ScoreText() const { return labels.player2ScoreText(); }
+    inline const sf::Text& messageText() const { return labels.messageText(); }
+
 };

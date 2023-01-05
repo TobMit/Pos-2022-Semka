@@ -25,7 +25,7 @@ add_executable(Grafika
         src/Game/Graphics/Resources/Resources.cpp
         src/Game/Graphics/Resources/Resources.h
         src/Game/Graphics/Resources/Sounds/Sounds.cpp
-        src/Game/Graphics/Resources/Sounds/Sounds.h)
+        src/Game/Graphics/Resources/Sounds/Sounds.h src/Game/Graphics/Resources/Font/Labels.cpp src/Game/Graphics/Resources/Font/Labels.h)
 
 add_executable(Server
         src/SFML-client_server/Server.cpp

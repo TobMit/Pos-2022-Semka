@@ -170,8 +170,8 @@ void ServerGame::processConsole(bool *end) {
             packet << networkData;
             server.socketSend(&packet, &mut);
             server.setEnd(&mut, end);
-        } else if (commandFromBuffer.find(":cend", 0) != -1) {
-            std::cout << "Disconect zatial prvého klienta " << commandFromBuffer;
+        } else if (commandFromBuffer.find(":cend 1", 0) != -1 && server.getClienSize()>= 1) {
+            std::cout << "Disconect 2. client!" << std::endl;
             sf::Packet packet;
             NetworkData networkData(DISCONECT);
             packet << networkData;
@@ -180,8 +180,37 @@ void ServerGame::processConsole(bool *end) {
                     server.clientDisconnect(0);
                 }
             }
+        } else if (commandFromBuffer.find(":cend 2", 0) != -1 && server.getClienSize()>= 2) {
+            std::cout << "Disconect 2. client!" << std::endl;;
+            sf::Packet packet;
+            NetworkData networkData(DISCONECT);
+            packet << networkData;
+            if (server.getClienSize() > 0) {
+                if(!server.socketSend(1, &packet, &mut)) {
+                    server.clientDisconnect(0);
+                }
+            }
+        } else if (commandFromBuffer.find(":stat", 0) != -1) {
+            switch (serverLogic.getServerStatus()) {
+                case gameStatus::WAITING:
+                    std::cout << "Online players: " << server.getClienSize() << std::endl;
+                    std::cout << "Game is WAITING for players!" << std::endl;
+                    break;
+                case gameStatus::PLAYING: {
+                    std::cout << "Game is RUNNING!" << std::endl;
+                    GameInfoData data = serverLogic.getClientStatus(true);
+                    std::cout << "Score:\n\tPlayer 1: " << data.scoreP1 << "\n\tPlayer 2: " << data.scoreP2 << std::endl;;
+                }
+                default:
+                    std::cout << "Online players: " << server.getClienSize() << std::endl;
+                    break;
+            }
+        } else if (commandFromBuffer.find(":restart", 0) != -1 && server.getClienSize()>= 2) {
+            std::cout << "Restarting game!" << std::endl;;
+            serverLogic.setServerStatus(gameStatus::WAITING);
+            serverLogic.restGame();
         } else {
-            std::cout << "Z konzoli ha " << commandFromBuffer;
+            std::cerr << "Unknow command!" << std::endl;
         }
     }
 }

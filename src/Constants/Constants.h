@@ -19,7 +19,8 @@ namespace constants
         UP = 0,
         DOWN = 1,
         NONE = 2,
-        RELEASED = 3
+        RELEASED = 3,
+        MUTE = 4
     };
 
     /**
@@ -44,6 +45,12 @@ namespace constants
     const std::string winSoundPath = "../src/Game/Graphics/Resources/Sounds/Samples/win.wav";
     const std::string gameMusicPath = "../src/Game/Graphics/Resources/Sounds/Samples/Pacific Rim.ogg";
     const std::string lobbyMusicPath = "../src/Game/Graphics/Resources/Sounds/Samples/lobyMusic.ogg";
+    const std::string fontPath = "../src/Game/Graphics/Resources/Font/font.ttf";
+
+    const std::string WIN_MESSAGE = "WIN";
+    const std::string LOSE_MESSAGE = "LOSE";
+    const std::string WAITING_MESSAGE = "Waiting for opponent";
+
     const int ROUNDPAUSE = 2;
 
 }

@@ -47,31 +47,42 @@ void ClientLogic::update(ServerResponseData data) {
 void ClientLogic::render() {
     mainWindow.clear(sf::Color::White);
 
-    mainWindow.draw(ball.getObject());
-    mainWindow.draw(player1.getObject());
-    mainWindow.draw(player2.getObject());
-
     switch (state) {
         case gameStatus::WAITING:
             //todo nejaký nápis ako waiting for players
             //todo hudba lobyMusic.waw
+//            resources.updateMessage(Labels::WAITING);
+//            mainWindow.draw(resources.messageText());
             break;
         case gameStatus::COUNTDOWN:
             //todo zobrazí cislo countDownNumber;
+//            resources.updateMessage(Labels::COUNTDOWN, countDownNumber);
+//            mainWindow.draw(resources.messageText());
             break;
         case gameStatus::PLAYING:
             //todo score
+            resources.updatePlayersScore(playerScore1, playerScore2);
+            mainWindow.draw(resources.player1ScoreText());
+            mainWindow.draw(resources.player2ScoreText());
+
             break;
         case gameStatus::WIN:
             //todo nejaká hlaška round win
-            //todo hudba success
+            //todo hudba succes
+            resources.updateMessage(Labels::WIN);
+            mainWindow.draw(resources.messageText());
             break;
         case gameStatus::LOSE:
             //todo nejaká hláška round lose
             //todo hudba hit
+            resources.updateMessage(Labels::LOSE);
+            mainWindow.draw(resources.messageText());
             break;
     }
-    //todo score
+
+    mainWindow.draw(ball.getObject());
+    mainWindow.draw(player1.getObject());
+    mainWindow.draw(player2.getObject());
 
     mainWindow.display();
 }
@@ -79,16 +90,31 @@ void ClientLogic::render() {
 constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool isPressed) {
     switch (key) {
         case sf::Keyboard::Up:
-            return isPressed ? constants::UP : constants::RELEASED;
+            if( player1.getPosition().y > 0) {
+                return isPressed ? constants::UP : constants::RELEASED;
+            }
+            return constants::NONE;
 
         case sf::Keyboard::Down:
-            return isPressed ? constants::DOWN : constants::RELEASED;
+            if (player1.getPosition().y < constants::windowHeight) {
+                return isPressed ? constants::DOWN : constants::RELEASED;
+            }
+            return constants::NONE;
 
         case sf::Keyboard::Left:
-            return isPressed ? constants::UP : constants::RELEASED;
+            if( player1.getPosition().y > 0) {
+                return isPressed ? constants::UP : constants::RELEASED;
+            }
+            return constants::NONE;
 
         case sf::Keyboard::Right:
-            return isPressed ? constants::DOWN : constants::RELEASED;
+            if (player1.getPosition().y < constants::windowHeight) {
+                return isPressed ? constants::DOWN : constants::RELEASED;
+            }
+            return constants::NONE;
+
+        case sf::Keyboard::M:
+            return isPressed ? constants::MUTE : constants::RELEASED;
 
         default:
             return constants::NONE;

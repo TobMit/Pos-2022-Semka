@@ -22,7 +22,7 @@ private:
     int countDownNumber;
     Resources resources;
 
-    static constants::Direction handlePlayerInputs(sf::Keyboard::Key key, bool isPressed);
+    constants::Direction handlePlayerInputs(sf::Keyboard::Key key, bool isPressed);
 
 public:
     ClientLogic();

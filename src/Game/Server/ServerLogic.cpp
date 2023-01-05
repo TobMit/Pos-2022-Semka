@@ -27,11 +27,11 @@ void ServerLogic::update() {
 
     switch (player1Direction) {
         case constants::UP:
-            player1Position.y -= constants::paddleSpped;
+            player1Position.y -= player1Position.y > 0 ? constants::paddleSpped : 0.f;
             break;
 
         case constants::DOWN:
-            player1Position.y += constants::paddleSpped;
+            player1Position.y += player1Position.y > constants::windowHeight ? constants::paddleSpped : 0.f;
             break;
 
         default:
@@ -40,11 +40,11 @@ void ServerLogic::update() {
 
     switch (player2Direction) {
         case constants::UP:
-            player2Position.y -= constants::paddleSpped;
+            player2Position.y -= player2Position.y > 0 ? constants::paddleSpped : 0.f;
             break;
 
         case constants::DOWN:
-            player2Position.y += constants::paddleSpped;
+            player2Position.y += player2Position.y > 0 ? constants::paddleSpped : 0.f;
             break;
 
         default:
@@ -55,54 +55,54 @@ void ServerLogic::update() {
     ballPosition.y += std::sin(ballAngle) * constants::ballSpeed;
 
     //boundries collisions checking
-    if (ballPosition.x - constants::ballRadius / 2 < 0.f) {
+    if (ballPosition.x - constants::ballRadius < 0.f) {
         scorePlayer2++;
         setServerStatus(gameStatus::COLLISION);
         resetPositions();
         roundWinPlayer1 = false;
     }
-    if (ballPosition.x + constants::ballRadius / 2 > constants::windowWidth) {
+    if (ballPosition.x + constants::ballRadius > constants::windowWidth) {
         scorePlayer1++;
         setServerStatus(gameStatus::COLLISION);
         resetPositions();
         roundWinPlayer1 = true;
     }
-    if (ballPosition.y - constants::ballRadius / 2 < 0.f) {
+    if (ballPosition.y - constants::ballRadius < 0.f) {
         ballAngle = -ballAngle;
         ballPosition.y = constants::ballRadius + 0.1f;
     }
-    if (ballPosition.y + constants::ballRadius / 2 > constants::windowHeight) {
+    if (ballPosition.y + constants::ballRadius > constants::windowHeight) {
         ballAngle = -ballAngle;
         ballPosition.y = constants::windowHeight - constants::ballRadius - 0.1f;
     }
 
     //player1 pad collisions checking
 
-    if (ballPosition.x - constants::ballRadius / 2 < player1Position.x + constants::paddleSize.x / 2 &&
-        ballPosition.x - constants::ballRadius / 2 > player1Position.x - constants::paddleSize.x / 2 &&
-        ballPosition.y - constants::ballRadius / 2 <= player1Position.y + constants::paddleSize.y / 2 &&
-        ballPosition.y + constants::ballRadius / 2 >= player1Position.y - constants::paddleSize.y / 2) {
+    if (ballPosition.x - constants::ballRadius < player1Position.x + constants::paddleSize.x / 2 &&
+        ballPosition.x - constants::ballRadius > player1Position.x &&
+        ballPosition.y - constants::ballRadius <= player1Position.y + constants::paddleSize.y / 2 &&
+        ballPosition.y + constants::ballRadius >= player1Position.y - constants::paddleSize.y / 2) {
         if (ballPosition.y > player1Position.y)
             ballAngle = constants::pi - ballAngle + (std::rand() % 20) * constants::pi / 180;
         else
             ballAngle = constants::pi - ballAngle - (std::rand() % 20) * constants::pi / 180;
 
-        ballPosition.x = player1Position.x + constants::ballRadius / 2 + constants::paddleSize.x / 2 + 0.1f;
+        ballPosition.x = player1Position.x + constants::ballRadius + constants::paddleSize.x / 2 + 0.1f;
         bounce = true;
     }
 
     //player2 pad collisions checking
 
-    if (ballPosition.x + constants::ballRadius / 2 > player2Position.x - constants::paddleSize.x / 2 &&
-        ballPosition.x + constants::ballRadius / 2 < player2Position.x + constants::paddleSize.x / 2 &&
-        ballPosition.y - constants::ballRadius / 2 <= player2Position.y + constants::paddleSize.y / 2 &&
-        ballPosition.y + constants::ballRadius / 2 >= player2Position.y - constants::paddleSize.y / 2) {
+    if (ballPosition.x + constants::ballRadius > player2Position.x - constants::paddleSize.x / 2 &&
+        ballPosition.x + constants::ballRadius < player2Position.x &&
+        ballPosition.y - constants::ballRadius <= player2Position.y + constants::paddleSize.y / 2 &&
+        ballPosition.y + constants::ballRadius >= player2Position.y - constants::paddleSize.y / 2) {
         if (ballPosition.y > player2Position.y)
             ballAngle = constants::pi - ballAngle + (std::rand() % 20) * constants::pi / 180;
         else
             ballAngle = constants::pi - ballAngle - (std::rand() % 20) * constants::pi / 180;
 
-        ballPosition.x = player2Position.x - constants::ballRadius / 2 - constants::paddleSize.x / 2 - 0.1f;
+        ballPosition.x = player2Position.x - constants::ballRadius - constants::paddleSize.x / 2 - 0.1f;
         bounce = true;
     }
 
