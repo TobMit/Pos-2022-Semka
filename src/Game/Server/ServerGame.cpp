@@ -33,7 +33,7 @@ void ServerGame::run() {
                 server.socketConnect(&mut) ? std::cout << "New client!" << std::endl : EMPTY; //! no krása
 
                 std::cout << "Online clients " << server.getClienSize() << std::endl;
-                server.getClienSize() > 1 ? serverLogic.setStart(true) : serverLogic.setStart(false);
+                server.getClienSize() > 1 ? serverLogic.setServerStatus(gameStatus::COUNTDOWN) : serverLogic.setServerStatus(gameStatus::WAITING);
             } else {
                 sf::Packet packet;
                 ClientPacket clientPacket(&packet);
@@ -47,23 +47,11 @@ void ServerGame::run() {
         while (timeSinceLastUpdate > timePerFrame) {
             //std::cout << "tick" << std::endl;
             timeSinceLastUpdate -= timePerFrame;
-            if (server.getClienSize() > 1) {
-                serverLogic.update();
+            if (server.getClienSize() < 2) {
+                serverLogic.setServerStatus(gameStatus::WAITING);
+                serverLogic.restGame();
             }
-            if (server.getClienSize() > 0) {
-                sf::Packet packet;
-                packet << serverLogic.getDataForClient(true);
-                if (!server.socketSend(0, &packet, &mut)) {
-                    std::cerr << "Error sending" << std::endl;
-                }
-                if (server.getClienSize() > 1) {
-                    packet.clear();
-                    packet << serverLogic.getDataForClient(false);
-                    if (!server.socketSend(1, &packet, &mut)) {
-                        std::cerr << "Error sending" << std::endl;
-                    }
-                }
-            }
+            serverTick();
         }
         processConsole(&end);
 
@@ -74,12 +62,75 @@ void ServerGame::run() {
     std::cout << "Server shut down!" << std::endl;
 }
 
+void ServerGame::serverTick() {
+    switch (serverLogic.getServerStatus()) {
+        case gameStatus::WAITING: {
+            setSpeedToWait();
+            GameInfoData data;
+            data.msg = gameStatus::WAITING;
+            sf::Packet packet;
+            packet << data;
+            server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
+            packet.clear();
+            packet << serverLogic.getDataForClient(true);
+            server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
+            break;
+        }
+        case gameStatus::COUNTDOWN: {
+            setSpeedToCountDown();
+            GameInfoData data = serverLogic.coundDown();
+            sf::Packet packet;
+            packet << data;
+            server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
+            packet.clear();
+            packet << serverLogic.getDataForClient(true);
+            server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
+            break;
+        }
+        case gameStatus::PLAYING: {
+            setSpeedToGame();
+            serverLogic.update();
+            sf::Packet packet;
+            packet << serverLogic.getDataForClient(true);
+            server.socketSend(0, &packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
+            packet.clear();
+            packet << serverLogic.getDataForClient(false);
+            server.socketSend(1, &packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
+            break;
+        }
+        case gameStatus::COLLISION: {
+            setSpeedToWait();
+            sf::Packet packet;
+            packet << serverLogic.getDataForClient(true);
+            server.socketSend(&packet, &mut);
+            packet.clear();
+            packet << serverLogic.getClientStatus(true);
+            server.socketSend(0, &packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
+            packet.clear();
+            packet << serverLogic.getClientStatus(false);
+            server.socketSend(1, &packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
+            serverLogic.setServerStatus(gameStatus::ROUNDPAUSE);
+            break;
+        }
+        case gameStatus::ROUNDPAUSE:
+            setSpeedToWait();
+            if(!serverLogic.puseTick()) {
+                GameInfoData data;
+                data.msg = gameStatus::PLAYING;
+                sf::Packet packet;
+                packet << data;
+                server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
+            }
+            break;
+    }
+}
+
 void ServerGame::processPacket(sf::Packet *packet, ClientPacket *clientPacket) {//! Zistím typ paketu a podľa toho reagujem
     float typPaketu;
     if (*packet >> typPaketu) {
         //! Switchujem podla typu paketu
         switch (static_cast<int>(typPaketu)) {
-            case CLIENT_UPDATE :{
+            case CLIENT_UPDATE : {
                 ClientData clientData;
                 *packet >> clientData;
                 serverLogic.processData(&clientData, clientPacket->clientId == 0 ? true : false);
@@ -133,4 +184,16 @@ void ServerGame::processConsole(bool *end) {
             std::cout << "Z konzoli ha " << commandFromBuffer;
         }
     }
+}
+
+void ServerGame::setSpeedToCountDown() {
+    timePerFrame = sf::seconds(1.f/1.f);
+}
+
+void ServerGame::setSpeedToGame() {
+    timePerFrame = sf::seconds(1.f/50.f);
+}
+
+void ServerGame::setSpeedToWait() {
+    timePerFrame = sf::seconds(1.f/5.f);
 }

@@ -6,9 +6,11 @@
 
 ServerLogic::ServerLogic() {
     resetPositions();
-    isStarted = false;
+    serverStatus = gameStatus::WAITING;
     scorePlayer1 = 0;
     scorePlayer2 = 0;
+    time = 3;
+    roundPause = 3;
 }
 
 void ServerLogic::processData(ClientData* data, bool isLeftPlayer) {
@@ -16,7 +18,7 @@ void ServerLogic::processData(ClientData* data, bool isLeftPlayer) {
 }
 
 void ServerLogic::update() {
-    if (!isStarted) {
+    if (serverStatus != gameStatus::PLAYING) {
         return;
     }
 
@@ -52,12 +54,16 @@ void ServerLogic::update() {
     //boundries collisions checking
 
     if (ballPosition.x - constants::ballRadius / 2 < 0.f) {
-        scorePlayer1++;
+        scorePlayer2++;
+        setServerStatus(gameStatus::COLLISION);
         resetPositions();
+        roundWinPlayer1 = false;
     }
     if (ballPosition.x + constants::ballRadius / 2 > constants::windowWidth) {
-        scorePlayer2++;
+        scorePlayer1++;
+        setServerStatus(gameStatus::COLLISION);
         resetPositions();
+        roundWinPlayer1 = true;
     }
     if (ballPosition.y - constants::ballRadius / 2 < 0.f) {
         ballAngle = -ballAngle;
@@ -129,4 +135,52 @@ void ServerLogic::resetPositions() {
         ballAngle = (random() % 360) * 2 * constants::pi / 360;
     }
     while (std::abs(std::cos(ballAngle)) < 0.7f);
+}
+
+GameInfoData ServerLogic::coundDown() {
+    GameInfoData data;
+    if (time > 0) {
+        data.msg = gameStatus::COUNTDOWN;
+        data.other = time--;
+    } else {
+        data.msg = gameStatus::PLAYING;
+        setServerStatus(gameStatus::PLAYING);
+        time = 3;
+    }
+    return data;
+}
+
+GameInfoData ServerLogic::getClientStatus(bool isLeft) {
+    GameInfoData data;
+    if (isLeft) {
+        data.scoreP1 = scorePlayer1;
+        data.scoreP2 = scorePlayer2;
+    } else {
+        data.scoreP1 = scorePlayer2;
+        data.scoreP2 = scorePlayer1;
+    }
+    if (roundWinPlayer1) {
+        data.msg = gameStatus::WIN;
+    } else {
+        data.msg = gameStatus::LOSE;
+    }
+    return data;
+}
+
+bool ServerLogic::puseTick() {
+    roundPause--;
+    if (roundPause <= 0) {
+        roundPause = constants::ROUNDPAUSE;
+        setServerStatus(gameStatus::PLAYING);
+        return false;
+    }
+    return true;
+
+}
+
+void ServerLogic::restGame() {
+    resetPositions();
+    scorePlayer1 = 0;
+    scorePlayer2 = 0;
+
 }

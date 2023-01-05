@@ -17,18 +17,38 @@ private:
     constants::Direction player1Direction;
     constants::Direction player2Direction;
     float ballAngle;
-    bool isStarted;
+    int serverStatus;
     int scorePlayer1;
     int scorePlayer2;
+    /**
+     * Používa sa napríklad na odpočítavanie
+     */
+    int time;
+    bool roundWinPlayer1;
+    int roundPause;
 
 public:
     ServerLogic();
     void processData(ClientData* data, bool isLeftPlayer);
     void update();
     ServerResponseData getDataForClient(bool isLeft);
-    void setStart(bool start) {
-        isStarted = start;
+    void setServerStatus(int pStatus) {
+        serverStatus = pStatus;
     }
+    int getServerStatus() {
+        return serverStatus;
+    }
+    GameInfoData coundDown();
+
+    GameInfoData getClientStatus(bool isLeft);
+
+    /**
+     * Pause countdown
+     * @return if is pause
+     */
+    bool puseTick();
+
+    void restGame();
 
 private:
     void resetPositions();

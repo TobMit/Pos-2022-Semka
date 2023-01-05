@@ -59,7 +59,7 @@ inline Client::~Client() {
 }
 
 inline bool Client::selectorChange() {
-    if (selector->wait()) {
+    if (selector->wait(sf::microseconds(1))) {
         return selector->isReady(*socket);
     }
     return false;

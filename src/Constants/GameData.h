@@ -24,6 +24,9 @@ enum packetType {
     //! ak bude treba vlastný enum
     DISCONECT = 3,
 
+    /**
+     * Server to client about game
+     */
     GAME_INFO = 4
 
 };
@@ -33,7 +36,15 @@ enum gameStatus{
     COUNTDOWN = 1,
     PLAYING = 2,
     WIN = 3,
-    LOSE = 4
+    LOSE = 4,
+    /**
+     * Only for server
+     */
+    COLLISION = 5,
+    /**
+     * Pusa between rounds
+     */
+    ROUNDPAUSE = 6
 };
 
 /**
@@ -56,11 +67,12 @@ public:
     float player2PaddleY;
     float ballX;
     float ballY;
+    bool bounce;
     ServerResponseData() {
       id = packetType::SERVER_RESPONSE;
     };
-    ServerResponseData(float player1PaddleY, float player2PaddleY, float ballX, float ballY)
-    : player1PaddleY(player1PaddleY), player2PaddleY(player2PaddleY), ballX(ballX), ballY(ballY) {
+    ServerResponseData(float player1PaddleY, float player2PaddleY, float ballX, float ballY, bool bounce)
+    : player1PaddleY(player1PaddleY), player2PaddleY(player2PaddleY), ballX(ballX), ballY(ballY), bounce(bounce) {
         id = packetType::SERVER_RESPONSE;
     }
 };
@@ -97,6 +109,9 @@ public:
 
 class GameInfoData : public PacketData {
 public:
+    /**
+     * Pre identifikáciu typu GameInfoSpravy
+     */
     int msg;
     int scoreP1;
     int scoreP2;
@@ -114,11 +129,11 @@ public:
 
 
 inline sf::Packet& operator <<(sf::Packet& packet, const ServerResponseData& data) {
-    return packet << static_cast<float>(data.id) << data.player1PaddleY << data.player2PaddleY << data.ballX << data.ballY;
+    return packet << static_cast<float>(data.id) << data.player1PaddleY << data.player2PaddleY << data.ballX << data.ballY << data.bounce;
 }
 
 inline sf::Packet& operator >>(sf::Packet& packet, ServerResponseData& data) {
-    return packet >> data.player1PaddleY >> data.player2PaddleY >> data.ballX >> data.ballY;
+    return packet >> data.player1PaddleY >> data.player2PaddleY >> data.ballX >> data.ballY >> data.bounce;
 }
 
 inline sf::Packet& operator <<(sf::Packet& packet, const ClientData& data) {

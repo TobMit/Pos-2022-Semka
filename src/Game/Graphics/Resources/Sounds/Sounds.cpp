@@ -3,6 +3,7 @@
 //
 
 #include "Sounds.h"
+#include <iostream>
 
 Sounds::Sound::Sound(const std::string& soundPath) {
     sf::SoundBuffer soundBuffer;
@@ -13,6 +14,8 @@ Sounds::Sound::Sound(const std::string& soundPath) {
 void Sounds::Sound::play() {
     if (isLoaded)
         sound.play();
+    else
+        std::cerr << "Error Music" << std::endl;
 }
 
 void Sounds::Music::play() {

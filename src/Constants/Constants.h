@@ -44,6 +44,6 @@ namespace constants
     const std::string winSoundPath = "../src/Game/Graphics/Resources/Sounds/Samples/win.wav";
     const std::string gameMusicPath = "../src/Game/Graphics/Resources/Sounds/Samples/lobyMusic.ogg";
     const std::string lobbyMusicPath = "../src/Game/Graphics/Resources/Sounds/Samples/Pacific Rim.ogg";
-    const int ROUNDPAUSE = 2;
+    const int ROUNDPAUSE = 2*5;
 
 }

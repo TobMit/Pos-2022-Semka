@@ -12,7 +12,6 @@ void ClientGame::run() {
     std::cout << "Client is connected to the server" << std::endl;
 
     while (game.isRunning()) {
-
         if (client.selectorChange()) {
             auto direction = game.processEvents();
             // musí tam byť overenie či bola klávesa zmačknutá lebo inak to robili dvojkliky
@@ -84,6 +83,9 @@ void ClientGame::processPacket(sf::Packet *packet) {//! Zistím typ paketu a pod
                         game.setGameState(gameStatus::COUNTDOWN);
                         game.showNumber(gameInfoData.other);
                         std::cout << gameInfoData.other << std::endl;
+                        break;
+                    case gameStatus::PLAYING:
+                        game.setGameState(gameStatus::PLAYING);
                         break;
                 }
             }

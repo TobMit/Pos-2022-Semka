@@ -23,9 +23,12 @@ public:
     ServerGame();
     bool serverInicialise();
     void run();
-
+private:
     void processConsole(bool *end);
-
     void processPacket(sf::Packet *packet, ClientPacket *clientPacket);
+    void setSpeedToCountDown();
+    void setSpeedToGame();
+    void setSpeedToWait();
+    void serverTick();
 };
 
