@@ -35,20 +35,20 @@ private:
     Sound ballSound;
     Sound winSound;
     Sound loseSound;
-//    Music lobbyMusic;
-//    Music gameMusic;
+    Music lobbyMusic;
+    Music gameMusic;
 
 public:
     Sounds()
     : ballSound(constants::ballSoundPath), winSound(constants::winSoundPath),
-    loseSound(constants::loseSoundPath) /*,lobbyMusic(constants::lobbyMusicPath),
-    gameMusic(constants::gameMusicPath)*/ {}
+    loseSound(constants::loseSoundPath) ,lobbyMusic(constants::lobbyMusicPath),
+    gameMusic(constants::gameMusicPath) {}
 
     inline void playBallSound() { ballSound.play(); }
     inline void playWinSound() { winSound.play(); }
     inline void playLoseSound() { loseSound.play(); }
-//    inline void playLobbyMusic() { lobbyMusic.play(); }
-//    inline void playGameMusic() { gameMusic.play(); }
-//    inline void stopLobbyMusic() { lobbyMusic.stop(); }
-//    inline void stopGameMusic() { gameMusic.stop(); }
+    inline void playLobbyMusic() { lobbyMusic.play(); }
+    inline void playGameMusic() { gameMusic.play(); }
+    inline void stopLobbyMusic() { lobbyMusic.stop(); }
+    inline void stopGameMusic() { gameMusic.stop(); }
 };

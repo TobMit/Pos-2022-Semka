@@ -11,19 +11,19 @@ ClientLogic::ClientLogic()
     ball.setPosition(constants::windowWidth / 2, constants::windowHeight / 2);
     player1.setPosition(10 + player1.getSize().x / 2, constants::windowHeight / 2);
     player2.setPosition(constants::windowWidth - 10 - player2.getSize().x / 2, constants::windowHeight / 2);
-    state = gameStatus::WAITING;
+    state = gameStatus::ROUNDPAUSE;
 }
 
 constants::Direction ClientLogic::processEvents() {
     sf::Event event{};
 
-    while(mainWindow.pollEvent(event) && state == gameStatus::PLAYING) {
+    while(mainWindow.pollEvent(event)) {
         switch (event.type) {
             case sf::Event::KeyPressed:
-                return handlePlayerInputs(event.key.code, true);
+                return state == gameStatus::PLAYING ? handlePlayerInputs(event.key.code, true) :  constants::NONE;
 
             case sf::Event::KeyReleased:
-                return handlePlayerInputs(event.key.code, false);
+                return state == gameStatus::PLAYING ? handlePlayerInputs(event.key.code, false) :  constants::NONE;
 
             case sf::Event::Closed:
                 mainWindow.close();
@@ -95,15 +95,36 @@ constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool
 void ClientLogic::win(int player1, int player2) {
     setGameScore(player1, player2);
     resources.playWinSound();
-    state = gameStatus::WIN;
+    setGameState(gameStatus::WIN);
 }
 
 void ClientLogic::lose(int player1, int player2) {
     setGameScore(player1, player2);
-    state = gameStatus::LOSE;
+    resources.playLoseSound();
+    setGameState(gameStatus::LOSE);
 }
 
 void ClientLogic::setGameScore(int player1, int player2) {
     playerScore1 = player1;
     playerScore2 = player2;
+}
+
+void ClientLogic::setGameState(int pState) {
+    if(state != pState) {
+        state = pState;
+        switch (state) {
+            case gameStatus::PLAYING:
+                resources.stopLobbyMusic();
+                resources.playGameMusic();
+                break;
+            case gameStatus::WAITING:
+                resources.stopGameMusic();
+                resources.playLobbyMusic();
+                break;
+            default:
+                resources.stopLobbyMusic();
+                resources.stopGameMusic();
+                break;
+        }
+    }
 }

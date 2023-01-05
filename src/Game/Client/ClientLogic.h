@@ -31,14 +31,15 @@ public:
     void update(ServerResponseData data);
     void render();
     void closeWindow(){ mainWindow.close();}
-    void setGameState(int gState) {
-        state = gState;
-    }
+    void setGameState(int pState);
     void win(int player1, int player2);
     void lose(int player1, int player2);
     void showNumber(int number) {
         countDownNumber = number;
     };
+    void playBounceMusic(){
+        resources.playBallSound();
+    }
 
 private:
     void setGameScore(int player1, int player2);

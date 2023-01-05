@@ -8,14 +8,14 @@
 Sounds::Sound::Sound(const std::string& soundPath) {
     sf::SoundBuffer soundBuffer;
     isLoaded = soundBuffer.loadFromFile(soundPath);
-    sound = sf::Sound(soundBuffer);
+    sound.setBuffer(soundBuffer);
 }
 
 void Sounds::Sound::play() {
-    if (isLoaded)
+    if (isLoaded) {
         sound.play();
-    else
         std::cerr << "Error Music" << std::endl;
+    }
 }
 
 void Sounds::Music::play() {

@@ -17,8 +17,8 @@ public:
     inline void playBallSound() { sounds.playBallSound(); }
     inline void playWinSound() { sounds.playWinSound(); }
     inline void playLoseSound() { sounds.playLoseSound(); }
-//    inline void playLobbyMusic() { sounds.playLobbyMusic(); }
-//    inline void playGameMusic() { sounds.playGameMusic(); }
-//    inline void stopLobbyMusic() { sounds.stopLobbyMusic(); }
-//    inline void stopGameMusic() { sounds.stopGameMusic(); }
+    inline void playLobbyMusic() { sounds.playLobbyMusic(); }
+    inline void playGameMusic() { sounds.playGameMusic(); }
+    inline void stopLobbyMusic() { sounds.stopLobbyMusic(); }
+    inline void stopGameMusic() { sounds.stopGameMusic(); }
 };
