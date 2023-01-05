@@ -16,6 +16,7 @@ private:
     Ball ball;
     Paddle player1;
     Paddle player2;
+    bool isMutedSound;
     int state;
     int playerScore1;
     int playerScore2;

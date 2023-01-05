@@ -12,6 +12,7 @@ ClientLogic::ClientLogic()
     player1.setPosition(10 + player1.getSize().x / 2, constants::windowHeight / 2);
     player2.setPosition(constants::windowWidth - 10 - player2.getSize().x / 2, constants::windowHeight / 2);
     state = gameStatus::ROUNDPAUSE;
+    isMutedSound = false;
 }
 
 constants::Direction ClientLogic::processEvents() {
@@ -114,7 +115,10 @@ constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool
             return constants::NONE;
 
         case sf::Keyboard::M:
-            return isPressed ? constants::MUTE : constants::RELEASED;
+            if (isPressed) {
+                isMutedSound = !isMutedSound;
+                resources.muteAllSounds(isMutedSound);
+            }
 
         default:
             return constants::NONE;

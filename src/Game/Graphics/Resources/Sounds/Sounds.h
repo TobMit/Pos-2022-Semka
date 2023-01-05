@@ -19,6 +19,7 @@ private:
     public:
         explicit Sound(const std::string& soundPath);
         void play();
+        void changeVolume(float toLevel);
     };
 
     class Music {
@@ -28,6 +29,7 @@ private:
     public:
         explicit Music(std::string musicPath) : musicPath(std::move(musicPath)) {}
         void play();
+        void changeVolume(float toLevel);
         inline void stop() { music.stop(); }
     };
 
@@ -51,4 +53,6 @@ public:
     inline void playGameMusic() { gameMusic.play(); }
     inline void stopLobbyMusic() { lobbyMusic.stop(); }
     inline void stopGameMusic() { gameMusic.stop(); }
+
+    void muteAllsounds(bool isMuted);
 };

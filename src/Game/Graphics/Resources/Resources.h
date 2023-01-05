@@ -23,6 +23,7 @@ public:
     inline void playGameMusic() { sounds.playGameMusic(); }
     inline void stopLobbyMusic() { sounds.stopLobbyMusic(); }
     inline void stopGameMusic() { sounds.stopGameMusic(); }
+    inline void muteAllSounds(bool isMuted) { sounds.muteAllsounds(isMuted); }
 
     inline void updatePlayersScore(int player1Score, int player2Score) { labels.updatePlayersScore(player1Score, player2Score); };
     inline void updateMessage(Labels::MessageType messageType, int countDownValue = -1) { labels.updateMessage(messageType, countDownValue); };
