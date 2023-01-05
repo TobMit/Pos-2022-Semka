@@ -3,19 +3,15 @@
 //
 
 #include "Sounds.h"
-#include <iostream>
 
 Sounds::Sound::Sound(const std::string& soundPath) {
-    sf::SoundBuffer soundBuffer;
-    isLoaded = soundBuffer.loadFromFile(soundPath);
-    sound.setBuffer(soundBuffer);
+    isLoaded = buffer.loadFromFile(soundPath);
+    sound.setBuffer(buffer);
 }
 
 void Sounds::Sound::play() {
-    if (isLoaded) {
+    if (isLoaded)
         sound.play();
-        std::cerr << "Error Music" << std::endl;
-    }
 }
 
 void Sounds::Sound::changeVolume(float toLevel) {
@@ -31,7 +27,7 @@ void Sounds::Music::changeVolume(float toLevel) {
     music.setVolume(toLevel);
 }
 
-void Sounds::muteAllsounds(bool isMuted) {
+void Sounds::muteAllSounds(bool isMuted) {
     ballSound.changeVolume(isMuted ? 0.f : 100.f);
     winSound.changeVolume(isMuted ? 0.f : 100.f);
     loseSound.changeVolume(isMuted ? 0.f : 100.f);
