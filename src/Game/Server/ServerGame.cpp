@@ -155,7 +155,7 @@ void ServerGame::processPacket(sf::Packet *packet, ClientPacket *clientPacket) {
 void ServerGame::processConsole(bool *end) {
     std::string commandFromBuffer;
     {
-        std::__1::unique_lock<std::mutex> lock(mut);
+        std::unique_lock<std::mutex> lock(mut);
         if (!buffer.empty()) {
             commandFromBuffer = buffer.at(buffer.size() - 1);
             buffer.pop_back();
