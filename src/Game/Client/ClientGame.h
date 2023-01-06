@@ -5,14 +5,20 @@
 #pragma once
 
 #include "ClientLogic.h"
+#include <iostream>
+#include "../../SFML-client_server/Sockets/Client.h"
 
 
 class ClientGame {
-
+private:
     ClientLogic game;
+    Client client;
 
 public:
     void run();
-    void update(ServerData data);
+    void update();
+    void update(ServerResponseData data);
+
+    void processPacket(sf::Packet *packet);
 };
 

@@ -2,16 +2,15 @@
 #include "Sockets/MultiServer/MultiServer.h"
 
 int main() {
-    //todo keď je 0 klientov nechce vypnut server
     std::cout << "Server start!" << std::endl;
     MultiServer multiServer;
-    if (!multiServer.socketInicialise(constants::PORT))
+    if (!multiServer.socketInitialize(constants::PORT))
     {
         std::cerr << "Error - listen" << std::endl;
         return EXIT_FAILURE;
     }
     std::cout << "Server is ready!" << std::endl;
-    std::cout << "Online clients: "<< multiServer.getClienSize() << std::endl;
+    std::cout << "Online clients: " << multiServer.getClientSize() << std::endl;
 
     bool end = false;
     std::mutex mut;
@@ -36,7 +35,7 @@ int main() {
                     }
                 }
             }
-            std::cout << "Online clients " << multiServer.getClienSize() << std::endl;
+            std::cout << "Online clients " << multiServer.getClientSize() << std::endl;
         }
 
     }

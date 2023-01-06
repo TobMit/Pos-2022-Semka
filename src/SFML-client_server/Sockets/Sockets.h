@@ -8,16 +8,12 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "../../Constants.h"
+#include "../../Constants/Constants.h"
 
 /**
  * Wrapper class for SFML networking
  */
 class Sockets {
-protected:
-    /*
-    std::mutex mut;
-    std::condition_variable writeToBuff, readFromBuff;*/
 public:
     Sockets() = default;
     ~Sockets()= default;
@@ -27,7 +23,10 @@ public:
      * @param end end of thread
      */
     void consoleSendData(std::mutex *mut, bool *end);
-    //! časom sa môžu presunúť do protected
+
+    void consoleToBuffer(std::mutex *mut, bool *end, std::vector<std::string> &buffer,
+                         std::condition_variable *writeToBuff);
+
     bool isEnd(std::mutex *mut, bool *pEnd);
     void setEnd(std::mutex *mut, bool *pEnd);
     /**
@@ -50,7 +49,7 @@ public:
      */
     virtual bool socketConnect(std::string pIpAddress, int pPort) = 0;
     /**
-     * Disconect from server
+     * Disconnect from server
      */
     virtual void socketDisconnect() = 0;
 protected:

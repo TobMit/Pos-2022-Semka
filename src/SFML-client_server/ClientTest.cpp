@@ -4,7 +4,7 @@
 int main() {
     std::cout << "Client started!" << std::endl;
     Client client;
-    if (!client.socketConnect("localhost", constants::PORT))
+    if (!client.socketConnect(constants::FRIOS_IP, constants::PORT))
     {
         std::cerr << "Error connection!" << std::endl;
         return EXIT_FAILURE;
@@ -20,9 +20,6 @@ int main() {
         sf::Packet packet;
         int position = -1;
 
-        //!aby to ešte správne fungovalo receive by mal byť cez select alebo set to nonBlocking
-        // teraz je to tak, že keď človek zadá na klientovy :end tak sa klient vypne až keď prime najakú správu
-        // to je preto lebo to tu čaká na prijatie správy
         if (!client.socketReceive(&packet)) {
             client.setEnd(&mut, &end);
         }

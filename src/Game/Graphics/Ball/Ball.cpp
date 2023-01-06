@@ -3,15 +3,15 @@
 //
 
 #include "Ball.h"
-#include "../../../Constants.h"
+#include "../../../Constants/Constants.h"
 
 const sf::Color Ball::ballColor = sf::Color::White;
 
 Ball::Ball()
-: ball(constants::ballRadius - constants::outline_thickness)
+: ball(constants::BALL_RADIUS - constants::OUTLINE_THICKNESS)
 {
-    ball.setOutlineThickness(constants::outline_thickness);
-    ball.setOutlineColor(constants::outline_color);
+    ball.setOutlineThickness(constants::OUTLINE_THICKNESS);
+    ball.setOutlineColor(constants::OUTLINE_COLOR);
     ball.setFillColor(ballColor);
-    ball.setOrigin(constants::ballRadius / 2, constants::ballRadius / 2);
+    ball.setOrigin(constants::BALL_RADIUS / 2, constants::BALL_RADIUS / 2);
 }

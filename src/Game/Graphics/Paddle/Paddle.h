@@ -5,7 +5,7 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
-#include "../../../Constants.h"
+#include "../../../Constants/Constants.h"
 #include <tuple>
 
 class Paddle {
@@ -13,7 +13,7 @@ public:
     explicit Paddle(bool isLeft);
 
     inline sf::Vector2f getPosition() const { return paddle.getPosition(); }
-    inline sf::Vector2f getSize() const { return constants::paddleSize; }
+    inline sf::Vector2f getSize() const { return constants::PADDLE_SIZE; }
     inline const sf::RectangleShape& getObject() const { return paddle; }
 
     inline void setPosition(sf::Vector2f position) { paddle.setPosition(position); }

@@ -21,7 +21,7 @@ MultiServer::~MultiServer() {
     delete clients;
 }
 
-bool MultiServer::socketInicialise(int pPort) {
+bool MultiServer::socketInitialize(int pPort) {
     if (listener->listen(pPort) == sf::Socket::Done)
     {
         selector->add(*listener);
@@ -31,7 +31,7 @@ bool MultiServer::socketInicialise(int pPort) {
 }
 
 bool MultiServer::selectorWait() {
-    return selector->wait();
+    return selector->wait(sf::microseconds(1));
 }
 
 bool MultiServer::listenerIsReady() {
@@ -39,7 +39,7 @@ bool MultiServer::listenerIsReady() {
 }
 
 /**
- * Metod connect new client to the server database
+ * Method connects new client to the server database
  * @return every time is true
  */
 bool MultiServer::socketConnect() {
@@ -48,7 +48,7 @@ bool MultiServer::socketConnect() {
 
 /**
  * THREADS ONLY
- * Metod connect new client to the server database
+ * Method connects new client to the server database
  * @return every time is true
  */
 bool MultiServer::socketConnect(std::mutex *mut) {
@@ -71,8 +71,8 @@ bool MultiServer::socketConnect(std::mutex *mut) {
 }
 
 /**
- * Sent packet for every client
- * If is client disconnected this can detect and remove client
+ * Send packet to every client
+ * If client has been disconnected this can detect and remove client
  * @param pPacket for sending
  * @return true false if was successful
  */
@@ -92,7 +92,7 @@ bool MultiServer::socketSend(sf::Packet *pPacket) {
 
 /**
  * Send packet to the specific client
- * If was client disconected, this will detect it and remove it from server
+ * If client has been disconnected, this will detect it and remove it from the server
  * @param id of clint for sending packet
  * @param pPacket packet for sending
  * @return true if was send successful
@@ -103,8 +103,8 @@ bool MultiServer::socketSend(int id, sf::Packet *pPacket) {
 
 /**
  * THREADS ONLY
- * Sent packet for every client
- * If is client disconnected this can detect and remove client
+ * Send packet to every client
+ * If client has been disconnected this can detect and remove client
  * @param pPacket for sending
  * @return true false if was successful
  */
@@ -139,7 +139,7 @@ bool MultiServer::socketSend(sf::Packet *pPacket, std::mutex *mut) {
 /**
  * THREADS ONLY
  * Send packet to the specific client.
- * If was client disconected, this will detect it and remove it from server
+ * If client has been disconnected, this will detect it and remove it from the server
  * @param id of clint for sending packet
  * @param pPacket packet for sending
  * @return true if was send successful
@@ -147,6 +147,9 @@ bool MultiServer::socketSend(sf::Packet *pPacket, std::mutex *mut) {
 bool MultiServer::socketSend(int id, sf::Packet *pPacket, std::mutex *mut) {
     sf::Socket::Status status;
     bool success = true;
+    if (id >= clients->size()) {
+        return false;
+    }
     if (mut != nullptr) {
         std::unique_lock<std::mutex> lock(*mut);
         success = socketSendPacket(pPacket, clients->at(id), &status);
@@ -185,9 +188,9 @@ bool MultiServer::socketReceive(sf::Packet *pPacket, sf::TcpSocket *pSocket, sf:
 }
 
 /**
- * Get packet form client, but only for first find clients. I dont expect in same time from two clients get message.
+ * Get packet from client, but only for the first find clients. I dont expect in same time from two clients get message.
  * If is client disconnected this can detect and remove client
- * @param pClientPacket strore id and packet form client
+ * @param pClientPacket strore packet_id and packet form client
  * @return true if was receiving successful
  */
 bool MultiServer::socketReceive(ClientPacket *pClientPacket) {
@@ -198,7 +201,7 @@ bool MultiServer::socketReceive(ClientPacket *pClientPacket) {
  * THREADS ONLY
  * Get packet form client, but only for first find clients. I dont expect in same time from two clients get message.
  * If is client disconnected this can detect and remove client
- * @param pClientPacket strore id and packet form client
+ * @param pClientPacket strore packet_id and packet form client
  * @return true if was receiving successful
  */
 bool MultiServer::socketReceive(ClientPacket *pClientPacket, std::mutex *mut) {
@@ -212,7 +215,7 @@ bool MultiServer::socketReceive(ClientPacket *pClientPacket, std::mutex *mut) {
                 if (!socketReceive(pClientPacket->packet, clients->at(i), &status)){
                     successful = false;
                 }
-                // if was client disconnected
+                // if client was disconnected
                 if (status == sf::Socket::Disconnected) {
                     clientDisconnect(i);
                 }
@@ -223,10 +226,10 @@ bool MultiServer::socketReceive(ClientPacket *pClientPacket, std::mutex *mut) {
         for (int i = 0; i < clients->size(); ++i) {
             if (selectorIsReady(*clients->at(i))) {
                 pClientPacket->clientId = i;
-                if (!socketReceive(pClientPacket->packet, clients->at(i), nullptr)){
+                if (!socketReceive(pClientPacket->packet, clients->at(i), &status)){
                     successful = false;
                 }
-                // if was client disconnected
+                // if client was disconnected
                 if (status == sf::Socket::Disconnected) {
                     clientDisconnect(i);
                 }
