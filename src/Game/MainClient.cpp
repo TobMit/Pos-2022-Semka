@@ -4,8 +4,7 @@
 
 #include "Client/ClientGame.h"
 
-int main()
-{
+int main() {
     ClientGame game;
     game.run();
     return 0;

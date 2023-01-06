@@ -18,7 +18,7 @@ public:
 };
 /**
  * Server that can handle multiple users
- * It is not separate server like SimpleServer it is Cower class for SFML Sever
+ * It is not separate server like SimpleServer it is wrapper class for SFML Server
  */
 class MultiServer : public Sockets {
 private:
@@ -26,16 +26,15 @@ private:
     sf::SocketSelector *selector;
     std::vector<sf::TcpSocket*> *clients;
 public:
-    //! Ak bude treba tak môže beťať aj na vlákne ale zatiaľ bude to takto čiastočne obalené
     MultiServer();
     ~MultiServer();
 
     /**
-     * Funcition bind server to the port
+     * Function bind server to the port
      * @param pPort port for client connection
      * @return  if was binding successful
      */
-    bool socketInicialise(int pPort);
+    bool socketInitialize(int pPort);
 
     /**
      * This function returns as soon as at least one socket has some data available to be received.
@@ -46,7 +45,7 @@ public:
     bool listenerIsReady();
 
     /**
-     * Return allways false bacause this is server
+     * Return always false because this is server
      */
     bool socketConnect(std::string pIpAddress, int pPort) override{
         return false;
@@ -65,10 +64,10 @@ public:
     bool socketSend(int id, sf::Packet *pPacket, std::mutex *mut);
 
     /**
-     * Count of clints
+     * Count of clients
      * @return count of clients in list
      */
-    int getClienSize(){
+    int getClientSize(){
         return clients->size();
     };
 

@@ -5,6 +5,7 @@ class Client : public Sockets {
 private:
     sf::TcpSocket *socket;
     sf::SocketSelector *selector;
+
 public:
     Client();
     ~Client();
@@ -17,11 +18,10 @@ public:
     void socketDisconnect() override;
 
     bool selectorChange();
-
 };
 
 /**
- * Simple clinet for socket
+ * Simple client for socket
  */
 inline Client::Client() {
     socket = new sf::TcpSocket;

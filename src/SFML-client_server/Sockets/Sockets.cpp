@@ -21,7 +21,6 @@ void Sockets::consoleSendData(std::mutex *mut, bool *end) {
             while (fgets(testStart, constants::BUFF_SIZE-1, stdin)!= nullptr) {
                 std::string inputFromConsole = testStart;
                 position = inputFromConsole.find(":end",0);
-                //std::cout << testStart << std::endl;
                 {
                     std::unique_lock<std::mutex> lock(*mut);
                     sf::Packet packet;

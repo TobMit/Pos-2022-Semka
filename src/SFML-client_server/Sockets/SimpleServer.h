@@ -17,12 +17,12 @@ public:
 
     bool socketConnect(std::string pIpAddress, int pPort) override;
     /**
-     * Funcition wait for client to connect
+     * Function wait for client to connect
      * @return  if was connection successful
      */
     bool socketConnect();
     /**
-     * Funcition bind server to the port
+     * Function bind server to the port
      * @param pPort port for client connection
      * @return  if was binding successful
      */

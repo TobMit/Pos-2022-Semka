@@ -5,7 +5,7 @@
 #include "ClientGame.h"
 
 void ClientGame::run() {
-    if (!client.socketConnect(constants::LOCALHOST_IP, constants::PORT)) {
+    if (!client.socketConnect(constants::FRIOS_IP, constants::PORT)) {
         std::cerr << "Error - connection" << std::endl;
         return;
     }
@@ -33,15 +33,12 @@ void ClientGame::run() {
                 std::cerr << "ERROR - data receiving" << std::endl;
             }
         }
-
-        //game.render();
-
     }
-    //TODO paket inicializuje disconect ked sa zvrie okno
     client.socketDisconnect();
 }
 
-void ClientGame::processPacket(sf::Packet *packet) {//! Zistím typ paketu a podľa toho reagujem
+void ClientGame::processPacket(sf::Packet *packet) {
+//! Zistím typ paketu a podľa toho reagujem
     float typPaketu;
     if (*packet >> typPaketu) {
         //! Switchujem podla typu paketu
@@ -64,29 +61,29 @@ void ClientGame::processPacket(sf::Packet *packet) {//! Zistím typ paketu a pod
             case GAME_INFO : {
                 GameInfoData gameInfoData;
                 *packet >> gameInfoData;
-                //todo upratať
                 switch (gameInfoData.msg) {
                     case GameStatus::WAITING:
                         game.setGameState(GameStatus::WAITING);
-                        std::cout << "Waiting for players" << std::endl;
                         break;
+
                     case GameStatus::WIN:
                         game.win(gameInfoData.scoreP1, gameInfoData.scoreP2);
-                        std::cout << "Round win" << std::endl;
                         break;
+
                     case GameStatus::LOSE:
                         game.lose(gameInfoData.scoreP1, gameInfoData.scoreP2);
-                        std::cout << "Round lose" << std::endl;
                         break;
+
                     case GameStatus::COUNTDOWN:
                         game.setGameState(GameStatus::COUNTDOWN);
                         game.showNumber(gameInfoData.other);
-                        std::cout << gameInfoData.other << std::endl;
                         break;
+
                     case GameStatus::PLAYING:
                         game.setGameState(GameStatus::PLAYING);
                         break;
                 }
+
                 update();
             }
         }

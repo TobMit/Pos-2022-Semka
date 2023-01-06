@@ -27,7 +27,7 @@ add_executable(GameClient
         src/Game/Graphics/Resources/Labels/Labels.h)
 
 add_executable(GameServer
-        src/MainServer.cpp
+        src/Game/MainServer.cpp
         src/SFML-client_server/Sockets/Sockets.cpp
         src/SFML-client_server/Sockets/Sockets.h
         src/SFML-client_server/Sockets/MultiServer/MultiServer.h
