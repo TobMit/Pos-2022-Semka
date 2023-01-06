@@ -27,11 +27,11 @@ void ServerLogic::update() {
 
     switch (player1Direction) {
         case constants::UP:
-            player1Position.y -= player1Position.y > 0 ? constants::PADDLE_SPEED : 0.f;
+            player1Position.y -= player1Position.y - constants::PADDLE_SIZE.y / 2 > 0 ? constants::PADDLE_SPEED : 0.f;
             break;
 
         case constants::DOWN:
-            player1Position.y += player1Position.y > constants::WINDOW_HEIGHT ? constants::PADDLE_SPEED : 0.f;
+            player1Position.y += player1Position.y + constants::PADDLE_SIZE.y / 2 < constants::WINDOW_HEIGHT ? constants::PADDLE_SPEED : 0.f;
             break;
 
         default:
@@ -40,11 +40,11 @@ void ServerLogic::update() {
 
     switch (player2Direction) {
         case constants::UP:
-            player2Position.y -= player2Position.y > 0 ? constants::PADDLE_SPEED : 0.f;
+            player2Position.y -= player2Position.y - constants::PADDLE_SIZE.y / 2 > 0 ? constants::PADDLE_SPEED : 0.f;
             break;
 
         case constants::DOWN:
-            player2Position.y += player2Position.y > 0 ? constants::PADDLE_SPEED : 0.f;
+            player2Position.y += player2Position.y + constants::PADDLE_SIZE.y / 2 < constants::WINDOW_HEIGHT ? constants::PADDLE_SPEED : 0.f;
             break;
 
         default:

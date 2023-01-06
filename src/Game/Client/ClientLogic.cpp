@@ -22,10 +22,10 @@ constants::Direction ClientLogic::processEvents() {
     while(mainWindow.pollEvent(event)) {
         switch (event.type) {
             case sf::Event::KeyPressed:
-                return state == gameStatus::PLAYING ? handlePlayerInputs(event.key.code, true) :  constants::NONE;
+                return state == GameStatus::PLAYING ? handlePlayerInputs(event.key.code, true) : constants::NONE;
 
             case sf::Event::KeyReleased:
-                return state == gameStatus::PLAYING ? handlePlayerInputs(event.key.code, false) :  constants::NONE;
+                return state == GameStatus::PLAYING ? handlePlayerInputs(event.key.code, false) : constants::NONE;
 
             case sf::Event::Closed:
                 mainWindow.close();
@@ -88,28 +88,12 @@ void ClientLogic::render() {
 constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool isPressed) {
     switch (key) {
         case sf::Keyboard::Up:
-            if( player1.getPosition().y > 0) {
-                return isPressed ? constants::UP : constants::RELEASED;
-            }
-            return constants::NONE;
+        case sf::Keyboard::Left:
+            return isPressed ? constants::UP : constants::RELEASED;
 
         case sf::Keyboard::Down:
-            if (player1.getPosition().y < constants::WINDOW_HEIGHT) {
-                return isPressed ? constants::DOWN : constants::RELEASED;
-            }
-            return constants::NONE;
-
-        case sf::Keyboard::Left:
-            if( player1.getPosition().y > 0) {
-                return isPressed ? constants::UP : constants::RELEASED;
-            }
-            return constants::NONE;
-
         case sf::Keyboard::Right:
-            if (player1.getPosition().y < constants::WINDOW_HEIGHT) {
-                return isPressed ? constants::DOWN : constants::RELEASED;
-            }
-            return constants::NONE;
+            return isPressed ? constants::DOWN : constants::RELEASED;
 
         case sf::Keyboard::M:
             if (isPressed) {
