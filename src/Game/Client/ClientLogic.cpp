@@ -22,10 +22,10 @@ constants::Direction ClientLogic::processEvents() {
     while(mainWindow.pollEvent(event)) {
         switch (event.type) {
             case sf::Event::KeyPressed:
-                return state == GameStatus::PLAYING ? handlePlayerInputs(event.key.code, true) : constants::NONE;
+                return handlePlayerInputs(event.key.code, true);
 
             case sf::Event::KeyReleased:
-                return state == GameStatus::PLAYING ? handlePlayerInputs(event.key.code, false) : constants::NONE;
+                return handlePlayerInputs(event.key.code, false);
 
             case sf::Event::Closed:
                 mainWindow.close();
@@ -89,11 +89,11 @@ constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool
     switch (key) {
         case sf::Keyboard::Up:
         case sf::Keyboard::Left:
-            return isPressed ? constants::UP : constants::RELEASED;
+            return state == GameStatus::PLAYING ? (isPressed ? constants::UP : constants::RELEASED) : constants::NONE;
 
         case sf::Keyboard::Down:
         case sf::Keyboard::Right:
-            return isPressed ? constants::DOWN : constants::RELEASED;
+            return state == GameStatus::PLAYING ? (isPressed ? constants::DOWN : constants::RELEASED) : constants::NONE;
 
         case sf::Keyboard::M:
             if (isPressed) {
