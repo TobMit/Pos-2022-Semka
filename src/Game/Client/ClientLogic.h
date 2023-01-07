@@ -20,6 +20,7 @@ private:
     int state;
     int playerScore1;
     int playerScore2;
+    int lastPlayerScore;
     int countDownNumber;
     Resources resources;
 

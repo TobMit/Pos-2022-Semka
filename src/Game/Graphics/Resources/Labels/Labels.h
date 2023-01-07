@@ -18,18 +18,21 @@ private:
     sf::Font font;
     sf::Text player1Score;
     sf::Text player2Score;
+    sf::Text lastScore;
     sf::Text message;
     bool isFontLoaded;
 
     void setupMessage(const std::string& text, bool isCountdown = false);
+    void updateLastScore(int lastPlayerScore);
 
 public:
     Labels();
 
     bool updatePlayersScore(int player1Score, int player2Score);
-    bool updateMessage(MessageType messageType, int countDownValue);
+    bool updateMessage(MessageType messageType, int countDownValue, int lastPlayerScore);
 
     inline const sf::Text& player1ScoreText() const { return player1Score; }
     inline const sf::Text& player2ScoreText() const { return player2Score; }
+    inline const sf::Text& lastScoreText() const { return lastScore; }
     inline const sf::Text& messageText() const { return message; }
 };

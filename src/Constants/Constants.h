@@ -43,6 +43,7 @@ namespace constants
     const std::string WIN_MESSAGE = "WIN";
     const std::string LOSE_MESSAGE = "LOSE";
     const std::string WAITING_MESSAGE = "Waiting for opponent";
+    const std::string LAST_SCORE_MESSAGE = "Your last score was: ";
 
     const int ROUND_PAUSE = 2;
 }

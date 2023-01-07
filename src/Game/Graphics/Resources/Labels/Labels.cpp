@@ -10,8 +10,9 @@ Labels::Labels() {
         player1Score.setFont(font);
         player2Score.setFont(font);
         message.setFont(font);
+        lastScore.setFont(font);
 
-        std::vector<sf::Text*> vectorOfTexts { &player1Score, &player2Score, &message };
+        std::vector<sf::Text*> vectorOfTexts { &player1Score, &player2Score, &message, &lastScore };
 
         std::for_each(vectorOfTexts.begin(), vectorOfTexts.end(), [](sf::Text* text) {
             text->setString("0");
@@ -38,10 +39,11 @@ bool Labels::updatePlayersScore(int player1, int player2) {
     return isFontLoaded;
 }
 
-bool Labels::updateMessage(MessageType messageType, int countDownValue) {
+bool Labels::updateMessage(MessageType messageType, int countDownValue, int lastPlayerScore) {
     switch (messageType) {
         case WAITING:
             setupMessage(constants::WAITING_MESSAGE);
+            updateLastScore(lastPlayerScore);
             break;
 
         case COUNTDOWN:
@@ -79,5 +81,16 @@ void Labels::setupMessage(const std::string& text, bool isCountdown) {
         else {
             message.setString(text);
         }
+    }
+}
+
+void Labels::updateLastScore(int lastPlayerScore) {
+    if (isFontLoaded) {
+        std::string text = constants::LAST_SCORE_MESSAGE + std::to_string(lastPlayerScore);
+        lastScore.setString(text);
+        lastScore.setOrigin(lastScore.getGlobalBounds().width / 2, lastScore.getGlobalBounds().height / 2);
+        lastScore.setPosition(constants::WINDOW_WIDTH / 2, constants::TEXT_OFFSET * 2);
+    } else {
+        std::cout << constants::LAST_SCORE_MESSAGE << lastPlayerScore << std::endl << std::endl;
     }
 }

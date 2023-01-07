@@ -12,7 +12,7 @@ ClientLogic::ClientLogic()
     player1.setPosition(10 + player1.getSize().x / 2, constants::WINDOW_HEIGHT / 2);
     player2.setPosition(constants::WINDOW_WIDTH - 10 - player2.getSize().x / 2, constants::WINDOW_HEIGHT / 2);
     state = GameStatus::ROUND_PAUSE;
-    playerScore1 = playerScore2 = 0;
+    playerScore1 = playerScore2 = lastPlayerScore = 0;
     isMutedSound = false;
 }
 
@@ -51,8 +51,9 @@ void ClientLogic::render() {
 
     switch (state) {
         case GameStatus::WAITING:
-            if (resources.updateMessage(Labels::WAITING))
+            if (resources.updateMessage(Labels::WAITING, 0, lastPlayerScore))
                 mainWindow.draw(resources.messageText());
+                mainWindow.draw(resources.lastScoreText());
             break;
 
         case GameStatus::COUNTDOWN:
@@ -111,6 +112,7 @@ constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool
 
 void ClientLogic::win(int player1Score, int player2Score) {
     setGameScore(player1Score, player2Score);
+    lastPlayerScore = playerScore1;
     resources.playWinSound();
     setGameState(GameStatus::WIN);
 }
