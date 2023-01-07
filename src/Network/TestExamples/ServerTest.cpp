@@ -1,4 +1,4 @@
-#include "Sockets/SimpleServer.h"
+#include "../Sockets/SimpleServer.h"
 #include <iostream>
 
 int main() {

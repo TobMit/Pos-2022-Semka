@@ -2,7 +2,7 @@
 // Created by Tobias on 04/01/2023.
 //
 #pragma once
-#include "../../SFML-client_server/Sockets/MultiServer/MultiServer.h"
+#include "../../Network//Sockets/MultiServer/MultiServer.h"
 #include "../../Constants/GameData.h"
 #include "ServerLogic.h"
 #include <SFML/Graphics.hpp>

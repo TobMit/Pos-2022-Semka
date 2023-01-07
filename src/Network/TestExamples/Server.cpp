@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Sockets/MultiServer/MultiServer.h"
+#include "../Sockets/MultiServer/MultiServer.h"
 
 int main() {
     std::cout << "Server start!" << std::endl;
