@@ -2,7 +2,7 @@
 // Created by Matúš Mištrik on 27/12/2022.
 //
 
-#include "Client/ClientGame.h"
+#include "Game/Client/ClientGame.h"
 
 int main() {
     ClientGame game;

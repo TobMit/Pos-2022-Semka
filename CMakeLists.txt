@@ -8,7 +8,7 @@ include_directories(${SFML_INCLUDE_DIRS})
 
 
 add_executable(GameClient
-        src/Game/MainClient.cpp
+        src/MainClient.cpp
         src/Game/Graphics/Ball/Ball.cpp
         src/Game/Graphics/Ball/Ball.h
         src/Game/Graphics/Paddle/Paddle.cpp
@@ -27,11 +27,11 @@ add_executable(GameClient
         src/Game/Graphics/Resources/Labels/Labels.h)
 
 add_executable(GameServer
-        src/Game/MainServer.cpp
-        src/SFML-client_server/Sockets/Sockets.cpp
-        src/SFML-client_server/Sockets/Sockets.h
-        src/SFML-client_server/Sockets/MultiServer/MultiServer.h
-        src/SFML-client_server/Sockets/MultiServer/MultiServer.cpp
+        src/MainServer.cpp
+        src/Sockets/Sockets.cpp
+        src/Sockets/Sockets.h
+        src/Sockets/MultiServer/MultiServer.h
+        src/Sockets/MultiServer/MultiServer.cpp
         src/Constants/Constants.h
         src/Constants/GameData.h
         src/Game/Server/ServerLogic.cpp
