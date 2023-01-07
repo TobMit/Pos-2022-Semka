@@ -38,6 +38,7 @@ public:
     void lose(int player1Score, int player2Score);
     void showNumber(int number) {
         countDownNumber = number;
+        lastPlayerScore = 0;
     };
     void setGameScore(int player1Score, int player2Score);
 };

@@ -5,7 +5,7 @@
 #include "ClientGame.h"
 
 void ClientGame::run() {
-    if (!client.socketConnect(constants::LOCALHOST_IP, constants::PORT)) {
+    if (!client.socketConnect(constants::FRIOS_IP, constants::PORT)) {
         std::cerr << "Error - connection" << std::endl;
         return;
     }
