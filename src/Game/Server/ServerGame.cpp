@@ -30,9 +30,17 @@ void ServerGame::run() {
 
             if (server.listenerIsReady()) {
                 server.socketConnect() ? std::cout << "New client!" << std::endl : EMPTY; //! no krása
-
-                std::cout << "Online clients " << server.getClientSize() << std::endl;
-                server.getClientSize() > 1 ? serverLogic.setServerStatus(GameStatus::COUNTDOWN) : serverLogic.setServerStatus(GameStatus::WAITING);
+                if (server.getClientSize() > 2) {
+                    sf::Packet packet;
+                    NetworkData networkData(DISCONECT);
+                    packet << networkData;
+                    server.socketSend(2, &packet);
+                    server.clientDisconnect(2);
+                } else {
+                    std::cout << "Online clients " << server.getClientSize() << std::endl;
+                    server.getClientSize() > 1 ? serverLogic.setServerStatus(GameStatus::COUNTDOWN)
+                                               : serverLogic.setServerStatus(GameStatus::WAITING);
+                }
             } else {
                 sf::Packet packet;
                 ClientPacket clientPacket(&packet);
@@ -58,7 +66,7 @@ void ServerGame::run() {
     console.join();
 
     server.socketDisconnect();
-    std::cout << "Server shut down!" << std::endl;
+    std::cout << "Server is Shuting down!" << std::endl;
 }
 
 void ServerGame::serverTick() {
@@ -67,6 +75,7 @@ void ServerGame::serverTick() {
             setGameSpeed(WAITING);
             GameInfoData data;
             data.msg = GameStatus::WAITING;
+            data.scoreP1 = data.scoreP2 = 0;
             sf::Packet packet;
             packet << data;
             server.socketSend(&packet) ? EMPTY : std::cerr << "Error sending" << std::endl;
@@ -140,13 +149,10 @@ void ServerGame::processPacket(sf::Packet *packet, ClientPacket *clientPacket) {
                 *packet >> networkData;
                 if (networkData.netMsg == DISCONECT) {
                     server.clientDisconnect(clientPacket->clientId);
-
+                    std::cout << "Disconnecting " << clientPacket->clientId << ". player!" << std::endl;
                 }
                 break;
             }
-            default:
-                std::cout << "wrong" << std::endl;
-                break;
         }
     }
 }

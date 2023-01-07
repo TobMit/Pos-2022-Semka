@@ -34,6 +34,10 @@ void ClientGame::run() {
             }
         }
     }
+    sf::Packet packet;
+    NetworkData networkData(DISCONECT);
+    packet << networkData;
+    client.socketSend(&packet);
     client.socketDisconnect();
 }
 
@@ -64,6 +68,7 @@ void ClientGame::processPacket(sf::Packet *packet) {
                 switch (gameInfoData.msg) {
                     case GameStatus::WAITING:
                         game.setGameState(GameStatus::WAITING);
+                        game.setGameScore(gameInfoData.scoreP1, gameInfoData.scoreP2);
                         break;
 
                     case GameStatus::WIN:

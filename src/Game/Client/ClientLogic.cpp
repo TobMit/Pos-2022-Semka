@@ -100,7 +100,10 @@ constants::Direction ClientLogic::handlePlayerInputs(sf::Keyboard::Key key, bool
                 isMutedSound = !isMutedSound;
                 resources.muteAllSounds(isMutedSound);
             }
-
+            return constants::NONE;
+        case sf::Keyboard::Escape:
+            mainWindow.close();
+            return constants::NONE;
         default:
             return constants::NONE;
     }

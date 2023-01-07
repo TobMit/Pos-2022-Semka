@@ -38,8 +38,5 @@ public:
     void showNumber(int number) {
         countDownNumber = number;
     };
-
-
-private:
     void setGameScore(int player1Score, int player2Score);
 };
