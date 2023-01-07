@@ -170,7 +170,7 @@ void ServerGame::processConsole(bool *end) {
             server.socketSend(&packet, &mut);
             server.setEnd(&mut, end);
         } else if (commandFromBuffer.find(":cend 1", 0) != -1 && server.getClientSize() >= 1) {
-            std::cout << "Disconect 2. client!" << std::endl;
+            std::cout << "Disconect 1. client!" << std::endl;
             sf::Packet packet;
             NetworkData networkData(DISCONECT);
             packet << networkData;
@@ -206,10 +206,15 @@ void ServerGame::processConsole(bool *end) {
             }
         } else if (commandFromBuffer.find(":restart", 0) != -1 && server.getClientSize() >= 2) {
             std::cout << "Restarting game!" << std::endl;;
-            serverLogic.setServerStatus(GameStatus::WAITING);
+            serverLogic.setServerStatus(GameStatus::COUNTDOWN);
             serverLogic.restGame();
+            sf::Packet packet;
+            GameInfoData gameInfoData = serverLogic.getClientStatus(true);
+            gameInfoData.msg = GameStatus::LOSE;
+            packet << gameInfoData;
+            server.socketSend(&packet, &mut) ? EMPTY : std::cerr << "Error sending" << std::endl;
         } else {
-            std::cerr << "Unknow command!" << std::endl;
+            std::cerr << "Error command!" << std::endl;
         }
     }
 }
@@ -219,7 +224,7 @@ void ServerGame::setGameSpeed(GameStatus status) {
         case WAITING:
         case ROUND_PAUSE:
         case COLLISION:
-            timePerFrame = sf::seconds(1.f/2.f);
+            timePerFrame = sf::seconds(1.f/2.5f);
             break;
 
         case COUNTDOWN:
